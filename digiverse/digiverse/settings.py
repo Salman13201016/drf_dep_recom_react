@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'role',
     'divisions',
     'districts',
+    'stations',
 ]
 
 MIDDLEWARE = [
