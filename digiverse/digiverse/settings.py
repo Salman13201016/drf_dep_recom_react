@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'divisions',
     'districts',
     'stations',
+    'hospital_categories',
 ]
 
 MIDDLEWARE = [
