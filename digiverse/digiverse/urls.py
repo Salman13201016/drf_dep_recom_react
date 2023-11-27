@@ -9,4 +9,5 @@ urlpatterns = [
     path('district/', include('districts.urls')), 
     path('station/', include('stations.urls')),
     path('hospital_category/', include('hospital_categories.urls')),
+    path('hospital/', include('hospitals.urls')),
 ]
