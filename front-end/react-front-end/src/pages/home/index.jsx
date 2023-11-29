@@ -5,23 +5,22 @@ import { useState } from 'react';
 import HospitalBody from './HospitalBody';
 
 const HomePage = () => {
-  const [isPrimaryBodyShow, setisPrimaryBodyShow] = useState(true);
-  const [isShowDistrict, setisShowDistrict] = useState(false);
+  const [componentShow, setcomponentShow] = useState('primary');
+  const selectComponent = (value) =>{
+    setcomponentShow(value);
+  }
 
   
   return (
     <div className="main-wrapper">
       <HeaderSection />
 
-      <SideBarSection
-        setisPrimaryBodyShow={setisPrimaryBodyShow}
-        setisShowDistrict={setisShowDistrict}
-      />
+      <SideBarSection selectComponent={selectComponent} />
 
-      {isPrimaryBodyShow ? (
+      {componentShow == "primary" ? (
         <BodySection />
       ) : (
-        <HospitalBody isShowDistrict={isShowDistrict} />
+        <HospitalBody componentShow={componentShow} />
       )}
     </div>
   );

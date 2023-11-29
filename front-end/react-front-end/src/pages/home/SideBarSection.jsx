@@ -2,8 +2,7 @@ import { useState } from "react";
 import PropTypes from 'prop-types'
 
 const SideBarSection = ({
-  setisPrimaryBodyShow,
-  setisShowDistrict,
+  selectComponent,
 }) => {
   const [isDisplayNone, setisDisplayNone] = useState(true);
   return (
@@ -11,9 +10,6 @@ const SideBarSection = ({
       <div className="sidebar-inner slimscroll">
         <div id="sidebar-menu" className="sidebar-menu">
           <ul>
-            {/* <li className="menu-title">
-              <span>Main</span>
-            </li> */}
             <li>
               <a href="index.html">
                 <i className="fe fe-home"></i> <span>Dashboard</span>
@@ -26,15 +22,24 @@ const SideBarSection = ({
               </a>
               <ul style={{ display: isDisplayNone ? "none" : "block" }}>
                 <li>
-                  <a
-                    href="#"
-                    onClick={() => setisPrimaryBodyShow(false)}
-                  >
+                  <a href="#" onClick={() => selectComponent("division")}>
                     Division
                   </a>
                 </li>
                 <li>
-                  <a href="#" onClick={()=>setisShowDistrict(true)} >District</a>
+                  <a href="#" onClick={() => selectComponent('district')}>
+                    District
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent('station')}>
+                    Station
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent('hospitalCtg')}>
+                    Hospital Category
+                  </a>
                 </li>
               </ul>
             </li>
@@ -48,6 +53,7 @@ const SideBarSection = ({
 SideBarSection.propTypes = {
   setisPrimaryBodyShow: PropTypes.func,
   setisShowDistrict: PropTypes.func,
+  selectComponent : PropTypes.func,
 };
 
 export default SideBarSection
