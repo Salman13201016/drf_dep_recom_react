@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'stations',
     'hospital_categories',
     'hospitals',
+    'hospital_map_app',
+    
 ]
 
 MIDDLEWARE = [
