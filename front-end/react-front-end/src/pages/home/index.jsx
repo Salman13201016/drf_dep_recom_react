@@ -1,13 +1,30 @@
+import HeaderSection from './HeaderSection';
+import SideBarSection from './SideBarSection';
+import BodySection from './BodySection'
+import { useState } from 'react';
+import HospitalBody from './HospitalBody';
 
-import SideNav from "./SideNav";
+const HomePage = () => {
+  const [isPrimaryBodyShow, setisPrimaryBodyShow] = useState(true);
+  const [isShowDistrict, setisShowDistrict] = useState(false);
 
-const DivisionSection = () => {
   
   return (
-    <div>
-      <SideNav />
+    <div className="main-wrapper">
+      <HeaderSection />
+
+      <SideBarSection
+        setisPrimaryBodyShow={setisPrimaryBodyShow}
+        setisShowDistrict={setisShowDistrict}
+      />
+
+      {isPrimaryBodyShow ? (
+        <BodySection />
+      ) : (
+        <HospitalBody isShowDistrict={isShowDistrict} />
+      )}
     </div>
   );
 };
 
-export default DivisionSection;
+export default HomePage;
