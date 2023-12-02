@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\nirba\OneDrive\Desktop\drf_dep_recom_react\digiverse\myenv
+set VIRTUAL_ENV=F:\Programming\Web Design\Full Stack Army\innovative_project\React\drf_dep_recom_react\digiverse\myenv
 
 if not defined PROMPT set PROMPT=$P$G
 

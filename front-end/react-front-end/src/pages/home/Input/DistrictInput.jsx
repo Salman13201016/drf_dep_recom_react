@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {useStoreState} from 'easy-peasy'
+import apiService from "../../../api";
 
 
 
@@ -18,7 +19,12 @@ const DistrictInput = () => {
 
       const handleSubmit = () => {
         if (district.length > 0) {
-          console.log(division, district);
+          const newData = {
+            name: district,
+            division: division,
+          };
+          const res = apiService.postData( 'http://127.0.0.1:8000/district/districts/', JSON.stringify(newData));
+          console.log(res)
           setdistrict("");
         } else {
           alert("Please Insert district");

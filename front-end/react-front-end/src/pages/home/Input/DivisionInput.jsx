@@ -1,4 +1,5 @@
 import { useState } from "react";
+import apiService from "../../../api";
 
 
 const DivisionInput = () => {
@@ -7,8 +8,15 @@ const DivisionInput = () => {
     setdivision(e.target.value)
   }
   const handleSubmit = () =>{
+    const jsonData = {
+      name : division
+    }
     if(division.length>0){
-          console.log(division);
+          const res = apiService.postData(
+            "http://127.0.0.1:8000/division/divisions/",
+            JSON.stringify(jsonData)
+          );
+          console.log(res)
           setdivision("");
     }else{
       alert('Please Insert Division')
