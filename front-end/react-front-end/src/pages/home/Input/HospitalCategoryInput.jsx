@@ -1,4 +1,5 @@
 import { useState } from "react";
+import apiService from "../../../api";
 
 
 const HospitalCategoryInput = () => {
@@ -8,10 +9,14 @@ const HospitalCategoryInput = () => {
       };
       const handleSubmit = () => {
         if (hospitalCategory.length > 0) {
-          console.log(hospitalCategory);
+          const categoryData = {name:hospitalCategory};
+          apiService.postData(
+            "http://127.0.0.1:8000/hospital_category/hospital_categories/",
+            JSON.stringify(categoryData)
+          );
           sethospitalCategory("");
         } else {
-          alert("Please Insert Division");
+          alert("Please Insert Information");
         }
       };
   return (

@@ -1,6 +1,6 @@
 import HeaderSection from './HeaderSection';
 import SideBarSection from './SideBarSection';
-import BodySection from './BodySection'
+import BodySection from './--BodySection'
 import { useState } from 'react';
 import HospitalBody from './HospitalBody';
 

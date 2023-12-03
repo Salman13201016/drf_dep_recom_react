@@ -12,12 +12,10 @@ const DivisionInput = () => {
       name : division
     }
     if(division.length>0){
-          const res = apiService.postData(
+          apiService.postData(
             "http://127.0.0.1:8000/division/divisions/",
             JSON.stringify(jsonData)
           );
-          console.log(res)
-          setdivision("");
     }else{
       alert('Please Insert Division')
     }

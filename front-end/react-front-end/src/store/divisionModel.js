@@ -1,10 +1,17 @@
-import {action} from 'easy-peasy';
+import {action, thunk} from 'easy-peasy';
 import apiService from '../api';
-const initalValue = ['Barishal', 'Chattogram', 'Dhaka', 'Khulna', 'Rajshahi', 'Rangpur', 'Mymensingh', 'Sylhet'];
+// const initalValue = ['Barishal', 'Chattogram', 'Dhaka', 'Khulna', 'Rajshahi', 'Rangpur', 'Mymensingh', 'Sylhet'];
 const divisionModel = {
-    divisionList : [...initalValue],
-    getDivisionListFromServer : action((state, payload)=>{
-        state.divisionList = apiService.getData(payload);
+    divisionList : [],
+    updateDivisionList : action((state, payload)=>{
+        state.divisionList.push(payload)
+    }),
+    getDivisionListFromServer : thunk(async(actions, payload)=>{
+        const data =  await apiService.getData(payload);
+        data.forEach(element => {
+            actions.updateDivisionList(element.name)
+
+        });
     })
 };
 

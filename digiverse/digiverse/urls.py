@@ -11,5 +11,4 @@ urlpatterns = [
     path('hospital_category/', include('hospital_categories.urls')),
     path('hospital/', include('hospitals.urls')),
     path('hospital-map-app/', include('hospital_map_app.urls')),
-    
 ]

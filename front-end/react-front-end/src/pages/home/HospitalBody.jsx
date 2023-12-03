@@ -4,6 +4,8 @@ import DistrictInput from "./Input/DistrictInput";
 import DivisionInput from "./Input/DivisionInput";
 import StationInput from "./Input/StationInput";
 import HospitalCategoryInput from "./Input/HospitalCategoryInput";
+import HospitalAppInput from "./Input/HospitalAppInput";
+
 
 const HospitalBody = ({ componentShow }) => {
   let renderComponent;
@@ -11,11 +13,14 @@ const HospitalBody = ({ componentShow }) => {
     renderComponent = <DivisionInput />;
   } else if (componentShow == "district") {
     renderComponent = <DistrictInput />;
-  }else if (componentShow == "station"){
-    renderComponent = <StationInput />
-  }else if (componentShow == "hospitalCtg"){
-    renderComponent = <HospitalCategoryInput />
+  } else if (componentShow == "station") {
+    renderComponent = <StationInput />;
+  } else if (componentShow == "hospitalCtg") {
+    renderComponent = <HospitalCategoryInput />;
+  } else if (componentShow == "hospitalApp") {
+    renderComponent =  <HospitalAppInput />
   }
+
     return (
       <div className="page-wrapper">
         <div className="content container-fluid">

@@ -41,6 +41,11 @@ const SideBarSection = ({
                     Hospital Category
                   </a>
                 </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent('hospitalApp')}>
+                    Hospital App
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>

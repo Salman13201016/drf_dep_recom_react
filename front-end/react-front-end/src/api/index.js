@@ -1,10 +1,16 @@
 import axios from "axios";
 
 const apiService = {
-  getData: async function (url) {
-    const { data } = await axios.get(url);
-    return data;
-  },
+
+  getData : async function (url) {
+  try {
+    const response = await axios.get(url);
+    return response.data
+  } catch (error) {
+    console.error(error);
+  }
+},
+
 
   postData: async function (url, postData) {
     try {
