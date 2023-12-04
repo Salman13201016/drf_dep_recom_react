@@ -73,17 +73,17 @@ const HospitalAppInput = () => {
             <div className="form-group row">
               <label className="col-form-label col-md-2">Select District</label>
               <div className="col-md-10">
-                {district.districtList.map((districtName, index) => {
+                {district.districtList.map((districtDetails, index) => {
                   return (
                     <div className="radio" key={index}>
                       <label>
                         <input
                           type="radio"
                           name="district"
-                          value={districtName}
+                          value={districtDetails.name}
                           onChange={handleChange}
                         />{" "}
-                        {districtName}
+                        {districtDetails.name}
                       </label>
                     </div>
                   );

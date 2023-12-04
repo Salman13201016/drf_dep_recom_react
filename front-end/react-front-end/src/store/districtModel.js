@@ -9,7 +9,7 @@ const districtModel = {
   getDistrictListFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
     data.forEach((element) => {
-    actions.updateDistrictList(element.name)
+    actions.updateDistrictList(element)
     });
   }),
 };

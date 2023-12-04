@@ -1,42 +1,58 @@
 import { useStoreState } from "easy-peasy";
-import { useState } from "react";
-import apiService from "../../../api";
-
+import { useEffect, useState } from "react";
+const initalValue = {
+  name: "",
+  division: "",
+  district: "",
+};
 const StationInput = () => {
-  const { division: divisionFromServer, district: districtFromServer} = useStoreState((state) => state);
-  const [district, setdistrict] = useState("");
-  const [division, setdivision] = useState("");
-  const [station, setstation] = useState("");
+  const { division: divisionFromServer, district: districtFromServer } =
+    useStoreState((state) => state);
+  const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
+  const [stationInfo, setstationInfo] = useState(initalValue);
 
+  useEffect(() => {
+    let selectedDistrict = [];
+    districtFromServer.districtList.forEach((element) => {
+      if (element.division.name == stationInfo.division) {
+        selectedDistrict.push(element.name);
+      }
+    });
+    setshowDistrictInJSX(selectedDistrict);
+    selectedDistrict = [];
 
-
+    if (!showDistrictInJSX.length > 0) {
+      setstationInfo((prev) => {
+        return {
+          ...prev,
+          district: "",
+        };
+      });
+    }
+  }, [
+    districtFromServer.districtList,
+    showDistrictInJSX.length,
+    stationInfo.division,
+  ]);
 
   const handleChange = (e) => {
-    if (e.target.name == "divisionRadio") {
-      setdivision(e.target.value);
-    } else if (e.target.name == "districtRadio") {
-      setdistrict(e.target.value);
-    } else {
-      setstation(e.target.value);
-    }
+    setstationInfo((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
   };
 
   const handleSubmit = () => {
-    if (district.length > 0 && station.length > 0) {
-      const dataField = {name:station, division: division, district: district};
-       apiService.postData(
-        "http://127.0.0.1:8000/station/stations/",
-        JSON.stringify(dataField)
-      );
-
-      console.log(JSON.stringify(dataField))
-  
-      setdistrict("");
-      setstation("");
+    if (stationInfo.name.length > 0) {
+      console.log(stationInfo);
+      setstationInfo(initalValue);
     } else {
-      alert("Please Insert All Field");
+      alert("Please Enter Valid Station Name");
     }
   };
+
   return (
     <div className="card">
       <div className="card-header">
@@ -55,7 +71,7 @@ const StationInput = () => {
                     <label>
                       <input
                         type="radio"
-                        name="divisionRadio"
+                        name="division"
                         value={divisionName}
                         onChange={handleChange}
                       />{" "}
@@ -71,37 +87,45 @@ const StationInput = () => {
 
           <div
             style={{
-              display: division ? "block" : "none",
+              display: stationInfo.division.length > 0 ? "block" : "none",
               marginBottom: "20px",
             }}
           >
-            <div className="form-group row">
-              <label className="col-form-label col-md-2">Select District</label>
-              <div className="col-md-10">
-                {districtFromServer.districtList.map((districtName, index) => {
-                  return (
-                    <div className="radio" key={index}>
-                      <label>
-                        <input
-                          type="radio"
-                          name="districtRadio"
-                          value={districtName}
-                          onChange={handleChange}
-                        />{" "}
-                        {districtName}
-                      </label>
-                    </div>
-                  );
-                })}
+            {showDistrictInJSX.length > 0 ? (
+              <div className="form-group row">
+                <label className="col-form-label col-md-2">
+                  Select District
+                </label>
+                <div className="col-md-10">
+                  {showDistrictInJSX.map((districtDetails, index) => {
+                    return (
+                      <div className="radio" key={index}>
+                        <label>
+                          <input
+                            type="radio"
+                            name="district"
+                            value={districtDetails}
+                            onChange={handleChange}
+                          />{" "}
+                          {districtDetails}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            ) : (
+              <p> District May Not Be Available or Please Select Division</p>
+            )}
           </div>
-
-      
 
           {/* station input start from here */}
 
-          <div style={{ display: district ? "block" : "none" }}>
+          <div
+            style={{
+              display: stationInfo.district.length > 1 ? "block" : "none",
+            }}
+          >
             <div className="form-group mb-0 row">
               <label className="col-form-label col-md-2">Station Name</label>
               <div className="col-md-10">
@@ -109,8 +133,9 @@ const StationInput = () => {
                   <input
                     className="form-control"
                     type="text"
-                    value={station}
+                    value={stationInfo.name}
                     onChange={handleChange}
+                    name="name"
                   />
                   <div className="input-group-append">
                     <button

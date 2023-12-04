@@ -5,6 +5,7 @@ import DivisionInput from "./Input/DivisionInput";
 import StationInput from "./Input/StationInput";
 import HospitalCategoryInput from "./Input/HospitalCategoryInput";
 import HospitalAppInput from "./Input/HospitalAppInput";
+import HospitalMap from "./Input/HospitalMapInput";
 
 
 const HospitalBody = ({ componentShow }) => {
@@ -18,7 +19,9 @@ const HospitalBody = ({ componentShow }) => {
   } else if (componentShow == "hospitalCtg") {
     renderComponent = <HospitalCategoryInput />;
   } else if (componentShow == "hospitalApp") {
-    renderComponent =  <HospitalAppInput />
+    renderComponent = <HospitalAppInput />;
+  } else if (componentShow == "hospitalmap") {
+    renderComponent = <HospitalMap />
   }
 
     return (
