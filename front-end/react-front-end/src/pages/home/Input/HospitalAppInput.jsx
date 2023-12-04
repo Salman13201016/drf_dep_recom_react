@@ -1,44 +1,69 @@
-import {useStoreState} from 'easy-peasy'
-import { useState } from 'react';
+import { useStoreState } from "easy-peasy";
+import { useState, useEffect } from "react";
 const initalState = {
-    division : '',
-    district : '',
-    station : '',
-    hospitalName : '',
-    zipCode : '',
-    address : '',
-    picture : '',
-    hospitalType : '',
-    description: ''
-}
+  division: "",
+  district: "",
+  station: "",
+  hospitalName: "",
+  zipCode: "",
+  address: "",
+  picture: "",
+  hospitalType: "",
+  description: "",
+};
 
 const HospitalAppInput = () => {
-    const { division, district, station, hospitalCategory } = useStoreState(
-      (state) => state
-    );
-    const [hospitalInfo, setHospitalInfo] = useState(initalState)
+  const { division, district, station, hospitalCategory } = useStoreState(
+    (state) => state
+  );
+  const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
+  const [showStationInJSX, setshowStationInJSX] = useState("");
+  const [hospitalInfo, setHospitalInfo] = useState(initalState);
 
-    const handleChange = (e) =>{
-        setHospitalInfo((prev)=>{
-            return {
-                ...prev,
-                [e.target.name] : e.target.value
-            }
-        })
-    }
+  useEffect(() => {
+    let selectedDistrict = [];
+    district.districtList.forEach((element) => {
+      if (element.division.name == hospitalInfo.division) {
+        selectedDistrict.push(element.name);
+      }
+    });
+    setshowDistrictInJSX(selectedDistrict);
+    selectedDistrict = [];
+  }, [district.districtList, hospitalInfo.division]);
 
-    const handlePicture = (e) =>{
-        setHospitalInfo((prev)=>{
-            return {
-                ...prev,
-                [e.target.name] : e.target.files[0]
-            }
-        })
-    }
+  useEffect(() => {
+    let selectedStation = [];
+    station.stationList.forEach((element) => {
+      if (element.district_name == hospitalInfo.district) {
+        selectedStation.push(element.name);
+      }
+    });
+    setshowStationInJSX(selectedStation);
+    selectedStation = [];
 
-    const handleSubmit = () =>{
-        console.log(hospitalInfo)
-    }
+  }, [hospitalInfo.district, station.stationList]);
+
+  const handleChange = (e) => {
+    setHospitalInfo((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const handlePicture = (e) => {
+    setHospitalInfo((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.files[0],
+      };
+    });
+  };
+
+  const handleSubmit = () => {
+    console.log(hospitalInfo);
+  };
   return (
     <>
       <div className="card">
@@ -70,48 +95,60 @@ const HospitalAppInput = () => {
             </div>
 
             {/* district input start from here */}
-            <div className="form-group row">
-              <label className="col-form-label col-md-2">Select District</label>
-              <div className="col-md-10">
-                {district.districtList.map((districtDetails, index) => {
-                  return (
-                    <div className="radio" key={index}>
-                      <label>
-                        <input
-                          type="radio"
-                          name="district"
-                          value={districtDetails.name}
-                          onChange={handleChange}
-                        />{" "}
-                        {districtDetails.name}
-                      </label>
-                    </div>
-                  );
-                })}
+            {showDistrictInJSX.length > 0 ? (
+              <div className="form-group row">
+                <label className="col-form-label col-md-2">
+                  Select District
+                </label>
+                <div className="col-md-10">
+                  {showDistrictInJSX.map((districtDetails, index) => {
+                    return (
+                      <div className="radio" key={index}>
+                        <label>
+                          <input
+                            type="radio"
+                            name="district"
+                            value={districtDetails}
+                            onChange={handleChange}
+                          />{" "}
+                          {districtDetails}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            ) : (
+              <p>Please Select Divison Above</p>
+            )}
 
             {/* station input start from here */}
-            <div className="form-group row">
-              <label className="col-form-label col-md-2">Select Station</label>
-              <div className="col-md-10">
-                {station.stationList.map((stationName, index) => {
-                  return (
-                    <div className="radio" key={index}>
-                      <label>
-                        <input
-                          type="radio"
-                          name="station"
-                          value={stationName}
-                          onChange={handleChange}
-                        />{" "}
-                        {stationName}
-                      </label>
-                    </div>
-                  );
-                })}
+            {showStationInJSX.length > 0 ? (
+              <div className="form-group row">
+                <label className="col-form-label col-md-2">
+                  Select Station
+                </label>
+                <div className="col-md-10">
+                  {showStationInJSX.map((stationName, index) => {
+                    return (
+                      <div className="radio" key={index}>
+                        <label>
+                          <input
+                            type="radio"
+                            name="station"
+                            value={stationName}
+                            onChange={handleChange}
+                          />{" "}
+                          {stationName}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            ) : (
+              <p>Please Select District Above</p>
+            )}
 
             {/* hospital name input start from here */}
             <div style={{ marginBottom: "20px" }}>
@@ -235,6 +272,6 @@ const HospitalAppInput = () => {
       </div>
     </>
   );
-}
+};
 
-export default HospitalAppInput
+export default HospitalAppInput;

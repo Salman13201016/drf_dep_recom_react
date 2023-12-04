@@ -9,7 +9,7 @@ const stationModel = {
   getStationFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
     data.forEach((element) => {
-      actions.updateStationList(element.name);
+      actions.updateStationList(element);
     });
   }),
 };
