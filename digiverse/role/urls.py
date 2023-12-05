@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import RoleViewSet
 
-app_name = 'your_app_name'
+app_name = 'role'
 
 urlpatterns = [
     path('roles/', RoleViewSet.as_view({'post': 'create', 'get': 'list'}), name='role-list'),
