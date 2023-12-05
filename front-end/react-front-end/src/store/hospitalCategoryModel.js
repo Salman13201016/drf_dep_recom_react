@@ -9,7 +9,7 @@ const hospitalCategoryModel = {
   getCategoryListFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
     data.forEach((element) => {
-      actions.updateCategoryList(element.name);
+      actions.updateCategoryList(element);
     });
   }),
 };

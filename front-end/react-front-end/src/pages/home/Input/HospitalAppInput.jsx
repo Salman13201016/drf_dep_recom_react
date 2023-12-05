@@ -231,10 +231,10 @@ const HospitalAppInput = () => {
                         <input
                           type="radio"
                           name="hospitalType"
-                          value={categoryName}
+                          value={categoryName.name}
                           onChange={handleChange}
                         />{" "}
-                        {categoryName}
+                        {categoryName.name}
                       </label>
                     </div>
                   );
