@@ -1,10 +1,11 @@
 import {useStoreState} from 'easy-peasy';
 import { useState } from 'react';
+import apiService from '../../../api';
 
 const initalValue = {
     hospital : '',
-    longitude : 0,
-    latitude : 0
+    longitude : '',
+    latitude : ''
 }
 const HospitalMap = () => {
     const { hospitalInfoList } = useStoreState((state) => state.hospitalInfo);
@@ -18,7 +19,10 @@ const HospitalMap = () => {
         })
     }
     const handleSubmit = () =>{
-        console.log(hospitalMapInfo)
+      apiService.postData(
+        "http://127.0.0.1:8000/hospital-map-app/hospital-maps/",
+        JSON.stringify(hospitalMapInfo)
+      );
     }
   return (
     <div>
@@ -33,17 +37,17 @@ const HospitalMap = () => {
             <div className="form-group row">
               <label className="col-form-label col-md-2">Hospital Name</label>
               <div className="col-md-10">
-                {hospitalInfoList.map((hospital, index) => {
+                {hospitalInfoList.map((singleHospital, index) => {
                   return (
                     <div className="radio" key={index}>
                       <label>
                         <input
                           type="radio"
                           name="hospital"
-                          value={hospital.name}
+                          value={singleHospital.id}
                           onChange={handleChange}
                         />{" "}
-                        {hospital.name}
+                        {singleHospital.name}
                       </label>
                     </div>
                   );

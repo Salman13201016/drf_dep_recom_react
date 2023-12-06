@@ -1,14 +1,15 @@
 import { useStoreState } from "easy-peasy";
 import { useState, useEffect } from "react";
+import apiService from '../../../api/index'
 const initalState = {
   division: "",
   district: "",
   station: "",
-  hospitalName: "",
-  zipCode: "",
+  name: "",
+  zip_code: "",
   address: "",
-  picture: "",
-  hospitalType: "",
+  image: null,
+  hos_type: "",
   description: "",
 };
 
@@ -23,8 +24,8 @@ const HospitalAppInput = () => {
   useEffect(() => {
     let selectedDistrict = [];
     district.districtList.forEach((element) => {
-      if (element.division.name == hospitalInfo.division) {
-        selectedDistrict.push(element.name);
+      if (element.division.id == hospitalInfo.division) {
+        selectedDistrict.push(element);
       }
     });
     setshowDistrictInJSX(selectedDistrict);
@@ -34,8 +35,8 @@ const HospitalAppInput = () => {
   useEffect(() => {
     let selectedStation = [];
     station.stationList.forEach((element) => {
-      if (element.district_name == hospitalInfo.district) {
-        selectedStation.push(element.name);
+      if (element.district == hospitalInfo.district) {
+        selectedStation.push(element);
       }
     });
     setshowStationInJSX(selectedStation);
@@ -52,17 +53,19 @@ const HospitalAppInput = () => {
     });
   };
 
-  const handlePicture = (e) => {
-    setHospitalInfo((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.files[0],
-      };
-    });
-  };
+  // const handlePicture = (e) => {
+  //   setHospitalInfo((prev) => {
+  //     return {
+  //       ...prev,
+  //       [e.target.name]: e.target.files[0],
+  //     };
+  //   });
+  // };
 
   const handleSubmit = () => {
-    console.log(hospitalInfo);
+    apiService.postData('http://127.0.0.1:8000/hospital/hospitals/',
+    JSON.stringify(hospitalInfo)
+    )
   };
   return (
     <>
@@ -76,17 +79,17 @@ const HospitalAppInput = () => {
             <div className="form-group row">
               <label className="col-form-label col-md-2">Select Division</label>
               <div className="col-md-10">
-                {division.divisionList.map((divisionName, index) => {
+                {division.divisionList.map((singleDivision, index) => {
                   return (
                     <div className="radio" key={index}>
                       <label>
                         <input
                           type="radio"
                           name="division"
-                          value={divisionName}
+                          value={singleDivision.id}
                           onChange={handleChange}
                         />{" "}
-                        {divisionName}
+                        {singleDivision.name}
                       </label>
                     </div>
                   );
@@ -95,23 +98,24 @@ const HospitalAppInput = () => {
             </div>
 
             {/* district input start from here */}
+
             {showDistrictInJSX.length > 0 ? (
               <div className="form-group row">
                 <label className="col-form-label col-md-2">
                   Select District
                 </label>
                 <div className="col-md-10">
-                  {showDistrictInJSX.map((districtDetails, index) => {
+                  {showDistrictInJSX.map((singleDistrict, index) => {
                     return (
                       <div className="radio" key={index}>
                         <label>
                           <input
                             type="radio"
                             name="district"
-                            value={districtDetails}
+                            value={singleDistrict.id}
                             onChange={handleChange}
                           />{" "}
-                          {districtDetails}
+                          {singleDistrict.name}
                         </label>
                       </div>
                     );
@@ -123,23 +127,24 @@ const HospitalAppInput = () => {
             )}
 
             {/* station input start from here */}
+
             {showStationInJSX.length > 0 ? (
               <div className="form-group row">
                 <label className="col-form-label col-md-2">
                   Select Station
                 </label>
                 <div className="col-md-10">
-                  {showStationInJSX.map((stationName, index) => {
+                  {showStationInJSX.map((singleStation, index) => {
                     return (
                       <div className="radio" key={index}>
                         <label>
                           <input
                             type="radio"
                             name="station"
-                            value={stationName}
+                            value={singleStation.id}
                             onChange={handleChange}
                           />{" "}
-                          {stationName}
+                          {singleStation.name}
                         </label>
                       </div>
                     );
@@ -151,6 +156,7 @@ const HospitalAppInput = () => {
             )}
 
             {/* hospital name input start from here */}
+
             <div style={{ marginBottom: "20px" }}>
               <div className="form-group mb-0 row">
                 <label className="col-form-label col-md-2">Hospital Name</label>
@@ -158,7 +164,7 @@ const HospitalAppInput = () => {
                   <div className="input-group">
                     <input
                       className="form-control"
-                      name="hospitalName"
+                      name="name"
                       type="text"
                       onChange={handleChange}
                     />
@@ -168,6 +174,7 @@ const HospitalAppInput = () => {
             </div>
 
             {/* zip code input start from here */}
+
             <div style={{ marginBottom: "20px" }}>
               <div className="form-group mb-0 row">
                 <label className="col-form-label col-md-2">Zip Code</label>
@@ -177,7 +184,7 @@ const HospitalAppInput = () => {
                       className="form-control"
                       type="number"
                       onChange={handleChange}
-                      name="zipCode"
+                      name="zip_code"
                     />
                   </div>
                 </div>
@@ -185,6 +192,7 @@ const HospitalAppInput = () => {
             </div>
 
             {/* address input start from here */}
+
             <div style={{ marginBottom: "20px" }}>
               <div className="form-group mb-0 row">
                 <label className="col-form-label col-md-2">Address</label>
@@ -202,39 +210,41 @@ const HospitalAppInput = () => {
             </div>
 
             {/* picture input start from here */}
-            <div style={{ marginBottom: "20px" }}>
+
+            {/* <div style={{ marginBottom: "20px" }}>
               <div className="form-group mb-0 row">
                 <label className="col-form-label col-md-2">Picture</label>
                 <div className="col-md-10">
                   <div className="input-group">
                     <input
                       className="form-control"
-                      name="picture"
+                      name="image"
                       type="file"
                       onChange={handlePicture}
                     />
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* category input start from here */}
+
             <div className="form-group row">
               <label className="col-form-label col-md-2">
                 Hospital Category
               </label>
               <div className="col-md-10">
-                {hospitalCategory.categoryList.map((categoryName, index) => {
+                {hospitalCategory.categoryList.map((category, index) => {
                   return (
                     <div className="radio" key={index}>
                       <label>
                         <input
                           type="radio"
-                          name="hospitalType"
-                          value={categoryName.name}
+                          name="hos_type"
+                          value={category.id}
                           onChange={handleChange}
                         />{" "}
-                        {categoryName.name}
+                        {category.name}
                       </label>
                     </div>
                   );
@@ -243,6 +253,7 @@ const HospitalAppInput = () => {
             </div>
 
             {/* description input start from here */}
+
             <div style={{ marginBottom: "20px" }}>
               <div className="form-group mb-0 row">
                 <label className="col-form-label col-md-2"> Description</label>

@@ -9,7 +9,7 @@ const divisionModel = {
     getDivisionListFromServer : thunk(async(actions, payload)=>{
         const data =  await apiService.getData(payload);
         data.forEach(element => {
-            actions.updateDivisionList(element.name)
+            actions.updateDivisionList(element)
 
         });
     })

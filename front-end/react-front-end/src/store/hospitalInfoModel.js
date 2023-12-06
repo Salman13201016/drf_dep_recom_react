@@ -8,8 +8,8 @@ const hospitalInfoodel = {
   }),
   getHospitalInfoFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
-    data.forEach((element) => {
-      actions.updateHospitalInfoList(element);
+    data.forEach((singleHospital) => {
+      actions.updateHospitalInfoList(singleHospital);
     });
   }),
 };

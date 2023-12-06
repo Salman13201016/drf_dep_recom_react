@@ -9,6 +9,8 @@ const DistrictInput = () => {
     const [district, setdistrict] = useState('');
     const [division, setdivision] = useState('');
 
+
+
     const handleChange = (e) =>{
         if(e.target.name == 'radio'){
             setdivision(e.target.value);
@@ -23,8 +25,7 @@ const DistrictInput = () => {
             name: district,
             division: division,
           };
-          const res = apiService.postData( 'http://127.0.0.1:8000/district/districts/', JSON.stringify(newData));
-          console.log(res)
+          apiService.postData( 'http://127.0.0.1:8000/district/districts/', JSON.stringify(newData));
           setdistrict("");
         } else {
           alert("Please Insert district");
@@ -36,7 +37,7 @@ const DistrictInput = () => {
   return (
     <div className="card">
       <div className="card-header">
-        <h4 className="card-title">District & Division Data Input</h4>
+        <h4 className="card-title">District Data Input</h4>
       </div>
       <div className="card-body">
         <form action="#">
@@ -47,17 +48,17 @@ const DistrictInput = () => {
           <div className="form-group row">
             <label className="col-form-label col-md-2">Select Division</label>
             <div className="col-md-10">
-              {divisionList.map((divisionName, index) => {
+              {divisionList.map((singleDivision, index) => {
                 return (
                   <div className="radio" key={index}>
                     <label>
                       <input
                         type="radio"
                         name="radio"
-                        value={divisionName}
+                        value={singleDivision.id}
                         onChange={handleChange}
                       />{" "}
-                      {divisionName}
+                      {singleDivision.name}
                     </label>
                   </div>
                 );

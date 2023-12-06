@@ -1,5 +1,6 @@
 import { useStoreState } from "easy-peasy";
 import { useEffect, useState } from "react";
+import apiService from "../../../api";
 const initalValue = {
   name: "",
   division: "",
@@ -11,11 +12,12 @@ const StationInput = () => {
   const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
   const [stationInfo, setstationInfo] = useState(initalValue);
 
+
   useEffect(() => {
     let selectedDistrict = [];
     districtFromServer.districtList.forEach((element) => {
-      if (element.division.name == stationInfo.division) {
-        selectedDistrict.push(element.name);
+      if (element.division.id == stationInfo.division) {
+        selectedDistrict.push(element);
       }
     });
     setshowDistrictInJSX(selectedDistrict);
@@ -46,7 +48,10 @@ const StationInput = () => {
 
   const handleSubmit = () => {
     if (stationInfo.name.length > 0) {
-      console.log(stationInfo);
+      apiService.postData(
+        "http://127.0.0.1:8000/station/stations/",
+        JSON.stringify(stationInfo)
+      );
       setstationInfo(initalValue);
     } else {
       alert("Please Enter Valid Station Name");
@@ -56,7 +61,7 @@ const StationInput = () => {
   return (
     <div className="card">
       <div className="card-header">
-        <h4 className="card-title">Station, District & Division Data Input</h4>
+        <h4 className="card-title">Station Data Input</h4>
       </div>
       <div className="card-body">
         <form action="#">
@@ -65,17 +70,17 @@ const StationInput = () => {
           <div className="form-group row">
             <label className="col-form-label col-md-2">Select Division</label>
             <div className="col-md-10">
-              {divisionFromServer.divisionList.map((divisionName, index) => {
+              {divisionFromServer.divisionList.map((singleDivision, index) => {
                 return (
                   <div className="radio" key={index}>
                     <label>
                       <input
                         type="radio"
                         name="division"
-                        value={divisionName}
+                        value={singleDivision.id}
                         onChange={handleChange}
                       />{" "}
-                      {divisionName}
+                      {singleDivision.name}
                     </label>
                   </div>
                 );
@@ -97,17 +102,17 @@ const StationInput = () => {
                   Select District
                 </label>
                 <div className="col-md-10">
-                  {showDistrictInJSX.map((districtDetails, index) => {
+                  {showDistrictInJSX.map((singleDistrict, index) => {
                     return (
                       <div className="radio" key={index}>
                         <label>
                           <input
                             type="radio"
                             name="district"
-                            value={districtDetails}
+                            value={singleDistrict.id}
                             onChange={handleChange}
                           />{" "}
-                          {districtDetails}
+                          {singleDistrict.name}
                         </label>
                       </div>
                     );
@@ -150,6 +155,8 @@ const StationInput = () => {
               </div>
             </div>
           </div>
+
+
         </form>
       </div>
     </div>

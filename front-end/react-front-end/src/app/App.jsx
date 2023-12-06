@@ -4,6 +4,10 @@ import "../assets/css/feathericon.min.css";
 import "../assets/css/font-awesome.min.css";
 import "../assets/css/bootstrap.min.css";
 import "../assets/img/favicon.png";
+
+
+
+
 import HomePage from "../pages/home";
 import { useStoreActions} from 'easy-peasy'
 

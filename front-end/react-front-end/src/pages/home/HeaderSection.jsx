@@ -5,7 +5,7 @@ const HeaderSection = () => {
     <div className="header">
       <div className="header-left">
         <a href="index.html" className="logo">
-          <img src="assets/img/logo.png" alt="Logo" />
+          <img src="/src/assets/img/logo.png" alt="Logo" />
         </a>
         <a href="index.html" className="logo logo-small">
           <img
