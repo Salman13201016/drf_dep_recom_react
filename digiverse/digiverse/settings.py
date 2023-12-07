@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'hospital_categories',
     'hospitals',
     'hospital_map_app',
+    'department',
     
 ]
 
