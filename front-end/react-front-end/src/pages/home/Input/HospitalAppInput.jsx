@@ -53,19 +53,35 @@ const HospitalAppInput = () => {
     });
   };
 
-  // const handlePicture = (e) => {
-  //   setHospitalInfo((prev) => {
-  //     return {
-  //       ...prev,
-  //       [e.target.name]: e.target.files[0],
-  //     };
-  //   });
-  // };
+  
+  const handlePicture = (e) => {
+    setHospitalInfo((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.files[0],
+      };
+    });
+  };
 
-  const handleSubmit = () => {
-    apiService.postData('http://127.0.0.1:8000/hospital/hospitals/',
-    JSON.stringify(hospitalInfo)
-    )
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const formData = new FormData();
+    formData.append("division", hospitalInfo.division)
+    formData.append("district", hospitalInfo.district);
+    formData.append("station", hospitalInfo.station);
+    formData.append("name", hospitalInfo.name);
+    formData.append("zip_code", hospitalInfo.zip_code);
+    formData.append("address", hospitalInfo.address);
+    formData.append("image", hospitalInfo.image);
+    formData.append("hos_type", hospitalInfo.hos_type);
+    formData.append("description", hospitalInfo.description);
+    apiService.postDataAsFormData(
+      "http://127.0.0.1:8000/hospital/hospitals/",
+      formData
+    );
+
+
+
   };
   return (
     <>
@@ -211,7 +227,7 @@ const HospitalAppInput = () => {
 
             {/* picture input start from here */}
 
-            {/* <div style={{ marginBottom: "20px" }}>
+            <div style={{ marginBottom: "20px" }}>
               <div className="form-group mb-0 row">
                 <label className="col-form-label col-md-2">Picture</label>
                 <div className="col-md-10">
@@ -225,7 +241,7 @@ const HospitalAppInput = () => {
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
 
             {/* category input start from here */}
 
@@ -268,7 +284,7 @@ const HospitalAppInput = () => {
                     <div className="input-group-append">
                       <button
                         className="btn btn-primary"
-                        type="button"
+                        type="submit"
                         onClick={handleSubmit}
                       >
                         Submit

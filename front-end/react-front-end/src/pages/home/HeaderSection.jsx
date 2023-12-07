@@ -1,6 +1,19 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from "prop-types";
+import {
+  faAlignLeft,
+  faMagnifyingGlass,
+  faBell,
+} from "@fortawesome/free-solid-svg-icons";
 
 
-const HeaderSection = () => {
+
+const HeaderSection = ({ isDisplayNone, setisDisplayNone }) => {
+  const handleToggle = () =>{
+    if(!isDisplayNone){
+      setisDisplayNone(!isDisplayNone);
+    }
+  }
   return (
     <div className="header">
       <div className="header-left">
@@ -9,7 +22,7 @@ const HeaderSection = () => {
         </a>
         <a href="index.html" className="logo logo-small">
           <img
-            src="assets/img/logo-small.png"
+            src="/src/assets/img/logo-small.png"
             alt="Logo"
             width="30"
             height="30"
@@ -17,8 +30,8 @@ const HeaderSection = () => {
         </a>
       </div>
 
-      <a href="#" id="toggle_btn">
-        <i className="fe fe-text-align-left"></i>
+      <a href="#" id="toggle_btn" onClick={handleToggle}>
+        <FontAwesomeIcon icon={faAlignLeft} />
       </a>
 
       <div className="top-nav-search">
@@ -29,7 +42,7 @@ const HeaderSection = () => {
             placeholder="Search here"
           />
           <button className="btn" type="submit">
-            <i className="fa fa-search"></i>
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
           </button>
         </form>
       </div>
@@ -45,7 +58,7 @@ const HeaderSection = () => {
             className="dropdown-toggle nav-link"
             data-toggle="dropdown"
           >
-            <i className="fe fe-bell"></i>{" "}
+            <FontAwesomeIcon icon={faBell} />{" "}
             <span className="badge badge-pill">3</span>
           </a>
           <div className="dropdown-menu notifications">
@@ -65,7 +78,7 @@ const HeaderSection = () => {
                         <img
                           className="avatar-img rounded-circle"
                           alt="User Image"
-                          src="assets/img/doctors/doctor-thumb-01.jpg"
+                          src="/src/assets/img/doctors/doctor-thumb-01.jpg"
                         />
                       </span>
                       <div className="media-body">
@@ -88,7 +101,7 @@ const HeaderSection = () => {
                         <img
                           className="avatar-img rounded-circle"
                           alt="User Image"
-                          src="assets/img/patients/patient1.jpg"
+                          src="/src/assets/img/patients/patient1.jpg"
                         />
                       </span>
                       <div className="media-body">
@@ -111,7 +124,7 @@ const HeaderSection = () => {
                         <img
                           className="avatar-img rounded-circle"
                           alt="User Image"
-                          src="assets/img/patients/patient2.jpg"
+                          src="/src/assets/img/patients/patient2.jpg"
                         />
                       </span>
                       <div className="media-body">
@@ -134,7 +147,7 @@ const HeaderSection = () => {
                         <img
                           className="avatar-img rounded-circle"
                           alt="User Image"
-                          src="assets/img/patients/patient3.jpg"
+                          src="/src/assets/img/patients/patient3.jpg"
                         />
                       </span>
                       <div className="media-body">
@@ -167,7 +180,7 @@ const HeaderSection = () => {
             <span className="user-img">
               <img
                 className="rounded-circle"
-                src="assets/img/profiles/avatar-01.jpg"
+                src="/src/assets/img/profiles/avatar-01.jpg"
                 width="31"
                 alt="Ryan Taylor"
               />
@@ -177,7 +190,7 @@ const HeaderSection = () => {
             <div className="user-header">
               <div className="avatar avatar-sm">
                 <img
-                  src="assets/img/profiles/avatar-01.jpg"
+                  src="/src/assets/img/profiles/avatar-01.jpg"
                   alt="User Image"
                   className="avatar-img rounded-circle"
                 />
@@ -201,6 +214,10 @@ const HeaderSection = () => {
       </ul>
     </div>
   );
-}
+};
 
+HeaderSection.propTypes = {
+  setisDisplayNone: PropTypes.func,
+  isDisplayNone: PropTypes.bool,
+};
 export default HeaderSection;

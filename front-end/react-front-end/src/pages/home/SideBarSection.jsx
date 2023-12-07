@@ -1,10 +1,20 @@
-import { useState } from "react";
+
 import PropTypes from 'prop-types'
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHouse,
+  faHospital,
+  faChevronUp,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 const SideBarSection = ({
   selectComponent,
+  isDisplayNone,
+  setisDisplayNone,
 }) => {
-  const [isDisplayNone, setisDisplayNone] = useState(true);
+  // const [isDisplayNone, setisDisplayNone] = useState(true);
   return (
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner slimscroll">
@@ -12,13 +22,21 @@ const SideBarSection = ({
           <ul>
             <li>
               <a href="index.html">
-                <i className="fe fe-home"></i> <span>Dashboard</span>
+                <FontAwesomeIcon icon={faHouse} /> <span>Dashboard</span>
               </a>
             </li>
             <li className="submenu">
               <a href="#" onClick={() => setisDisplayNone(!isDisplayNone)}>
-                <i className="fe fe-document"></i> <span> Hospital</span>{" "}
-                <span className="menu-arrow"></span>
+                <FontAwesomeIcon icon={faHospital} /> <span> Hospital</span>{" "}
+                {isDisplayNone ? (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </span>
+                ) : (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronUp} />
+                  </span>
+                )}
               </a>
               <ul style={{ display: isDisplayNone ? "none" : "block" }}>
                 <li>
@@ -27,27 +45,27 @@ const SideBarSection = ({
                   </a>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent('district')}>
+                  <a href="#" onClick={() => selectComponent("district")}>
                     District
                   </a>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent('station')}>
+                  <a href="#" onClick={() => selectComponent("station")}>
                     Station
                   </a>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent('hospitalCtg')}>
+                  <a href="#" onClick={() => selectComponent("hospitalCtg")}>
                     Hospital Category
                   </a>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent('hospitalApp')}>
+                  <a href="#" onClick={() => selectComponent("hospitalApp")}>
                     Hospital App
                   </a>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent('hospitalmap')}>
+                  <a href="#" onClick={() => selectComponent("hospitalmap")}>
                     Hospital Map
                   </a>
                 </li>
@@ -61,9 +79,9 @@ const SideBarSection = ({
 };
 
 SideBarSection.propTypes = {
-  setisPrimaryBodyShow: PropTypes.func,
-  setisShowDistrict: PropTypes.func,
-  selectComponent : PropTypes.func,
+  setisDisplayNone: PropTypes.func,
+  selectComponent: PropTypes.func,
+  isDisplayNone : PropTypes.bool
 };
 
 export default SideBarSection
