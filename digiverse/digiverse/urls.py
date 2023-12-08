@@ -13,5 +13,6 @@ urlpatterns = [
     path('hospital-map-app/', include('hospital_map_app.urls')),
     path('departments/', include('department.urls')),
     path('diseases/', include('disease.urls')),
+    path('symptoms/', include('symptom.urls')),
     
 ]
