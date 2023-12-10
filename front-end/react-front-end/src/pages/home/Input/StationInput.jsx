@@ -128,7 +128,7 @@ const StationInput = () => {
 
           <div
             style={{
-              display: stationInfo.district.length > 1 ? "block" : "none",
+              display: stationInfo.district.length ? "block" : "none",
             }}
           >
             <div className="form-group mb-0 row">

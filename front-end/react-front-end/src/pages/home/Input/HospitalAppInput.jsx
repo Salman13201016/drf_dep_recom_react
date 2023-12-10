@@ -80,7 +80,7 @@ const HospitalAppInput = () => {
       formData
     );
 
-
+    setHospitalInfo(initalState)
 
   };
   return (
@@ -115,7 +115,7 @@ const HospitalAppInput = () => {
 
             {/* district input start from here */}
 
-            {showDistrictInJSX.length > 0 ? (
+            {showDistrictInJSX.length  ? (
               <div className="form-group row">
                 <label className="col-form-label col-md-2">
                   Select District
@@ -144,7 +144,7 @@ const HospitalAppInput = () => {
 
             {/* station input start from here */}
 
-            {showStationInJSX.length > 0 ? (
+            {showStationInJSX.length  ? (
               <div className="form-group row">
                 <label className="col-form-label col-md-2">
                   Select Station
