@@ -69,6 +69,26 @@ const SideBarSection = ({
                     Hospital Map
                   </a>
                 </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent("department")}>
+                    Department
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent("departmentDetails")}>
+                    Department Details
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent("disease")}>
+                    Disease
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent("symtoms")}>
+                    Symtoms
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>

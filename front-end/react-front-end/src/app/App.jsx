@@ -15,8 +15,14 @@ import { useStoreActions} from 'easy-peasy'
 
 
 const App = () => {
-  const { division, district, station, hospitalCategory, hospitalInfo } =
-    useStoreActions((actions) => actions);
+  const {
+    division,
+    district,
+    station,
+    hospitalCategory,
+    hospitalInfo,
+    department,
+  } = useStoreActions((actions) => actions);
   division.getDivisionListFromServer(
     "http://127.0.0.1:8000/division/divisions/"
   );
@@ -33,6 +39,10 @@ const App = () => {
 
   hospitalInfo.getHospitalInfoFromServer(
     "http://127.0.0.1:8000/hospital/hospitals/"
+  );
+
+  department.getDepartmentListFromServer(
+    "http://127.0.0.1:8000/departments/department/"
   );
 
   return (

@@ -6,6 +6,10 @@ import StationInput from "./Input/StationInput";
 import HospitalCategoryInput from "./Input/HospitalCategoryInput";
 import HospitalAppInput from "./Input/HospitalAppInput";
 import HospitalMap from "./Input/HospitalMapInput";
+import DepartmentInput from "./Input/DepartmentInput";
+import DepartmentDetails from "./Input/DepartmentDetails";
+import DiseaseInput from "./Input/DiseaseInput";
+import SymtomsInput from "./Input/SymtomsInput";
 
 
 const HospitalBody = ({ componentShow }) => {
@@ -22,6 +26,14 @@ const HospitalBody = ({ componentShow }) => {
     renderComponent = <HospitalAppInput />;
   } else if (componentShow == "hospitalmap") {
     renderComponent = <HospitalMap />
+  }else if (componentShow == "department") {
+    renderComponent = <DepartmentInput />
+  }else if (componentShow == "departmentDetails") {
+    renderComponent = <DepartmentDetails />;
+  }else if (componentShow == "disease") {
+    renderComponent = <DiseaseInput />
+  }else if (componentShow == "symtoms") {
+    renderComponent = <SymtomsInput />
   }
 
     return (

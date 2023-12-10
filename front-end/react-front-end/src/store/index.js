@@ -3,7 +3,9 @@ import divisionModel from './divisionModel'
 import districtModel from './districtModel';
 import stationModel from './stationModel';
 import hospitalCategoryModel from './hospitalCategoryModel';
-import hospitalInfoodel from './hospitalInfoModel';
+import departmentModel from './departmentModel';
+import diseaseModel from './diseaseModel';
+import hospitalInfoModel from './hospitalInfoModel';
 
 
 
@@ -13,7 +15,9 @@ const store = createStore({
     district : districtModel,
     station : stationModel,
     hospitalCategory : hospitalCategoryModel,
-    hospitalInfo : hospitalInfoodel,
+    hospitalInfo : hospitalInfoModel,
+    department : departmentModel,
+    disease : diseaseModel,
 })
 
 export default store;

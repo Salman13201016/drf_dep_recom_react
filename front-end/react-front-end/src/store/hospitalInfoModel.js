@@ -1,7 +1,7 @@
 import { action, thunk } from "easy-peasy";
 import apiService from "../api";
 
-const hospitalInfoodel = {
+const hospitalInfoModel = {
   hospitalInfoList: [],
   updateHospitalInfoList: action((state, payload) => {
     state.hospitalInfoList.push(payload);
@@ -14,4 +14,4 @@ const hospitalInfoodel = {
   }),
 };
 
-export default hospitalInfoodel;
+export default hospitalInfoModel;
