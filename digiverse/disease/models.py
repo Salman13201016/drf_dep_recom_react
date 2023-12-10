@@ -3,7 +3,6 @@ from department.models import Department
 
 class Diseases(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    put = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
 
 
