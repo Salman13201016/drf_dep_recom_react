@@ -30,6 +30,9 @@ INSTALLED_APPS = [
     'hospital_categories',
     'hospitals',
     'hospital_map_app',
+    'department',
+    'disease',
+    'symptom',
     'corsheaders',
     
 ]
@@ -42,7 +45,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = "digiverse.urls"
@@ -71,22 +75,14 @@ WSGI_APPLICATION = "digiverse.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'digiverse',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'postgres',
+        'PASSWORD': 'nirban@007',
         'HOST': 'localhost',  # or the hostname where your MySQL server is running
-        'PORT' : '3306'
 
     }
 }
-
-try:
-    import pymysql
-    pymysql.version_info = (1, 4, 6, "final", 0)  # Specify a version to silence Django warning
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    print("yes")
 
 
 # Password validation
@@ -124,7 +120,6 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Add your frontend origin
+    'http://localhost:5173',
 ]
