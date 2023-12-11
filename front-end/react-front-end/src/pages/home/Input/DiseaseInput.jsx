@@ -21,7 +21,6 @@ const DiseaseInput = () => {
 
   const handleSubmit = () => {
     apiService.postData("http://127.0.0.1:8000/diseases/disease/", JSON.stringify(diseaseInfo));
-    console.log(JSON.stringify(diseaseInfo));
   };
 
   return (
