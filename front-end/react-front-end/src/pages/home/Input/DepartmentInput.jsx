@@ -1,10 +1,11 @@
 import { useState } from "react";
 import {useStoreState} from 'easy-peasy'
+import apiService from "../../../api";
 
 const initialState = {
   hospital : '',
-  depName : '',
-  depDetails : '',
+  name : '',
+  details : '',
 }
 const DepartmentInput = () => {
 
@@ -22,7 +23,11 @@ const DepartmentInput = () => {
   };
 
   const handleSubmit = () => {
-    console.log(departmentInfo)
+    
+    apiService.postData("http://127.0.0.1:8000/departments/department/",
+    JSON.stringify(departmentInfo)
+    );
+    setDepartmentInfo(initialState)
   };
   return (
     <div className="card">
@@ -66,7 +71,7 @@ const DepartmentInput = () => {
                 type="text"
                 value={hospitalInfo.depName}
                 onChange={handleChange}
-                name="depName"
+                name="name"
               />
             </div>
           </div>
@@ -84,7 +89,7 @@ const DepartmentInput = () => {
               cols="4"
               className="form-control"
               placeholder="Enter Department Details Here"
-              name="depDetails"
+              name="details"
               onChange={handleChange}
               value={hospitalInfo.depDetails}
             ></textarea>
