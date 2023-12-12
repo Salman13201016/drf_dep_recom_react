@@ -10,6 +10,7 @@ import DepartmentInput from "./Input/DepartmentInput";
 import DepartmentDetails from "./Input/DepartmentDetails";
 import DiseaseInput from "./Input/DiseaseInput";
 import SymtomsInput from "./Input/SymtomsInput";
+import DigiverseMain from "../digiverse";
 
 
 const HospitalBody = ({ componentShow }) => {
@@ -25,15 +26,17 @@ const HospitalBody = ({ componentShow }) => {
   } else if (componentShow == "hospitalApp") {
     renderComponent = <HospitalAppInput />;
   } else if (componentShow == "hospitalmap") {
-    renderComponent = <HospitalMap />
-  }else if (componentShow == "department") {
-    renderComponent = <DepartmentInput />
-  }else if (componentShow == "departmentDetails") {
+    renderComponent = <HospitalMap />;
+  } else if (componentShow == "department") {
+    renderComponent = <DepartmentInput />;
+  } else if (componentShow == "departmentDetails") {
     renderComponent = <DepartmentDetails />;
-  }else if (componentShow == "disease") {
-    renderComponent = <DiseaseInput />
-  }else if (componentShow == "symtoms") {
-    renderComponent = <SymtomsInput />
+  } else if (componentShow == "disease") {
+    renderComponent = <DiseaseInput />;
+  } else if (componentShow == "symtoms") {
+    renderComponent = <SymtomsInput />;
+  } else if (componentShow == "digiverseBody") {
+    renderComponent = <DigiverseMain />
   }
 
     return (

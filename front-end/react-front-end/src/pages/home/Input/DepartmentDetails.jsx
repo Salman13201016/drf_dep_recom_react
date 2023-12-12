@@ -36,21 +36,22 @@ const DepartmentDetails = () => {
           <div className="form-group row">
             <label className="col-form-label col-md-2">Select Department</label>
             <div className="col-md-10">
-              {departmentList.map((singleDepartment, index) => {
-                return (
-                  <div className="radio" key={index}>
-                    <label>
-                      <input
-                        type="radio"
-                        name="department"
-                        value={singleDepartment.id}
-                        onChange={handleChange}
-                      />{" "}
+              <select
+                className="form-control"
+                onChange={handleChange}
+                name="department"
+              >
+                {departmentList.map((singleDepartment) => {
+                  return (
+                    <option
+                      key={singleDepartment.id}
+                      value={singleDepartment.id}
+                    >
                       {singleDepartment.name}
-                    </label>
-                  </div>
-                );
-              })}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
           </div>
 

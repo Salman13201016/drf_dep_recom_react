@@ -2,13 +2,14 @@
 import "../assets/css/style.css";
 import "../assets/css/feathericon.min.css";
 import "../assets/css/font-awesome.min.css";
-// import "../assets/css/bootstrap.min.css";
 import "../assets/img/favicon.png";
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 
 
 
 import HomePage from "../pages/home";
+import DigiverseMain from "../pages/digiverse";
 import { useStoreActions} from 'easy-peasy'
 
 
@@ -22,6 +23,7 @@ const App = () => {
     hospitalCategory,
     hospitalInfo,
     department,
+    disease,
   } = useStoreActions((actions) => actions);
   division.getDivisionListFromServer(
     "http://127.0.0.1:8000/division/divisions/"
@@ -45,10 +47,15 @@ const App = () => {
     "http://127.0.0.1:8000/departments/department/"
   );
 
+  disease.getDiseaseListFromServer("http://127.0.0.1:8000/diseases/disease/");
+
   return (
-    <div>
-    <HomePage />
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/digiverse" element={<DigiverseMain />} />
+    </Routes>
+    </BrowserRouter>
   );
 }
 

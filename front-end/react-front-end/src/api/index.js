@@ -12,12 +12,12 @@ const apiService = {
 
   postData: async function (url, postData) {
     try {
-      const { data } = await axios.post(url, postData, {
+      const response = await axios.post(url, postData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      return data;
+      return response;
     } catch (error) {
       console.log("Error making POST Request:", error.message);
     }

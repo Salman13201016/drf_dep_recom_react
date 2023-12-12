@@ -21,6 +21,7 @@ const DiseaseInput = () => {
 
   const handleSubmit = () => {
     apiService.postData("http://127.0.0.1:8000/diseases/disease/", JSON.stringify(diseaseInfo));
+    setdiseaseInfo(initalState);
   };
 
   return (
@@ -32,7 +33,7 @@ const DiseaseInput = () => {
         <form action="#">
           {/* Department input start from here */}
 
-          <div className="form-group row">
+          {/* <div className="form-group row">
             <label className="col-form-label col-md-2">Select Department</label>
             <div className="col-md-10">
               {departmentList.map((singleDepartment, index) => {
@@ -50,6 +51,28 @@ const DiseaseInput = () => {
                   </div>
                 );
               })}
+            </div>
+          </div> */}
+
+          <div className="form-group row">
+            <label className="col-form-label col-md-2">Select Department</label>
+            <div className="col-md-10">
+              <select
+                className="form-control"
+                onChange={handleChange}
+                name="department"
+              >
+                {departmentList.map((singleDepartment) => {
+                  return (
+                    <option
+                      key={singleDepartment.id}
+                      value={singleDepartment.id}
+                    >
+                      {singleDepartment.name}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
           </div>
 

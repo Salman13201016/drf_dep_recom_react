@@ -1,14 +1,14 @@
 
 import PropTypes from 'prop-types'
-
+import {Link} from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
   faHospital,
   faChevronUp,
   faChevronDown,
+  faUserDoctor,
 } from "@fortawesome/free-solid-svg-icons";
-
 const SideBarSection = ({
   selectComponent,
   isDisplayNone,
@@ -21,7 +21,7 @@ const SideBarSection = ({
         <div id="sidebar-menu" className="sidebar-menu">
           <ul>
             <li>
-              <a href="index.html">
+              <a href="#">
                 <FontAwesomeIcon icon={faHouse} /> <span>Dashboard</span>
               </a>
             </li>
@@ -75,7 +75,10 @@ const SideBarSection = ({
                   </a>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent("departmentDetails")}>
+                  <a
+                    href="#"
+                    onClick={() => selectComponent("departmentDetails")}
+                  >
                     Department Details
                   </a>
                 </li>
@@ -90,6 +93,13 @@ const SideBarSection = ({
                   </a>
                 </li>
               </ul>
+            </li>
+
+            <li>
+              <Link to={'/digiverse'} >
+                  <FontAwesomeIcon icon={faUserDoctor} />{" "}
+                  <span> Digiverse</span>{" "}
+              </Link>
             </li>
           </ul>
         </div>
