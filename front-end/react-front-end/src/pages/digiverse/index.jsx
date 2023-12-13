@@ -1,7 +1,11 @@
+import DigiverseHome from "./home/Home"
+import '../../assets/digiverseAssets/css/digiverseStyle.css'
 
 const DigiverseMain = () => {
   return (
-    <div>DigiverseMain</div>
+    <>
+    <DigiverseHome />
+    </>
   )
 }
 

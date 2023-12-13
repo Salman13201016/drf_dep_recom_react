@@ -1,16 +1,14 @@
 
 import "../assets/css/style.css";
-import "../assets/css/feathericon.min.css";
-import "../assets/css/font-awesome.min.css";
-import "../assets/img/favicon.png";
+// import "../assets/digiverseAssets/css/style.css"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
-
-
-
 import HomePage from "../pages/home";
 import DigiverseMain from "../pages/digiverse";
 import { useStoreActions} from 'easy-peasy'
+import DigiverseLogin from "../pages/digiverse/login/DigiverseLogin";
+import { DigiverseSignUp } from "../pages/digiverse/singUp/DigiverseSignUp";
+import DigiversePrivacy from "../pages/digiverse/privacy/DigiversePrivacy";
+import DigiverseTerms from "../pages/digiverse/terms/DigiverseTerms";
 
 
 
@@ -54,6 +52,10 @@ const App = () => {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/digiverse" element={<DigiverseMain />} />
+      <Route path="/digiverse/login" element={<DigiverseLogin />} />
+      <Route path="/digiverse/signup" element={<DigiverseSignUp /> } />
+      <Route path="/digiverse/privacy" element={<DigiversePrivacy /> } />
+      <Route path="/digiverse/terms" element={<DigiverseTerms /> } />
     </Routes>
     </BrowserRouter>
   );

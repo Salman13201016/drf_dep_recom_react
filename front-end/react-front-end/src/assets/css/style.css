@@ -1384,8 +1384,8 @@ button.bg-danger:hover {
 -----------------------*/
 
 .header {
-	background: #fff;
-	border-bottom: 1px solid #f0f0f0;
+	background: transparent;
+	/* border-bottom: 1px solid #f0f0f0; */
 	left: 0;
 	position: fixed;
 	right: 0;
@@ -1972,7 +1972,7 @@ html.menu-opened body {
 }
 .page-wrapper {
 	margin-left: 240px;
-	padding-top: 60px;
+	/* padding-top: 60px; */
 	position: relative;
 	transition: all 0.4s ease;
 }
