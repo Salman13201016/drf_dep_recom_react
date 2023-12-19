@@ -3,7 +3,6 @@
 var okbtn = document.querySelector(".onLoad_body .icon");
 var onLoadMain = document.querySelector(".onLoad");
 var stopprelod = document.querySelector(".onLoad_body");
-
 console.log(stopprelod)
 $(window).on('load', function(){
   setTimeout(function(){
@@ -18,7 +17,7 @@ $(window).on('load', function(){
 })
 
 
-main slider
+// main slider
 let slideshowElements = document.querySelectorAll(".slider_box");
 let count = 1;
 setInterval(() => {
@@ -33,3 +32,12 @@ setInterval(() => {
   }
 }, 4000);
 
+
+
+// Cursor
+let mousecursor = document.querySelector(".cursor");
+window.addEventListener('mousemove', cursor);
+function cursor(e){
+  mousecursor.style.top = e.pageY + 'px'
+  mousecursor.style.left = e.pageX + 'px'
+}

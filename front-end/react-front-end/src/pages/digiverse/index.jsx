@@ -1,5 +1,5 @@
 import DigiverseHome from "./home/Home"
-import '../../assets/digiverseAssets/css/digiverseStyle.css'
+import '../../assets/digiverseAssets/css/style.css'
 
 const DigiverseMain = () => {
   return (

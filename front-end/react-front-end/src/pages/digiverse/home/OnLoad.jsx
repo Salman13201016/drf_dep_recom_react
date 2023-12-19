@@ -5,7 +5,7 @@ const OnLoadComponent = ({ setonLoadView }) => {
       <div className="onLoad_body">
         <div className="logo">
           <img
-            src="../../../../src/assets/digiverseAssets/img/logo/DigiVerse-Logo.png"
+            src="../../../../src/assets/digiverseAssets/img/logo/White-DigiVerse-Logo.png"
             alt="Logo"
           />
         </div>

@@ -43,6 +43,7 @@ const HospitalBody = ({ componentShow }) => {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <div className="row">
+            <h3 className="page-title">Insert Data Below</h3>
             <div className="col-lg-12">{renderComponent}</div>
           </div>
         </div>

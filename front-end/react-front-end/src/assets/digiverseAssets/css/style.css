@@ -1,5 +1,5 @@
 /* Reset CSS */
-*{
+.digiverseBody{
     margin: 0;
     box-sizing: border-box;
 }
@@ -11,12 +11,39 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    min-height: 100vh;
+    position: relative;
 }
+::placeholder{
+    color: #ffffff;
+}
+input{
+    color: #ffffff;
+}
+
 html{
     scroll-behavior: smooth;
 }
 img{
     max-width: 100%;
+}
+.cursor{
+    width: 1.2rem;
+    height: 1.2rem;
+    background: #004164;
+    position: absolute;
+    overflow: hidden;
+    box-shadow: 0 0 2px 1px #012b42;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+.cursor2{
+    background: transparent;
+    width: 1.2rem;
+    height: 1.2rem;
+    transform: translate(40%, 40%);
+    
 }
 
 /*========== Global CSS Start ===========*/
@@ -26,6 +53,7 @@ img{
     padding: 0 3rem;
     margin: 0 auto;
     height: 100%;
+    position: relative;
 }
 /*========== Global CSS End ===========*/
 
@@ -39,7 +67,7 @@ img{
     width: 100%;
     height: 100%;
     /* background:#0101a8; */
-    background: url('../img/background/bg1.jpg') no-repeat center center;
+    background: url('../img/background/welcome.jpg') no-repeat center center;
     background-size: cover;
     z-index: 999999999999999;
     display: flex;
@@ -60,8 +88,6 @@ img{
     animation: preload 6s infinite;
     animation-timing-function: ease-in-out;
     -webkit-animation-timing-function: ease-in-out;
-    background: #ffffff;
-    border-radius: 10rem;
     transition: all 6s;
 }
 @keyframes preload {
@@ -81,7 +107,7 @@ img{
     cursor: pointer;
     display: block !important;
     position: absolute;
-    bottom: 25vh;
+    bottom: 22vh;
     left: 50%;
     transform: translate(-50%);
 }
@@ -97,13 +123,17 @@ img{
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 1rem;
-    background: rgb(1, 1, 79);
+    background: #ffffff;
     transition: .3s;
+    -webkit-animation: preload 6s infinite;
+    animation: preload 6s infinite;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-timing-function: ease-in-out;
 }
 .onLoad_body .icon .dot::before{
     content: '';
     position: absolute;
-    background: #ffffff;
+    background: rgb(1, 1, 79);
     width: .4rem;
     height: 0.4rem;
     border-radius: 50%;
@@ -139,24 +169,25 @@ img{
     justify-content: center;
     align-items: center;
 }
+.bg_dark_homepage{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background: rgba(0, 0, 0, .6);
+}
 .container .body_main{
     position: relative;
 }
-.header{
-    position: sticky;
-    top: 0;
-}
+
 .header_logo{
-    width: 15rem;
+    width: 12rem;
     margin-left: auto;
     margin-right: auto;
-    background: #ffffff;
-    border-radius: .5rem;
+    margin-top: 1.5rem;
+    z-index: 1;
     /* box-shadow: 0 0 2px 0 rgb(1, 1, 79); */
 }
-.header_logo.login_logo{
-    box-shadow: 0 0 2px 0 rgb(1, 1, 79);
-}
+
 .body_main .header_logo{
     /* background: #ebf7fb; */
     width: 100%;
@@ -168,10 +199,8 @@ img{
     background: transparent;
 }
 .body_main .header_logo .home_page_logo img{
-    max-width: 15rem;
+    max-width: 12rem;
     margin: auto;
-    background: #ffffff;
-    border-radius: .5rem;
 }
 .header_logo a img{
     max-width: 100%;
@@ -190,7 +219,7 @@ img{
 .content .slider_main{
     width: 100%;
     max-width: 50rem;
-    margin-top: 25vh;
+    margin-top: 28vh;
     margin-left: auto;
     margin-right: auto;
     position: relative;
@@ -212,24 +241,30 @@ img{
 .body_main .btns{
     text-align: center;
     position: fixed;
-    bottom: 32vh;
+    bottom: 25vh;
     left: 50%;
     transform: translate(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.body_main .btns .home_btn{
+    width: 6rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    background: rd;
 }
 .body_main .btns a{
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 1rem;
+    font-size: .9rem;
     font-weight: 700;
     color: #ffffff;
-    /* background: #ffffff; */
-    margin: 0 .8rem;
     transition: .3s;
 }
 .body_main .btns a:hover{
-    /* background: #4875fb; */
-    /* background: rgb(1, 1, 79); */
-    color: #acb0ba;
+    font-size: 1rem;
 }
 
 .body_main .terms a:last-child{
@@ -248,7 +283,7 @@ img{
 .social .social_inner a i{
     font-size: .9rem;
     color: #000000;
-    background: #8a99bb;
+    background: #9fabc6;
     width: 1.8rem;
     height: 1.8rem;
     line-height: 1.8rem;
@@ -284,6 +319,59 @@ img{
 /*==== Body End =====*/
 
 /*========= Login start ============*/
+.signup_footer{
+    position: unset !important;
+    margin-top: 2rem;
+}
+.signup_main_div{
+    width: 100vw;
+    min-height: 100vh;
+    background: url('../img/signup/signup.jpg'), no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    background-attachment: fixed;
+}
+.login-main_body{
+    min-height: 100vh;
+    width: 100vw;
+    background: url('../img/signup/login.jpg'), no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    margin: auto;
+}
+.bg_dark_login{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .6);
+}
+.bg_dark_signup{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .6);
+}
+.login{
+    width: 100%;
+    max-width: 576px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -45%);
+}
+.signup{
+    position: relative;
+    width: 100%;
+    top: unset;
+    max-width: 576px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 5rem;
+    transform: unset;
+}
+
 .header_main{
     position: sticky;
     width: 100%;
@@ -293,25 +381,6 @@ img{
     /* box-shadow: 0 0 2px 0 rgba(0, 0, 0, .2); */
     padding: 0.3rem 0;
 }
-.login_main{
-    width: 100%;
-    max-width: 1024px;
-    background: #ffffff;
-    /* box-shadow: 0 0 2px 0 rgba(0, 0, 0, .5); */
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 4rem;
-    padding: 5rem;
-    border-radius: .5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    column-gap: 4%;
-}
-.login_main .backToSignup{
-    width: 48%;
-    text-align: left;
-}
 .auth_banner{
     text-align: center;
 }
@@ -319,17 +388,15 @@ img{
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, .4);
     border-radius: .4rem;
 }
-.login_main .login_inner{
-    width: 48%;
-    text-align: left;
-}
+
 .login_main .login_inner .auth_title{
-    font-size: 1.8rem;
-    font-weight: 800;
+    font-size: 1.6rem;
+    font-weight: 600;
     line-height: 2.5rem;
-    color: rgb(1, 1, 79);
-    margin-bottom: 2rem;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
+    text-align: center;
 }
 .login_inner form .form_inner_div{
     width: 100%;
@@ -338,17 +405,18 @@ img{
     align-items: center;
     column-gap: .5rem;
     margin-bottom: 1rem;
-    border-bottom: 1px solid rgb(1, 1, 79);
+    border-bottom: 1px solid #ffffff;
     padding-bottom: 1px;
 }
 .login_inner form .form_inner_div i{
     display: block;
     font-size: .8rem;
-    color: rgb(1, 1, 79);
+    color: #ffffff;
 }
 .login_inner form .form_inner_div input::placeholder{
     font-size: .8rem;
     font-weight: 500;
+    color: rgba(255, 255, 255, 1);
 }
 .login_inner form .form_inner_div input{
     display: block;
@@ -356,44 +424,48 @@ img{
     padding: .6rem .6rem 0 .6rem;
     border-color: transparent;
     outline-color: transparent;
+    background: transparent;
 }
 .login_inner form .form_inner_div input:focus{
     outline: none;
+    caret-color: #ffffff;
 }
 
 .login_inner form .auth_btn{
     width: fit-content;
     font-size: .9rem;
     font-weight: 700;
-    color: #3a4e7b;
+    color: #ffffff;
     border-color: transparent;
     outline-color: transparent;
     text-transform: uppercase;
     transition: .3s;
-    margin-top: 1.5rem;
     background: transparent;
-    box-sizing: border-box;
+}
+.login_inner form .auth_btns .auth_login_btn{
+    width: 6rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: left;
 }
 .login_inner form .auth_btn:hover{
-    color: #000000;
-    font-size: 14px;
+    font-size: 1.1rem;
 }
 .auth_btn_back{
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     text-align: center;
 }
 .auth_btn_back a{
-    font-size: 1rem;
+    font-size: .8rem;
     font-weight: 500;
-    color: #2b3d66;
+    color: #ffffff;
     text-decoration: none;
     text-transform: uppercase;
     transition: .3s;
 }
 .auth_btn_back a:hover{
-    color: #000000;
-    font-size: 15px;
+    font-size: .9rem;
 }
 .login_main.signup{
     flex-direction: row-reverse;
@@ -404,29 +476,41 @@ img{
     align-items: center;
     column-gap: 1rem;
 }
-.auth_btns .remember{
+.auth_btns .auth_rember_btn{
+    width: 20rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: right;
+}
+.auth_btns .auth_rember_btn .remember{
     margin-top: 1.5rem;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: .8rem;
     font-weight: 500;
-    color: #2b3d66;
+    color: #ffffff;
     text-decoration: none;
     text-transform: uppercase;
     transition: .3s;
 }
-.auth_btns .remember:hover{
-    color: #000000;
+.auth_btns .auth_rember_btn .remember:hover{
+    font-size: .9rem;
+}
+.login_inner form .signup_btn_div{
+    width: 6rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    margin: auto;
 }
 
 /*============= Footer section ===========*/
-.footer{
-    /* border-top: 1px solid rgb(1, 1, 65);
-    background: rgb(1, 1, 65); */
-    margin-top: 3rem;
+.privacy_footer{
+    position: unset !important;
+    margin-top: 2rem;
 }
 .footer_main{
     /* border-top: 1px solid rgb(1, 1, 65); */
-    padding: 1rem 0;
+    padding: 0 0 1rem 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -434,38 +518,39 @@ img{
 }
 .footer_main .copyrights{
     text-align: left;
-    width: 31%;
+    width: fit-content;
 }
 .footer_main .copyrights p{
     font-size: 9px;
-    color: #8a99bb;
+    color: #9fabc6;
     font-weight: 500;
     margin-bottom: 0 !important;
     text-transform: uppercase;
 }
 .footer_main .copyrights p a{
     font-size: 9px;
-    color: #c7ccd9;
+    color: #ffffff;
     font-weight: 600;
     margin-bottom: 0 !important;
     text-decoration: none;
     transition: .3s;
 }
 .footer_main .copyrights p a:hover{
-    color: #8a99bb;
+    color: #9fabc6;
 }
 .footer_main .login_social{
     text-align: right;
-    width: 26%;
+    width: fit-content;
 }
 .footer_main .login_privacy{
     text-align: center;
-    width: 41%;
+    width: fit-content;
+    margin-left: -.3rem;
 }
 .footer_main .login_privacy a{
     font-size: .7rem;
     font-weight: 400;
-    color: #8a99bb;
+    color: #9fabc6;
     text-decoration: none;
     padding: 0 1rem;
     border-right: 1px solid #4b5a7c;
@@ -473,10 +558,10 @@ img{
     transition: .3s;
 }
 .footer_main .login_privacy a:hover{
-    color: #c9c9dd;
+    color: #ffffff;
 }
 .footer_main .login_privacy a:last-child{
-    border: unset;
+    border-color: transparent;
 }
 .login_inner form .or{
     width: 100%;
@@ -497,7 +582,7 @@ img{
     font-weight: 600;
     color: #2b3d66;
 }
-.login_inner form .google_btn{
+.login_inner .google_btn{
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
@@ -513,14 +598,15 @@ img{
     transition: .3s;
     margin-top: 1rem;
 }
-.login_inner form .google_btn:hover{
-    transform: scale(1.1);
+.login_inner .google_btn:hover{
+    transform: scale(1.2);
 }
 
-.login_inner form .google_btn img{
-    width: 2rem;
+.login_inner .google_btn i{
+    font-size: 2rem;
+    color: #ffffff;
 }
-.login_inner form .google_btn p{
+.login_inner .google_btn p{
     margin-bottom: 0;
     font-size: 1rem;
     font-weight: 500;
@@ -529,10 +615,24 @@ img{
 /*========= Login end ============*/
 
 /*=========== Privacy Start =========*/
+.login.privacy_body{
+    position: relative !important;
+    top: unset !important;
+    left: unset !important;
+    max-width: unset !important;
+    transform: unset !important;
+}
+.bg_dark_pryvacy{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .6);
+}
 .privacy_content{
     width: 100%;
     max-width: 992px;
-    background: #ffffff;
     margin-top: 4rem;
     margin-left: auto;
     margin-right: auto;
@@ -541,43 +641,43 @@ img{
     border-radius: .5rem;
 }
 .privacy_content .privacy_title{
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 5rem;
+    font-size: 2.8rem;
+    font-weight: 400;
+    line-height: 4rem;
     padding-bottom: 2rem;
-    border-bottom: 2px solid #2b3d66;
-    color: #2b3d66;
+    border-bottom: 2px solid #ffffff;
+    color: #ffffff;
     text-align: center;
     text-transform: uppercase;
 }
 .privacy_top .privacy_data_bold{
     font-size: 1.1rem;
     font-weight: 700;
-    color: #2b3d66;
+    color: #ffffff;
     line-height: 1.5rem;
     padding-bottom: 1rem;
 }
 .privacy_top .pSubTitle{
     font-size: 1.5rem;
     font-weight: 700;
-    color: #2b3d66;
+    color: #ffffff;
     line-height: 2.2rem;
     margin-bottom: 0;
 }
 .privacy_top .privacy_data_color{
     font-size: 1rem;
     font-weight: 500;
-    color: #ffffff;
+    color: rgb(1, 1, 79);
     line-height: 1.6rem;
     padding: 1rem;
-    background: #2b3d66;
+    background: #ffffff;
     border-radius: .3rem;
     margin-bottom: 1.5rem;
 }
 .privacy_top .privacy_data{
     font-size: .9rem;
     font-weight: 500;
-    color: #2b3d66;
+    color: #ffffff;
     line-height: 1.4rem;
     margin-bottom: 2rem;
     padding-left: 1rem;
@@ -585,7 +685,7 @@ img{
 .privacy_top ul li{
     font-size: .9rem;
     font-weight: 500;
-    color: #2b3d66;
+    color: #ffffff;
     line-height: 1.4rem;
     margin-bottom: 0.8rem;
 }
@@ -593,6 +693,126 @@ img{
     margin-bottom: 2rem;
 }
 /*=========== Privacy End =========*/
+
+/*========== Forgot Password ==========*/
+.forgot_footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+.forgot_main{
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -45%);
+    width: 100%;
+    max-width: 576px;
+    border-radius: .5rem;
+    text-align: center;
+    padding: 2rem;
+}
+.forgot_main .forgot_title{
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 2rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+.forgot_main form .forgot_input{
+    display: block;
+    width: 100%;
+    max-width: 30rem;
+    margin: auto;
+    padding: 0.5rem;
+    outline: 0;
+    border: 1px solid #ffffff;
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+    background: transparent;
+}
+.forgot_main form .forgot_input:focus{
+    caret-color: #ffffff;
+}
+.forgot_main form .forgot_input::placeholder{
+    color: #ffffff;
+}
+.forgot_main form .forgot_send_btn{
+    font-size: .9rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    background: transparent;
+    border-color: transparent;
+    outline: none;
+    color: #ffffff;
+    transition: .3s;
+}
+.forgot_main form .forgot_send_btn:hover{
+    font-size: 1.1rem;
+}
+
+/*========= Welcome Page ============*/
+.welcome_main{
+    max-width: 100% !important;
+}
+.forgot_main .welcome_btn{
+    width: 6rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+}
+.forgot_main .welcome_btn .wc_send{
+    background: transparent;
+    outline: none;
+    border-color: transparent;
+}
+.welcome_btn .wc_send a{
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    transition: .3s;
+    text-transform: uppercase;
+}
+.welcome_btn .wc_send a:hover{
+    font-size: 1.1rem;
+}
+.forgot_main .welcome_msg{
+    width: fit-content;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 2rem;
+    color: #ffffff;
+    margin: 1rem auto;
+}
+.forgot_main .welcome_msg span{
+    font-weight: 700;
+}
+.forgot_main .welcome_success{
+    width: fit-content;
+    margin: auto;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    color: #ffffff;
+}
+.forgot_main .welcome_icon{
+    width: fit-content;
+    margin: auto;
+}
+.forgot_main .welcome_icon i{
+   width: 2rem;
+   height: 2rem;
+   line-height: 2rem;
+   text-align: center;
+   background: #27ae60;
+   color: #ffffff;
+   border-radius: 50%;
+   font-size: 1.2rem;
+}
 
 
 /*========== Start Responsive ===========*/
@@ -616,23 +836,11 @@ img{
         width: 20rem;
     }
     .header_logo{
-        width: 14rem !important;
+        width: 11rem !important;
     }
 
     /*----- Login page ----*/
 
-    .login_main{
-        flex-direction: column-reverse !important;
-        padding: 4rem 5rem !important;
-        width: 100%;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .login_main .backToSignup{
-        width: 100% !important;
-        text-align: center;
-    }
     .login_main .login_inner{
         width: 100% !important;
         text-align: center;
@@ -643,32 +851,11 @@ img{
         text-align: center;
     }
     .body_main .header_logo .home_page_logo img{
-        width: 14rem !important;
+        width: 11rem !important;
     }
 
 }
 
-/*----------- Max-width 810px ------------*/
-@media (max-width: 810px) {
-    .footer_main{
-        flex-direction: column-reverse;
-        row-gap: 1.5rem;
-    }
-    .footer_main .login_social{
-        text-align: center !important;
-        width: 100% !important;
-    }
-    .footer_main .login_privacy{
-        width: 100% !important;
-    }
-    .footer_main .copyrights{
-        text-align: center !important;
-        width: 100% !important;
-    }
-    .footer_main.home_page_footer{
-        padding: 1rem !important;
-    }
-}
 
 /*----------- max-width: 768px -------------*/
 @media (max-width: 768px) {
@@ -677,12 +864,12 @@ img{
         width: 18rem;
     }
     .header_logo{
-        width: 13rem !important;
+        width: 10rem !important;
     }
 
     /* Auth Pages */
     
-    .login_inner form .form_inner_div, .or, .google_btn{
+    .login_inner .form_inner_div, .or, .google_btn{
         max-width: 30rem;
         margin-left: auto;
         margin-right: auto;
@@ -699,12 +886,24 @@ img{
     .privacy_content{
         margin-top: 3.5rem !important;
     }
-    .login_main{
-        padding: 3.5rem !important;
-        margin-top: 3.5rem !important;
-    }
     .body_main .header_logo .home_page_logo img{
-        width: 13rem !important;
+        width: 10rem !important;
+    }
+
+
+    /* Footer */
+    .footer_main{
+        flex-direction: column-reverse;
+        row-gap: 1.5rem;
+    }
+    .footer_main .login_social{
+        text-align: center !important;
+    }
+    .footer_main .copyrights{
+        text-align: center !important;
+    }
+    .footer_main.home_page_footer{
+        padding: 0 1rem 1rem 1rem !important;
     }
 }
 
@@ -713,9 +912,6 @@ img{
     /* PreLoder */
     .onLoad .onLoad_body .logo{
         width: 16rem;
-    }
-    .onLoad_body .icon i{
-        font-size: 1.3rem !important;
     }
 
     /*------ Body --------*/
@@ -741,16 +937,16 @@ img{
     .body_main .header_logo{
         width: 13rem !important;
     }
-    .login_main{
-        padding: 2rem 1rem !important;
-        margin-top: 3rem !important;
-    }
+    
     .login_main .login_inner .auth_title{
         font-size: 1.5rem !important;
         line-height: 2.2rem;
     }
     .login_inner form .auth_btn{
-        font-size: .8rem !important;
+        font-size: .9rem !important;
+    }
+    .login_inner form .auth_btn:hover{
+        font-size: 1rem;
     }
     .login_inner form .form_inner_div input::placeholder{
         font-size: .7rem !important;
@@ -778,6 +974,21 @@ img{
     }
     .body_main .header_logo{
         width: 100% !important;
+    }
+    .forgot_main .forgot_title{
+        font-size: 1.2rem !important;
+    }
+    .forgot_main form .forgot_send_btn{
+        font-size: .9rem;
+    }
+    .forgot_main form .forgot_send_btn:hover{
+        font-size: 1rem;
+    }
+    .forgot_main{
+        padding: 1.5rem 1rem;
+    }
+    .forgot_main form .forgot_input{
+        max-width: 25rem;
     }
 }
 
@@ -830,11 +1041,6 @@ img{
     .body_main .btns a{
         font-size: .9rem !important;
     }
-    .auth_btns{
-        flex-direction: column;
-        row-gap: .8rem;
-        text-align: center;
-    }
 }
 
 
@@ -848,6 +1054,14 @@ img{
 @media (max-height: 450px) {
     .body_main .btns{
         bottom: 25% !important;
+    }
+}
+@media (min-height: 850px) {
+    .signup_footer{
+        position: fixed !important;
+        bottom: 0 !important;
+        width: 100%;
+        left: 0;
     }
 }
 

@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 const DigiversePrivacy = () => {
   return (
     <div className="digiverseBody">
+      <div className="bg_dark_pryvacy"></div>
       {/* <!--------- header section ----------> */}
-      <section className="header">
+      <section>
         <div className="header_main">
           <div className="header_logo">
             <Link to={"/digiverse"}>
               <img
-                src="../../../../src/assets/digiverseAssets/img/logo/DigiVerse-Logo.png"
+                src="../../../../src/assets/digiverseAssets/img/logo/White-DigiVerse-Logo.png"
                 alt=""
               />
             </Link>
@@ -18,7 +19,7 @@ const DigiversePrivacy = () => {
       </section>
 
       {/* <!--------- body section ----------> */}
-      <section className="login">
+      <section className="login privacy_body">
         <div className="container">
           <div className="privacy_content">
             <h1 className="privacy_title">Privacy policy</h1>
@@ -108,14 +109,13 @@ const DigiversePrivacy = () => {
           </div>
         </div>
       </section>
-
       {/* <!----------- Footer section -----------------> */}
       <section className="footer">
         <div className="container">
           <div className="footer_main">
             <div className="copyrights">
               <p className="copy_content">
-                All Rights Reserved By <a href="index.html">Digiverse</a>
+                All Rights Reserved By <Link to={'digiverse'}>Digiverse</Link>
               </p>
             </div>
             <div className="login_privacy">
