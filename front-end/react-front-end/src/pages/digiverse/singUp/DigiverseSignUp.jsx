@@ -38,7 +38,12 @@ export const DigiverseSignUp = () => {
     if (user) {
       const profile =  getGoogleUser(user.access_token);
       profile.then((res)=>{
-        console.log(res)
+        const userInfo = {
+          Uid : res.id,
+          name : res.name,
+          email : res.email
+        }
+        console.log(userInfo)
       })
 
     }
