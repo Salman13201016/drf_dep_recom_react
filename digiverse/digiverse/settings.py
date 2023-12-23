@@ -131,3 +131,13 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nirbanmitra007@gmail.com'
 EMAIL_HOST_PASSWORD = 'jziq iwgc wmec kcxb'
+
+# settings.py
+
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
+
