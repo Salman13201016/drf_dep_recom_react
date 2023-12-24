@@ -1,0 +1,1065 @@
+/* Reset CSS */
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Montserrat', sans-serif;
+    /* background: rgb(1, 1, 79); */
+    background-image: url('../img/background/bg1.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    position: relative;
+}
+::placeholder{
+    color: #ffffff;
+}
+input{
+    color: #ffffff;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+img{
+    max-width: 100%;
+}
+.cursor{
+    width: 1.2rem;
+    height: 1.2rem;
+    background: #004164;
+    position: absolute;
+    overflow: hidden;
+    box-shadow: 0 0 2px 1px #012b42;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+.cursor2{
+    background: transparent;
+    width: 1.2rem;
+    height: 1.2rem;
+    transform: translate(40%, 40%);
+    
+}
+
+/*========== Global CSS Start ===========*/
+.container{
+    width: 100%;
+    max-width: 1920px;
+    padding: 0 3rem;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+}
+/*========== Global CSS End ===========*/
+
+
+/*======== Styling Started =============*/
+/*==== Preeloder Start =====*/
+.onLoad{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background:#0101a8; */
+    background: url('../img/background/welcome.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: 999999999999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .5s;
+}
+
+.onLoadNone{
+    display: none !important;
+}
+.onLoad_body .logo{
+    max-width: 15rem;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-animation: preload 6s infinite;
+    animation: preload 6s infinite;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-timing-function: ease-in-out;
+    transition: all 6s;
+}
+@keyframes preload {
+    0%{
+        opacity: 0;
+    }
+    75%{
+       opacity: 1;
+    }
+    100%{
+       opacity: 0;
+    }
+}
+
+.onLoad_body .icon{
+    text-align: center;
+    cursor: pointer;
+    display: block !important;
+    position: absolute;
+    bottom: 22vh;
+    left: 50%;
+    transform: translate(-50%);
+}
+.onLoad_body .icon .dot{
+    cursor: pointer;
+    transition-duration: 1s;
+    border: 1px solid #ffffff;
+    width: 1.4rem;
+    height: 3rem;
+    margin-top: 5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 1rem;
+    background: #ffffff;
+    transition: .3s;
+    -webkit-animation: preload 6s infinite;
+    animation: preload 6s infinite;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-timing-function: ease-in-out;
+}
+.onLoad_body .icon .dot::before{
+    content: '';
+    position: absolute;
+    background: rgb(1, 1, 79);
+    width: .4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    top: .4rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+    animation: scrolldown 2s infinite;
+}
+@keyframes scrolldown {
+    0%{
+        opacity: 0;
+        transform: translate(-50%, 0);
+    }
+    20%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        transform: translate(-50%, 2rem);
+    }
+}
+/* .ok_bdb{
+    transform: translateX(0) !important;
+} */
+
+/*==== Preeloder End =====*/
+
+/*==== Body Start =====*/
+.body{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.bg_dark_homepage{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background: rgba(0, 0, 0, .6);
+}
+.container .body_main{
+    position: relative;
+}
+
+.header_logo{
+    width: 12rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1.5rem;
+    z-index: 1;
+    /* box-shadow: 0 0 2px 0 rgb(1, 1, 79); */
+}
+
+.body_main .header_logo{
+    /* background: #ebf7fb; */
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+    padding: 0.3rem 0;
+    background: transparent;
+}
+.body_main .header_logo .home_page_logo img{
+    max-width: 12rem;
+    margin: auto;
+}
+.header_logo a img{
+    max-width: 100%;
+}
+
+.slider_main .slider_box{
+    text-align: center;
+    position: absolute;
+    transform: translate(0) scale(0);
+    transition: transform 1s;
+}
+.slider_box.current{
+    transform: translate(0) scale(1);
+    transition: transform 1s;
+}
+.content .slider_main{
+    width: 100%;
+    max-width: 50rem;
+    margin-top: 28vh;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+.slider_box .slider_title{
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 110%;
+    margin-bottom: 0.4rem;
+}
+.slider_box .slider_text{
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 150%;
+    margin-top: .6rem;
+}
+.body_main .btns{
+    text-align: center;
+    position: fixed;
+    bottom: 25vh;
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.body_main .btns .home_btn{
+    width: 6rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    background: rd;
+}
+.body_main .btns a{
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: .9rem;
+    font-weight: 700;
+    color: #ffffff;
+    transition: .3s;
+}
+.body_main .btns a:hover{
+    font-size: 1rem;
+}
+
+.body_main .terms a:last-child{
+    border-color: transparent !important;
+}
+.body_main .terms{
+    width: fit-content;
+    position: fixed;
+    bottom: 12%;
+    left: 50%;
+    transform: translate(-50%);
+}
+.social .social_inner a{
+    margin-left: 0.4rem;
+}
+.social .social_inner a i{
+    font-size: .9rem;
+    color: #000000;
+    background: #9fabc6;
+    width: 1.8rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    text-align: center;
+    border-radius: 50%;
+    transition: .3s;
+}
+.social .social_inner a .fa-facebook-f:hover{
+    color: #ffffff;
+    background: #316FF6;
+}
+.social .social_inner a .fa-youtube:hover{
+    color: #ffffff;
+    background: #CD201F;
+}
+.social .social_inner a .fa-linkedin-in:hover{
+    color: #ffffff;
+    background: #0077b5;
+}
+.social .social_inner a .fa-x-twitter:hover{
+    background: #f6f6f7;
+    color: #000000;
+}
+.footer_main.home_page_footer{
+    position: fixed !important;
+    width: 100%;
+    height: fit-content;
+    bottom: 0;
+    left: 0;
+    padding: 2rem;
+    /* background: rgb(1, 1, 65); */
+}
+/*==== Body End =====*/
+
+/*========= Login start ============*/
+.signup_footer{
+    position: unset !important;
+    margin-top: 2rem;
+}
+.signup_main_div{
+    width: 100vw;
+    min-height: 100vh;
+    background: url('../img/signup/signup.jpg'), no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    background-attachment: fixed;
+}
+.login-main_body{
+    min-height: 100vh;
+    width: 100vw;
+    background: url('../img/signup/login.jpg'), no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    margin: auto;
+}
+.bg_dark_login{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .6);
+}
+.bg_dark_signup{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .6);
+}
+.login{
+    width: 100%;
+    max-width: 576px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -45%);
+}
+.signup{
+    position: relative;
+    width: 100%;
+    top: unset;
+    max-width: 576px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 5rem;
+    transform: unset;
+}
+
+.header_main{
+    position: sticky;
+    width: 100%;
+    top: 0;
+    left: 0;
+    /* background: #ebf7fb; */
+    /* box-shadow: 0 0 2px 0 rgba(0, 0, 0, .2); */
+    padding: 0.3rem 0;
+}
+.auth_banner{
+    text-align: center;
+}
+.auth_banner img{
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, .4);
+    border-radius: .4rem;
+}
+
+.login_main .login_inner .auth_title{
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    text-align: center;
+}
+.login_inner form .form_inner_div{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: .5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ffffff;
+    padding-bottom: 1px;
+}
+.login_inner form .form_inner_div i{
+    display: block;
+    font-size: .8rem;
+    color: #ffffff;
+}
+.login_inner form .form_inner_div input::placeholder{
+    font-size: .8rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+}
+.login_inner form .form_inner_div input{
+    display: block;
+    width: 100%;
+    padding: .6rem .6rem 0 .6rem;
+    border-color: transparent;
+    outline-color: transparent;
+    background: transparent;
+}
+.login_inner form .form_inner_div input:focus{
+    outline: none;
+    caret-color: #ffffff;
+}
+
+.login_inner form .auth_btn{
+    width: fit-content;
+    font-size: .9rem;
+    font-weight: 700;
+    color: #ffffff;
+    border-color: transparent;
+    outline-color: transparent;
+    text-transform: uppercase;
+    transition: .3s;
+    background: transparent;
+}
+.login_inner form .auth_btns .auth_login_btn{
+    width: 6rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: left;
+}
+.login_inner form .auth_btn:hover{
+    font-size: 1.1rem;
+}
+.auth_btn_back{
+    width: 100%;
+    margin-top: 1.5rem;
+    text-align: center;
+}
+.auth_btn_back a{
+    font-size: .8rem;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: .3s;
+}
+.auth_btn_back a:hover{
+    font-size: .9rem;
+}
+.login_main.signup{
+    flex-direction: row-reverse;
+}
+.auth_btns{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 1rem;
+}
+.auth_btns .auth_rember_btn{
+    width: 20rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: right;
+}
+.auth_btns .auth_rember_btn .remember{
+    margin-top: 1.5rem;
+    text-decoration: none;
+    font-size: .8rem;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: .3s;
+}
+.auth_btns .auth_rember_btn .remember:hover{
+    font-size: .9rem;
+}
+.login_inner form .signup_btn_div{
+    width: 6rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    margin: auto;
+}
+
+/*============= Footer section ===========*/
+.privacy_footer{
+    position: unset !important;
+    margin-top: 2rem;
+}
+.footer_main{
+    /* border-top: 1px solid rgb(1, 1, 65); */
+    padding: 0 0 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 2%;
+}
+.footer_main .copyrights{
+    text-align: left;
+    width: fit-content;
+}
+.footer_main .copyrights p{
+    font-size: 9px;
+    color: #9fabc6;
+    font-weight: 500;
+    margin-bottom: 0 !important;
+    text-transform: uppercase;
+}
+.footer_main .copyrights p a{
+    font-size: 9px;
+    color: #ffffff;
+    font-weight: 600;
+    margin-bottom: 0 !important;
+    text-decoration: none;
+    transition: .3s;
+}
+.footer_main .copyrights p a:hover{
+    color: #9fabc6;
+}
+.footer_main .login_social{
+    text-align: right;
+    width: fit-content;
+}
+.footer_main .login_privacy{
+    text-align: center;
+    width: fit-content;
+    margin-left: -.3rem;
+}
+.footer_main .login_privacy a{
+    font-size: .7rem;
+    font-weight: 400;
+    color: #9fabc6;
+    text-decoration: none;
+    padding: 0 1rem;
+    border-right: 1px solid #4b5a7c;
+    text-transform: uppercase;
+    transition: .3s;
+}
+.footer_main .login_privacy a:hover{
+    color: #ffffff;
+}
+.footer_main .login_privacy a:last-child{
+    border-color: transparent;
+}
+.login_inner form .or{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem auto;
+    display: none;
+}
+.login_inner form .or .ordiv{
+    width: 45%;
+    height: .05rem;
+    background: #2b3d66;
+}
+.login_inner form .or .or_text{
+    margin-bottom: 0;
+    font-size: .9rem;
+    font-weight: 600;
+    color: #2b3d66;
+}
+.login_inner form .google_btn{
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 1rem;
+    padding: .8rem 1rem;
+    border-radius: .4rem;
+    background: transparent;
+    outline-color: transparent !important;
+    border: none !important;
+    transition: .3s;
+    margin-top: 1rem;
+}
+.login_inner form .google_btn:hover{
+    transform: scale(1.2);
+}
+
+.login_inner form .google_btn img{
+    width: 2rem;
+}
+.login_inner form .google_btn p{
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(0, 0, 0, .8);
+}
+/*========= Login end ============*/
+
+/*=========== Privacy Start =========*/
+.login.privacy_body{
+    position: relative !important;
+    top: unset !important;
+    left: unset !important;
+    max-width: unset !important;
+    transform: unset !important;
+}
+.bg_dark_pryvacy{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .6);
+}
+.privacy_content{
+    width: 100%;
+    max-width: 992px;
+    margin-top: 4rem;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, .5);
+    padding: 1.5rem;
+    border-radius: .5rem;
+}
+.privacy_content .privacy_title{
+    font-size: 2.8rem;
+    font-weight: 400;
+    line-height: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #ffffff;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+}
+.privacy_top .privacy_data_bold{
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.5rem;
+    padding-bottom: 1rem;
+}
+.privacy_top .pSubTitle{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 2.2rem;
+    margin-bottom: 0;
+}
+.privacy_top .privacy_data_color{
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgb(1, 1, 79);
+    line-height: 1.6rem;
+    padding: 1rem;
+    background: #ffffff;
+    border-radius: .3rem;
+    margin-bottom: 1.5rem;
+}
+.privacy_top .privacy_data{
+    font-size: .9rem;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.4rem;
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+}
+.privacy_top ul li{
+    font-size: .9rem;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.4rem;
+    margin-bottom: 0.8rem;
+}
+.privacy_top ul{
+    margin-bottom: 2rem;
+}
+/*=========== Privacy End =========*/
+
+/*========== Forgot Password ==========*/
+.forgot_footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+.forgot_main{
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -45%);
+    width: 100%;
+    max-width: 576px;
+    border-radius: .5rem;
+    text-align: center;
+    padding: 2rem;
+}
+.forgot_main .forgot_title{
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 2rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+.forgot_main form .forgot_input{
+    display: block;
+    width: 100%;
+    max-width: 30rem;
+    margin: auto;
+    padding: 0.5rem;
+    outline: 0;
+    border: 1px solid #ffffff;
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+    background: transparent;
+}
+.forgot_main form .forgot_input:focus{
+    caret-color: #ffffff;
+}
+.forgot_main form .forgot_input::placeholder{
+    color: #ffffff;
+}
+.forgot_main form .forgot_send_btn{
+    font-size: .9rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    background: transparent;
+    border-color: transparent;
+    outline: none;
+    color: #ffffff;
+    transition: .3s;
+}
+.forgot_main form .forgot_send_btn:hover{
+    font-size: 1.1rem;
+}
+
+/*========= Welcome Page ============*/
+.welcome_main{
+    max-width: 100% !important;
+}
+.forgot_main .welcome_btn{
+    width: 6rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+}
+.forgot_main .welcome_btn .wc_send{
+    background: transparent;
+    outline: none;
+    border-color: transparent;
+}
+.welcome_btn .wc_send a{
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    transition: .3s;
+    text-transform: uppercase;
+}
+.welcome_btn .wc_send a:hover{
+    font-size: 1.1rem;
+}
+.forgot_main .welcome_msg{
+    width: fit-content;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 2rem;
+    color: #ffffff;
+    margin: 1rem auto;
+}
+.forgot_main .welcome_msg span{
+    font-weight: 700;
+}
+.forgot_main .welcome_success{
+    width: fit-content;
+    margin: auto;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    color: #ffffff;
+}
+.forgot_main .welcome_icon{
+    width: fit-content;
+    margin: auto;
+}
+.forgot_main .welcome_icon i{
+   width: 2rem;
+   height: 2rem;
+   line-height: 2rem;
+   text-align: center;
+   background: #27ae60;
+   color: #ffffff;
+   border-radius: 50%;
+   font-size: 1.2rem;
+}
+
+/*========== Start Responsive ===========*/
+
+/*------- max-width: 1400px  --------*/
+
+/*------- max-width: 1024px  --------*/
+@media (max-width: 1024px) {
+    .social .social_inner a i{
+        font-size: .8rem !important;
+        width: 1.7rem !important;
+        height: 1.7rem !important;
+        line-height: 1.7rem !important;
+    }
+}
+
+/*------- max-width: 992px  --------*/
+@media (max-width: 992px) {
+    /* PreLoder */
+    .onLoad .onLoad_body .logo{
+        width: 20rem;
+    }
+    .header_logo{
+        width: 11rem !important;
+    }
+
+    /*----- Login page ----*/
+
+    .login_main .login_inner{
+        width: 100% !important;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    .body_main .header_logo{
+        width: 100% !important;
+        text-align: center;
+    }
+    .body_main .header_logo .home_page_logo img{
+        width: 11rem !important;
+    }
+
+}
+
+
+/*----------- max-width: 768px -------------*/
+@media (max-width: 768px) {
+    /* PreLoder */
+    .onLoad .onLoad_body .logo{
+        width: 18rem;
+    }
+    .header_logo{
+        width: 10rem !important;
+    }
+
+    /* Auth Pages */
+    
+    .login_inner form .form_inner_div, .or, .google_btn{
+        max-width: 30rem;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1rem;
+    }
+    .footer_main .login_social{
+        text-align: center !important;
+        margin-top: 1.5rem;
+    }
+    .privacy_content .privacy_title{
+        font-size: 2.7rem !important;
+        line-height: 4.2rem;
+    }
+    .privacy_content{
+        margin-top: 3.5rem !important;
+    }
+    .body_main .header_logo .home_page_logo img{
+        width: 10rem !important;
+    }
+
+
+    /* Footer */
+    .footer_main{
+        flex-direction: column-reverse;
+        row-gap: 1.5rem;
+    }
+    .footer_main .login_social{
+        text-align: center !important;
+    }
+    .footer_main .copyrights{
+        text-align: center !important;
+    }
+    .footer_main.home_page_footer{
+        padding: 0 1rem 1rem 1rem !important;
+    }
+}
+
+/*----------- max-width: 576px -------------*/
+@media (max-width: 576px) {
+    /* PreLoder */
+    .onLoad .onLoad_body .logo{
+        width: 16rem;
+    }
+
+    /*------ Body --------*/
+    .slider_box .slider_title{
+        font-size: 2rem !important;
+    }
+    .slider_box .slider_text{
+        font-size: 1.1rem !important;
+    }
+    .body_main .social {
+        right: 2rem !important;
+    }
+    .body_main .terms a{
+        font-size: .8rem !important;
+        padding: 0 .4rem !important;
+    }
+    .body_main .btns a{
+        font-size: 1rem !important;
+    }
+    .container{
+        padding: 0 1rem !important;
+    }
+    .body_main .header_logo{
+        width: 13rem !important;
+    }
+    
+    .login_main .login_inner .auth_title{
+        font-size: 1.5rem !important;
+        line-height: 2.2rem;
+    }
+    .login_inner form .auth_btn{
+        font-size: .9rem !important;
+    }
+    .login_inner form .auth_btn:hover{
+        font-size: 1rem;
+    }
+    .login_inner form .form_inner_div input::placeholder{
+        font-size: .7rem !important;
+    }
+    /* Privacy */
+    .privacy_content .privacy_title{
+        font-size: 2.4rem !important;
+        line-height: 3.5rem;
+    }
+    .privacy_top .privacy_data_bold{
+        font-size: 1rem !important;
+    }
+    .privacy_top .pSubTitle{
+        font-size: 1.3rem !important;
+    }
+    .privacy_top .privacy_data_color{
+        font-size: .9rem !important;
+    }
+    .privacy_content{
+        padding: 0.5rem !important;
+        margin-top: 3rem !important;
+    }
+    .footer_main{
+        padding: 1rem 0 2rem 0;
+    }
+    .body_main .header_logo{
+        width: 100% !important;
+    }
+    .forgot_main .forgot_title{
+        font-size: 1.2rem !important;
+    }
+    .forgot_main form .forgot_send_btn{
+        font-size: .9rem;
+    }
+    .forgot_main form .forgot_send_btn:hover{
+        font-size: 1rem;
+    }
+    .forgot_main{
+        padding: 1.5rem 1rem;
+    }
+    .forgot_main form .forgot_input{
+        max-width: 25rem;
+    }
+}
+
+/*----------- max-width: 420px -------------*/
+@media (max-width: 420px) {
+    /* PreLoder */
+    .onLoad .onLoad_body .logo{
+        width: 14rem;
+    }
+    .onLoad_body .icon i{
+        font-size: 1rem !important;
+    }
+
+    /*------- Body ------*/
+    .body_main .terms{
+        left: 40% !important;
+        transform: translate(-40%) !important;
+    }
+    .body_main .social {
+        right: 1rem !important;
+    }
+    .body_main .btns a {
+        display: block;
+        margin-bottom: .6rem;
+        width: 100%;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .body_main .btns{
+        width: 100% !important;
+        text-align: center !important;
+        padding: 0 1rem;
+        bottom: 30% !important;
+    }
+    .body_main .header_logo{
+        width: 100% !important;
+    }
+}
+
+/*----------- max-width: 369px -------------*/
+
+@media (max-width: 369px) {
+    /* PreLoder*/
+    .onLoad .onLoad_body .logo{
+        width: 12rem;
+    }
+    .onLoad_body .icon i{
+        font-size: 1rem !important;
+    }
+    .body_main .btns a{
+        font-size: .9rem !important;
+    }
+}
+
+
+
+/* This is Height Controling */
+@media (max-height: 550px) {
+    .body_main .btns{
+        bottom: 30% !important;
+    }
+}
+@media (max-height: 450px) {
+    .body_main .btns{
+        bottom: 25% !important;
+    }
+}
+@media (min-height: 850px) {
+    .signup_footer{
+        position: fixed !important;
+        bottom: 0 !important;
+        width: 100%;
+        left: 0;
+    }
+}
+

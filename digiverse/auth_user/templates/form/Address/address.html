@@ -1,0 +1,108 @@
+{% extends 'common_code/base_code.html' %}
+{% load static %}
+{% block title %} Address {% endblock title %}
+
+{% block content %}
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+				
+					<!-- Page Header -->
+					
+					<!-- /Page Header -->
+					
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">Address Details Inputs</h4>
+								</div>
+								<div class="container-scroller">
+									{% if messages %}
+									<ul class="messages">
+										{% for message in messages %}
+											<div class="alert alert-{{ message.tags }}" role="alert">
+												{{ message }}
+											</div>
+										{% endfor %}
+									</ul>
+									{% endif %}
+                                <form class="forms-sample" method="POST" action="{% url 'address_store' %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="exampleSelectGender">Select Division Name</label>			
+                                              <select class="form-control" id="exampleSelectGender" name="Div_fk">
+                                                <option>Select Division</option>
+                                                {% for data_divi in div_data %}
+                                                <option value="{{ data_divi.id }}">{{ data_divi.division }}</option>
+                                                {% endfor %}
+                                              </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleSelectGender">Select District Name</label>			
+                                              <select class="form-control" id="exampleSelectGender" name="Dis_fk">
+                                                <option>Select District</option>
+                                                {% for dist_data in dist_data %}
+                                                <option value="{{ dist_data.id }}">{{ dist_data.district }}</option>
+                                                {% endfor %}
+                                              </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleSelectGender">Select Station Name</label>			
+                                              <select class="form-control" id="exampleSelectGender" name="Sta_fk">
+                                                <option>Select Station</option>
+                                                {% for data_sta in stat_data %}
+                                                <option value="{{ data_sta.id }}">{{ data_sta.station }}</option>
+                                                {% endfor %}
+                                              </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleSelectGender">Select Hospital Name</label>			
+                                              <select class="form-control" id="exampleSelectGender" name="Hos_fk">
+                                                <option>Select Hospital</option>
+                                                {% for data_hosptal in hosp_data %}
+                                                <option value="{{ data_hosptal.id }}">{{ data_hosptal.hos_cat }}</option>
+                                                {% endfor %}
+                                              </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                          <label for="exampleInputName1">Hospital Name</label>
+                                          <input type="text" class="form-control" id="exampleInputName1" placeholder="Hospital Name" name="hosp_name">
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="exampleInputName1">Address</label>
+                                          <input type="text" class="form-control" id="exampleInputName1" placeholder="Address" name="address">
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="exampleInputName1">Zip Code</label>
+                                          <input type="text" class="form-control" id="exampleInputName1" placeholder="Zip Code" name="zip_code">
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label for="exampleInputName1">Pictures</label>
+                                          <input type="file" class="form-control" id="exampleInputName1" placeholder="Image Upload" name="img">
+                                        </div>
+
+                                        <div class="form-group row">
+                                        <label class="col-form-label col-md-2">Description</label>
+                                        <div class="col-md-10">
+                                          <textarea rows="6" cols="6" class="form-control" placeholder="Enter text here" name="descrip"></textarea>
+                                        </div>
+										              
+                                        
+                                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                 </form>
+								  </div>
+								</div> 
+								
+							</div>
+							
+						</div>
+					</div>
+				
+				</div>			
+			</div>
+			<!-- /Main Wrapper -->
+{% endblock content %}

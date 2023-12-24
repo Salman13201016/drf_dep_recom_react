@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digiverse - Home</title>
+
+    <!-------- Fontwesome CDN --------->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!------- Google Fonts -------->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+
+    <!--------- Bootstrap css --------->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    
+    <!---------- custom css ------------>
+    <link rel="stylesheet" href="{% static '/assets/update_design/css/style.css' %}">
+</head>
+<body>
+    <!-- <div class="cursor">
+        <div class="cursor2"></div>
+    </div> -->
+    <div class="bg_dark_homepage"></div>
+    <!----------- OnLoad Event ---------->
+    <section class="onLoad">
+        <div class="onLoad_body">
+            <div class="logo">
+                <img src="{% static '/assets/update_design/img/logo/White-DigiVerse-Logo.png' %}" alt="Logo">
+            </div>
+            <div class="icon">
+                <div class="dot"></div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Body -->
+    <section class="body">
+        <div class="container">
+            <div class="body_main">
+                <div class="header_logo">
+                    <a class="home_page_logo" href="{% url 'aut_index' %}"><img src="{% static '/assets/update_design/img/logo/White-DigiVerse-Logo.png' %}" alt="Logo"></a>
+                </div>
+                <div class="content">
+                    <div class="slider_main">
+                        <div class="slider_box current">
+                            <p class="slider_text">Transforming Tomorrow's Wellness with AI-Powered Precision in the Digital Universe</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="btns">
+                    <div class="home_btn home_login_btn"><a href="{% url 'aut_login' %}">Log in</a></div>
+                    <div class="home_btn home_signup_btn"><a href="{% url 'aut_signup' %}">Sign up</a></div>
+                </div>
+                <div class="footer_main home_page_footer">
+                    <div class="copyrights footer_single">
+                        <p class="copy_content"> DESIGNED BY DIGIVERSE | <a href="{% url 'aut_index' %}">ABOUT</a></p>
+                    </div>
+                    <div class="login_privacy footer_single">
+                        <a href="{% url 'term' %}">Terms of use</a>
+                        <a href="{% url 'privacy' %}">Privacy policy</a>
+                    </div>
+                    <div class="login_social footer_single">
+                        <div class="social">
+                            <div class="social_inner">
+                                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!------------ Bootstrap js ------------->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!--------- Jquery cdn by Google ----------->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!------------ Custom js -------------->
+    <script src="{% static '/assets/update_design/js/script.js' %}"></script>
+</body>
+</html>

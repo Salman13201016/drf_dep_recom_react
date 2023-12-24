@@ -1,0 +1,66 @@
+{% extends 'common_code/base_code.html' %}
+{% load static %}
+{% block title %} Hospital Department {% endblock title %}
+
+{% block content %}
+			
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <div class="content container-fluid">
+    
+        <!-- Page Header -->
+        
+        <!-- /Page Header -->
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Hospital Department Inputs</h4>
+                    </div>
+                    <div class="container-scroller">
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    <form class="forms-sample" method="POST" action="{% url 'hospital_depart_store' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="exampleSelectGender">Select Department Name</label>			
+                                    <select class="form-control" id="exampleSelectGender" name="dep_sel_fk">
+                                    <option>Select Department</option>
+                                    {% for de_fk_data in dept_fk %}
+                                    <option value="{{ de_fk_data.id }}">{{ de_fk_data.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleSelectGender">Select Hospital Name</label>			
+                                    <select class="form-control" id="exampleSelectGender" name="hos_sel_fk">
+                                    <option>Select Hospital</option>
+                                    {% for hos_fk_data in hosp_fk %}
+                                    <option value="{{ hos_fk_data.id }}">{{ hos_fk_data.hos_cat }}</option>
+                                    {% endfor %}
+                                    </select>
+                            </div>
+                           
+
+                            <button type="submit" class="btn btn-primary me-2">Submit</button>
+                        </form>
+                        </div>
+                    </div> 
+                    
+                </div>
+                
+            </div>
+        </div>
+    
+    </div>			
+</div>
+<!-- /Main Wrapper -->
+{% endblock content %}
