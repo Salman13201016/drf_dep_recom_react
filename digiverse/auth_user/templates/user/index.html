@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %} 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Ai</title>
+
+    <!------------ Google font ------------------->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Typed js link
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.10/typed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.10/typed.min.js"></script> -->
+
+
+    <!--------------- Custom CSS Link ----------------->
+    <link rel="stylesheet" href="{% static 'assets/user/css/style.css' %}">
+</head>
+<body>
+    <!------------ Main body ------------------>
+    <section class="main">
+        <div class="container">
+            <div class="content_main">
+                <!-- Left side content -->
+                <div class="content_left">
+                    <div class="left_header">
+                        <a href="#"><img src="{% static 'assets/img/logo1.png' %}" alt="Logo" style="width: 300px;  margin-top: -50px;"></a>
+                    </div>
+                    <div class="left_body">
+                        <div class="left_slider_main">
+                            <div class="left_body_inner current">
+                                <h2 class="slider_title">Search your Doctor</h2>
+                                <p class="slider_content">Empower your health journey with personalized care - Search your Doctor, your trusted partner in well-being.</p>
+                            </div>
+                            <div class="left_body_inner">
+                                <h2 class="slider_title">Let's check our department recommendation system</h2>
+                                <p class="slider_content">Navigating healthcare excellence – Discover specialized care tailored to your needs in our hospital departments.</p>
+                            </div>
+                            <div class="left_body_inner">
+                                <h2 class="slider_title">Let's Search the nearest hospital and save you valuable money</h2>
+                                <p class="slider_content">Find the closest hospital effortlessly and save on healthcare costs - Let's search for the nearest hospital and protect your wallet and well-being.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right side content -->
+                <div class="content_right">
+                    <div class="right_header">
+                        <a href="#">Logo</a>
+                    </div>
+                    <div class="right_body">
+                        <div class="right_body_inner">
+                            <h2 class="right_title">Get started</h2>
+                            <div class="right_btns">
+                                <a href="{% url 'login' %}"><button>Log in</button></a>
+                                <a href="{% url 'signup' %}"><button>Sign up</button></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="right_footer">
+                        <!-- <div class="footer_logo">
+                            <a href="#"><img src="{% static 'assets/img/logo1.png' %}" alt="Logo" style="width: 100px;  margin-top: -50px;"></a>
+                        </div> -->
+                        <div class="footer_content">
+                            <a href="#">Terms of use</a>
+                            <a href="#">Privacy policy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!------------- jquery cdn link for google ------------------>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- typescript -->
+    <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
+
+
+    <!---------------- Custom js ------------------>
+    <script src="{% static 'assets/user/js/script.js' %}"></script>
+</body>
+</html>

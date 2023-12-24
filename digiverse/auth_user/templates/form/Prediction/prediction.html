@@ -1,0 +1,179 @@
+{% extends 'common_code/base_code.html' %}
+{% load static %}
+{% block title %} Prediction {% endblock title %}
+
+{% block content %}
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+				
+					<!-- Page Header -->
+					
+					<!-- /Page Header -->
+					
+					<div class="row">
+						<div class="col-lg-12 ">
+								<div class="card-header">
+									<h4 class="card-title" style="text-align: center;">Welcome to Digiverse Depart Suggestion Portal</h4>
+								</div>
+								<div class="container-scroller">
+									{% if messages %}
+									<ul class="messages">
+										{% for message in messages %}
+											<div class="alert alert-{{ message.tags }}" role="alert">
+												{{ message }}
+											</div>
+										{% endfor %}
+									</ul>
+									{% endif %}
+                                <form class="forms-sample">
+                                        {% csrf_token %}
+                                        <div class="form-group form_group1">
+                                            <label for="exampleSelectGender">Select Primary Symptom</label>			
+                                              <select class="form-control select_box select_box1 select2" id="exampleSelectGender" name="prediction1" data-live-search="true">
+                                                <option>Select Symptom1</option>
+                                                {% for data_prediction in symptom_data1 %}
+                                                <option value="{{ data_prediction.id }}">{{ data_prediction }}</option>
+                                                {% endfor %}
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group2" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 2</label>			
+                                              <select class="form-control select_box select_box2 select2" id="select_22" name="prediction2" data-live-search="true">
+                                                <option>Select Symptom2</option>
+                                                
+                                              </select>
+                                        </div>
+                                        <!-- <div class="form-group">
+                                          <label for="exampleSelectGender">Select Prediction0</label>			
+                                            <select class="form-control select_box select_box3" id="exampleSelectGender" name="prediction2">
+                                              <option>Select Symptom2</option>
+                                              
+                                            </select>
+                                      </div> -->
+                                        <div class="form-group form_group3" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 3</label>			
+                                              <select class="form-control select_box select_box3 select2" id="exampleSelectGender" name="prediction3" data-live-search="true">
+                                                <option>Select Symptom3</option>
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group4" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 4</label>			
+                                              <select class="form-control select_box select_box4 select2" id="exampleSelectGender" name="prediction4" data-live-search="true">
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group5" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 5</label>			
+                                              <select class="form-control select_box select_box5 select2" id="exampleSelectGender" name="prediction5" data-live-search="true">
+                                                
+                                        </div>
+                                        <div class="form-group form_group6" style="display:none">
+                                          <label for="exampleSelectGender">Select Symptom 6</label>			
+                                            <select class="form-control select_box select_box5 select2" id="exampleSelectGender" name="prediction5" data-live-search="true">
+                                              
+                                      </div>
+                                        <div class="form-group form_group6" style="display:none">
+                                            <label for="exampleSelectGender">Select Prediction6</label>			
+                                              <select class="form-control select_box select_box6 select2" id="exampleSelectGender" name="prediction6" data-live-search="true">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group7" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 7</label>			
+                                              <select class="form-control select_box select_box7 select2" id="exampleSelectGender" name="prediction7" data-live-search="true">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group8" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 8</label>			
+                                              <select class="form-control select_box select_box8 select2" id="exampleSelectGender" name="prediction8" data-live-search="true">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group9" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 9</label>			
+                                              <select class="form-control select_box select_box9" id="exampleSelectGender" name="prediction9">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group10" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 9</label>			
+                                              <select class="form-control select_box select_box10 select2" id="exampleSelectGender" name="prediction10" data-live-search="true">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group11" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 11</label>			
+                                              <select class="form-control select_box select_box11 select2" id="exampleSelectGender" name="prediction11" data-live-search="true">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group12" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 12</label>			
+                                              <select class="form-control select_box select_box12 select2" id="exampleSelectGender" name="prediction12" data-live-search="true">
+                                                
+                                               
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group13" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 13</label>			
+                                              <select class="form-control select_box select_box13 select2" id="exampleSelectGender" name="prediction13" data-live-search="true">
+                                               
+                                               
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group14" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 14</label>			
+                                              <select class="form-control select_box select_box14 select2" id="exampleSelectGender" name="prediction14" data-live-search="true">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group15" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 15</label>			
+                                              <select class="form-control select_box select_box15 select2" id="exampleSelectGender" name="prediction15" data-live-search="true">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group16" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 16</label>			
+                                              <select class="form-control select_box select_box16 select2" id="exampleSelectGender" name="prediction16" data-live-search="true">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        <div class="form-group form_group17" style="display:none">
+                                            <label for="exampleSelectGender">Select Symptom 17</label>			
+                                              <select class="form-control select_box select_box17 select2" id="exampleSelectGender" name="prediction17" data-live-search="true">
+                                                
+                                                
+                                              </select>
+                                        </div>
+                                        
+                                        <button style="display:none;" type="submit" class="btn btn-primary me-2 predict_dept">Predict</button> <br><br><br>
+                                        <div style="display:none;" class="alert alert-success result_pred" role="alert">
+                                          
+                                        </div>
+                                     </form>
+								  </div>
+								</div> 
+								
+							</div>
+							
+						</div>
+					</div>
+				
+				</div>			
+			</div>
+			<!-- /Main Wrapper -->
+{% endblock content %}
