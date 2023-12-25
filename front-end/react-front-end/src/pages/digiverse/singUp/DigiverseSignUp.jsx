@@ -5,11 +5,14 @@ import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { getGoogleUser } from "../../../api/google";
+import apiService from "../../../api";
+import {useNavigate} from 'react-router-dom'
 
 
 
 
 export const DigiverseSignUp = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -20,8 +23,24 @@ export const DigiverseSignUp = () => {
       identity: "",
     },
     validate : validateForm,
-    onSubmit : (values)=>{
-      console.log(values)
+    onSubmit : async(values)=>{
+      const userInfo = {
+        fname: values.name,
+        email: values.email,
+        mobile: values.phone,
+        identy_no: values.identity,
+        password: values.password,
+        conf_password: values.confirmPassword,
+      };
+      const result = await apiService.signUpPostData(
+        "http://127.0.0.1:8000/auth_user/signup/",
+        userInfo
+      );
+      if(result.status == 201){
+        navigate("/digiverse/welcome");
+      }else{
+        console.log(result)
+      }
     },
   });
 

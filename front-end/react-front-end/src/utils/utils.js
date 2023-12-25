@@ -9,11 +9,13 @@ export const isPasswordValid = (password) => {
   // Check for at least one number
   const hasNumber = /\d/.test(password);
 
+  const hasUppercase = /[A-Z]/.test(password);
+
   // Check for at least one special character (you can customize the character set)
   const hasSpecialCharacter = /[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]/.test(password);
 
   // Return true if both conditions are met
-  return hasNumber && hasSpecialCharacter;
+  return hasNumber && hasSpecialCharacter && hasUppercase;
 }
 
 export const validateForm = (values) =>{
@@ -33,10 +35,10 @@ export const validateForm = (values) =>{
 
    if(!values.password){
     errors.password = "Password is required";
-   }else if (values.password.length < 6) {
-     errors.password = "Your password must have at least 6 characters";
+   }else if (values.password.length < 8) {
+     errors.password = "Your password must have at least 8 characters";
    }else if (!isPasswordValid(values.password)){
-    errors.password = "Your password must have at one number and one special character";
+    errors.password = "must have at one uppercase, number and special character";
    }
      if (!values.confirmPassword) {
        errors.confirmPassword = "This field is required";
@@ -46,7 +48,7 @@ export const validateForm = (values) =>{
 
    if(!values.phone){
     errors.phone = "Phone is required";
-   }else if (values.phone.length < 10) {
+   }else if (values.phone.length < 11) {
      errors.phone = "Please enter a valid phone number";
    }
 
