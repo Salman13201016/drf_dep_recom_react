@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digiverse -Privacy</title>
+
+    <!-------- Fontwesome CDN --------->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!------- Google Fonts -------->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!------------ Bootstrap css ------------>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <!---------- custom css ------------>
+    <link rel="stylesheet" href="{% static '/assets/update_design/css/style.css' %}">
+</head>
+<body>
+
+    <div class="bg_dark_pryvacy"></div>
+    <!--------- header section ---------->
+    <section class="header">
+        <div class="header_main">
+            <div class="header_logo">
+                <a href="index.html"><img src="{% static '/assets/update_design/img/logo/White-DigiVerse-Logo.png' %}" alt=""></a>
+            </div>
+        </div>
+    </section>
+
+
+    <!----- Body section ------>
+    <section class="login privacy_body">
+        <div class="container">
+            <div class="privacy_content">
+                <h1 class="privacy_title">Privacy policy</h1>
+                <div class="privacy_top">
+                   <p class="privacy_data_bold">This Terms of Service was last updated on <span>26/11/2023</span></p>
+                   <h2 class="pSubTitle">1. Short summery</h2>
+                   <p class="privacy_data_color">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore earum unde rem, exercitationem fugit impedit corporis illum, voluptatum, ipsa corrupti cupiditate assumenda aspernatur molestias adipisci cum iusto nisi? Culpa, possimus delectus accusantium, rem suscipit impedit rerum minima ea nobis nihil sed adipisci ducimus omnis nulla odio quae consectetur, ipsam maiores! Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore officiis architecto molestiae ab possimus enim illo? Dolore mollitia nemo omnis? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus tempora ipsam aperiam rem temporibus dolorum esse odio veritatis quia voluptatum, sint nulla aliquid, beatae, totam quam dolores ipsum. Error, aut.</p> 
+                   <h2 class="pSubTitle">2. Data You Provide to Us</h2>
+                   <p class="privacy_data">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus tempora ipsam aperiam rem temporibus dolorum esse odio veritatis quia voluptatum, sint nulla aliquid, beatae, totam quam dolores ipsum. Error, aut.</p> 
+                   <h2 class="pSubTitle">3. How we use personal information</h2>
+                   <ul>
+                    <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi, laudantium.</li>
+                    <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi, laudantium.</li>
+                    <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi, laudantium Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, blanditiis?</li>
+                    <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi, laudantium Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, blanditiis?</li>
+                    <li>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi, laudantium Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, blanditiis?</li>
+                   </ul>
+                   <h2 class="pSubTitle">4. Your rights</h2>
+                   <ul>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, illum.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, illum.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, illum. Lorem ipsum dolor sit amet.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, illum. Lorem ipsum dolor sit amet.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, </li>
+                   </ul>
+                   <p class="privacy_data">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus tempora ipsam aperiam rem temporibus dolorum esse odio veritatis quia voluptatum, sint nulla aliquid, beatae, totam quam dolores ipsum. Error, aut.</p> 
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!----------- Footer section ---------------->
+    <section class="footer privacy_footer">
+        <div class="container">
+            <div class="footer_main ">
+                <div class="copyrights">
+                    <p class="copy_content">All Rights Reserved By <a href="{% url 'aut_index' %}">Digiverse</a></p>
+                </div>
+                <div class="login_privacy">
+                    <a href="{% url 'term' %}">Terms of use</a>
+                    <a href="{% url 'privacy' %}">Privacy policy</a>
+                </div>
+                <div class="login_social">
+                    <div class="social">
+                        <div class="social_inner">
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+   <!----------- Bootstrap js --------------->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!--------- Jquery cdn by Google ----------->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!------------ Custom js ------------->
+    <script src="{% static '/assets/update_design/js/script.js' %}"></script>
+</body>
+</html>
