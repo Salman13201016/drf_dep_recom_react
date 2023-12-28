@@ -10,10 +10,10 @@ class AddressListCreateView(generics.ListCreateAPIView):
     queryset = address_name.objects.all()
     serializer_class = AddressSerializer
 
-    def list(self, request, *args, **kwargs):
-        if 'user_id' not in self.request.session:
-            return Response({"error": "Authentication required."}, status=status.HTTP_401_UNAUTHORIZED)
-        return super().list(request, *args, **kwargs)
+    # def list(self, request, *args, **kwargs):
+    #     if 'user_id' not in self.request.session:
+    #         return Response({"error": "Authentication required."}, status=status.HTTP_401_UNAUTHORIZED)
+    #     return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         try:
