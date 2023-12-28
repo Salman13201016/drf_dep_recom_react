@@ -16,10 +16,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-<<<<<<< HEAD
-APPEND_SLASH = True
-# Application definition
-=======
 # APPEND_SLASH = False
 # # Application definition
 AUTHENTICATION_BACKENDS = [
@@ -27,7 +23,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     # Other authentication backends
 ]
->>>>>>> main
 
 INSTALLED_APPS = [
     "django.contrib.admin",
