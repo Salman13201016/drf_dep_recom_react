@@ -29,14 +29,15 @@ const DigiverseWelcome = () => {
               <i className="fa-solid fa-check"></i>
             </div>
             <h3 className="welcome_msg">
-              Congratulations! <span>Md. Anower Hossan</span>
+              Congratulations!
+              {/*  <span>Md. Anower Hossan</span> */}
             </h3>
             <h4 className="welcome_success">
               You have verified and registered the account successfully.
             </h4>
             <div className="welcome_btn">
               <button className="wc_send">
-                <Link  to={"/digiverse/login"}>Log in</Link>
+                <Link to={"/digiverse/login"}>Log in</Link>
               </button>
             </div>
           </div>

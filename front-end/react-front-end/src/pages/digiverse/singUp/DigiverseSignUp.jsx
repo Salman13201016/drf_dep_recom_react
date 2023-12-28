@@ -7,12 +7,22 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { getGoogleUser } from "../../../api/google";
 import apiService from "../../../api";
 import {useNavigate} from 'react-router-dom'
-
-
+import BeatLoader from "react-spinners/BeatLoader";
 
 
 export const DigiverseSignUp = () => {
+  const [message, setmessage] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const navigate = useNavigate();
+  const showBackendMessage = () =>{
+    setVisible(true);
+    const timer = setTimeout(() => {
+      setVisible(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -22,8 +32,9 @@ export const DigiverseSignUp = () => {
       phone: "",
       identity: "",
     },
-    validate : validateForm,
-    onSubmit : async(values)=>{
+    validate: validateForm,
+    onSubmit: async (values) => {
+      setisLoading(true);
       const userInfo = {
         fname: values.name,
         email: values.email,
@@ -36,10 +47,13 @@ export const DigiverseSignUp = () => {
         "http://127.0.0.1:8000/auth_user/signup/",
         userInfo
       );
-      if(result.status == 201){
+      if (result.status == 201) {
+        setisLoading(false);
         navigate("/digiverse/welcome");
-      }else{
-        console.log(result)
+      } else {
+        setisLoading(false);
+        setmessage(result);
+        showBackendMessage();
       }
     },
   });
@@ -55,22 +69,17 @@ export const DigiverseSignUp = () => {
 
   useEffect(() => {
     if (user) {
-      const profile =  getGoogleUser(user.access_token);
-      profile.then((res)=>{
+      const profile = getGoogleUser(user.access_token);
+      profile.then((res) => {
         const userInfo = {
-          Uid : res.id,
-          name : res.name,
-          email : res.email
-        }
-        console.log(userInfo)
-      })
-
+          Uid: res.id,
+          name: res.name,
+          email: res.email,
+        };
+        console.log(userInfo);
+      });
     }
   }, [user]);
-
-
-
-
 
   return (
     <div className="digiverseBody">
@@ -115,6 +124,13 @@ export const DigiverseSignUp = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.name}
+                      // style={{
+                      //   borderColor:
+                      //     formik.touched.name && formik.errors.name
+                      //       ? "red"
+                      //       : "transparent",
+                      //   borderWidth: 1,
+                      // }}
                     />
                   </div>
 
@@ -224,6 +240,10 @@ export const DigiverseSignUp = () => {
                       value={formik.values.identity}
                     />
                   </div>
+
+                  {visible && <p style={{ color: "white" }}>{message}</p>}
+
+                  <BeatLoader color="#ffffff" loading={isLoading} />
 
                   <div className="signup_btn_div">
                     <button type="submit" className="auth_btn">
