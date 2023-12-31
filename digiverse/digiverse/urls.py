@@ -17,6 +17,7 @@ urlpatterns = [
     path('symptoms/', include('symptom.urls')),
     path('auth_user/', include('auth_user.urls')),
     path('dashboard-form/', include('dashboard_from.urls')),
+    path('address/', include('address.urls')),
     # path('prediction/', include('prediction.urls')),
     
 
