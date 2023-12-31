@@ -16,10 +16,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-<<<<<<< HEAD
-APPEND_SLASH = True
-# Application definition
-=======
 # APPEND_SLASH = False
 # # Application definition
 AUTHENTICATION_BACKENDS = [
@@ -27,7 +23,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     # Other authentication backends
 ]
->>>>>>> main
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -58,10 +53,6 @@ INSTALLED_APPS = [
     'address', 
     'django_filters',
     'dj_rest_auth',
-   
-    
-
-    
 ]
 
 MIDDLEWARE = [
@@ -73,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware'
     
     
     
