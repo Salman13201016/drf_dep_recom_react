@@ -3,7 +3,14 @@ from rest_framework import generics
 from .models import HospitalMap
 from .serializers import HospitalMapSerializer
 
+
 class HospitalMapListCreateView(generics.ListCreateAPIView):
     queryset = HospitalMap.objects.all()
     serializer_class = HospitalMapSerializer
+    
+class HospitalMapRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = HospitalMap.objects.all()
+    serializer_class = HospitalMapSerializer
+
+
 
