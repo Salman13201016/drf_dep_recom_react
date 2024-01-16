@@ -7,7 +7,7 @@ class HospitalMap(models.Model):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
     longitude = models.FloatField()
     latitude = models.FloatField()
-    location = FloatField(blank=True, null=True)
+
 
     def __str__(self):
         return f"{self.hospital.name} Map"

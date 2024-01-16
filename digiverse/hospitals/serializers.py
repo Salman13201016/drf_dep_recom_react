@@ -14,3 +14,4 @@ class HospitalSerializer(serializers.ModelSerializer):
     district = serializers.PrimaryKeyRelatedField(queryset=District.objects.all())
     hos_type = serializers.PrimaryKeyRelatedField(queryset=HospitalCategory.objects.all())
     station = serializers.PrimaryKeyRelatedField(queryset=Station.objects.all())
+

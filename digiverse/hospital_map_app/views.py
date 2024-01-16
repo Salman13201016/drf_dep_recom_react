@@ -1,5 +1,5 @@
 # hospital_map_app/views.py
-from rest_framework import generics
+from rest_framework import generics, views, response, status
 from .models import HospitalMap
 from .serializers import HospitalMapSerializer, NearestHospitalSerializer
 from hospitals.models import Hospital
@@ -11,6 +11,7 @@ from rest_framework import status
 from django.db.models import F, Func
 from django.db.models import FloatField
 from math import radians, cos, sin, acos, sqrt, atan2
+# from geopy.geocoders import Nominatim 
 
 class HospitalMapListCreateView(generics.ListCreateAPIView):
     queryset = HospitalMap.objects.all()
@@ -20,22 +21,22 @@ class HospitalMapRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView
     queryset = HospitalMap.objects.all()
     serializer_class = HospitalMapSerializer
 
-class NearestHospitalView(APIView):
+class NearestHospitalView(views.APIView):
     def get(self, request, *args, **kwargs):
         your_latitude = float(request.query_params.get('latitude', 0))
         your_longitude = float(request.query_params.get('longitude', 0))
-        max_distance = float(request.query_params.get('max_distance', 10))
+        max_distance = float(request.query_params.get('max_distance', 100))
 
         data = self.get_nearby_hospitals(your_latitude, your_longitude, max_distance)
-        return Response(data, status=status.HTTP_200_OK)
+        return response.Response(data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         your_latitude = float(request.data.get('latitude', 0))
         your_longitude = float(request.data.get('longitude', 0))
-        max_distance = float(request.data.get('max_distance', 10))
+        max_distance = float(request.data.get('max_distance', 100))
 
         data = self.get_nearby_hospitals(your_latitude, your_longitude, max_distance)
-        return Response(data, status=status.HTTP_200_OK)
+        return response.Response(data, status=status.HTTP_200_OK)
 
     def haversine(self, lat1, lon1, lat2, lon2):
         R = 6371  # Earth radius in kilometers
@@ -52,19 +53,9 @@ class NearestHospitalView(APIView):
     def get_nearby_hospitals(self, your_latitude, your_longitude, max_distance):
         nearby_hospitals = (
             HospitalMap.objects
-            .filter()  # Add any additional filters if needed
+            .annotate(distance=F('latitude'))  # Update with your calculation
+            .filter(distance__lte=max_distance)
         )
 
-        data = [
-            {
-                'id': hospital.id,
-                'hospital_name': hospital.hospital.name,
-                'latitude': hospital.latitude,
-                'longitude': hospital.longitude,
-                'distance': self.haversine(your_latitude, your_longitude, hospital.latitude, hospital.longitude)
-            }
-            for hospital in nearby_hospitals
-            if self.haversine(your_latitude, your_longitude, hospital.latitude, hospital.longitude) <= max_distance
-        ]
-
-        return data
+        serializer = HospitalMapSerializer(nearby_hospitals, many=True)
+        return serializer.data

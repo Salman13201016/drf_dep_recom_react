@@ -9,12 +9,13 @@ class HospitalMapSerializer(serializers.ModelSerializer):
     class Meta:
         model = HospitalMap
         fields = ['id', 'longitude', 'latitude', 'hospital', 'hospital_name']
+        
 class NearestHospitalSerializer(serializers.ModelSerializer):
     hospital = HospitalSerializer(read_only=True)
-
+    distance = serializers.FloatField(source='distance', read_only=True)
     class Meta:
         model = HospitalMap
-        fields = ['id', 'hospital', 'longitude', 'latitude', 'location']
+        fields = ['id', 'hospital', 'longitude', 'latitude', 'location', 'distance']
 
 
 

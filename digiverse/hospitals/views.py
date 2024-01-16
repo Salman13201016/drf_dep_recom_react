@@ -8,3 +8,4 @@ class HospitalViewSet(viewsets.ModelViewSet):
     serializer_class = HospitalSerializer
 
 
+
