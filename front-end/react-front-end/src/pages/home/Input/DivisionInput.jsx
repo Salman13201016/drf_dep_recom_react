@@ -4,59 +4,61 @@ import { ToastContainer, toast } from "react-toastify";
 import { useStoreState } from "easy-peasy";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
-import PaginationReact from "../../../components/UI/pagination/Pagination";
+import PaginationComponent from "../../../components/UI/pagination/Pagination";
 
 const DivisionInput = () => {
   const { divisionList } = useStoreState((state) => state.division);
   const [division, setdivision] = useState("");
   const [currentPage, setcurrentPage] = useState(1);
-  const [postPerPage, setpostPerPage] = useState(5)
+  const [postPerPage, setpostPerPage] = useState(5);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalshow, setIsEditModalShow] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [selectedItemName, setSelectedItemName] = useState('');
+  const [selectedItemName, setSelectedItemName] = useState("");
+  const [selectedEditItem, setSelectedEditItem] = useState("");
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
-  const currentDivision = divisionList.slice(firstPostIndex, lastPostIndex)
-  const notify = () =>
-    toast.success("Successfully Added", {
-      autoClose: 3000,
-    });
+  const currentDivision = divisionList.slice(firstPostIndex, lastPostIndex);
+
   const handleChange = (e) => {
     setdivision(e.target.value);
   };
   const handleSubmit = async () => {
-    const jsonData = {
-      name: division,
-    };
     if (division.length > 0) {
-      const res = await apiService.postData(
+      const response = await apiService.postData(
         "http://127.0.0.1:8000/division/divisions/",
-        JSON.stringify(jsonData)
+        JSON.stringify({name:division})
       );
-      if (res.status) {
-        notify();
+      if (response.statusText == 'Created') {
+        toast.success("Division added successfully!");
         setdivision("");
       }
     } else {
-      alert("Please Insert Division");
+      toast.error('Please insert valid division')
     }
   };
-  const getCurrentPage = (pageNumber)=>{
+  const getCurrentPage = (pageNumber) => {
     setcurrentPage(pageNumber);
-  }
+  };
 
   const handleDeleteClick = (itemId) => {
     setSelectedItemId(itemId);
     setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteConfirm = (itemId) => {
-    // Perform the actual delete operation with the itemId
-    console.log(`Deleting item with ID: ${itemId}`);
-    // Reset selectedItemId and close the modal
-    setSelectedItemId(null);
-    setIsDeleteModalOpen(false);
+  const handleDeleteConfirm = async (itemId) => {
+    const response = await apiService.deleteData(
+      `http://127.0.0.1:8000/division/divisions/${itemId}/`
+    );
+    if(response.status == 204){
+      toast.warn("Division has been deleted", );
+      // Reset selectedItemId and close the modal
+      setSelectedItemId(null);
+      setIsDeleteModalOpen(false);
+    }else{
+      toast.error('Something went wrong')
+    }
+
   };
 
   const handleDeleteModalClose = () => {
@@ -66,19 +68,32 @@ const DivisionInput = () => {
   };
   const handleEditModalClose = () => {
     setSelectedItemId(null);
-    setSelectedItemName('');
+    setSelectedItemName("");
     setIsEditModalShow(false);
   };
 
-  const handleEditClick = (name, itemId) => {
-    setSelectedItemId(itemId);
-    setSelectedItemName(name);
+  const handleEditClick = (singleDiv) => {
+    setSelectedItemId(singleDiv.id);
+    setSelectedItemName(singleDiv.name);
+    setSelectedEditItem(singleDiv);
     setIsEditModalShow(true);
   };
-  const handleEditValueChange = (e)=>{
-    setSelectedItemName(e.target.value)
-  }
+  const handleEditValueChange = (e) => {
+    setSelectedItemName(e.target.value);
+  };
 
+  const handleConfirmEdit = () => {
+    setSelectedItemId(null);
+    setSelectedItemName("");
+
+    const finalData = { ...selectedEditItem, name: selectedItemName };
+    apiService.updateData(
+      `http://127.0.0.1:8000/division/divisions/${finalData.id}/`,
+      JSON.stringify(finalData)
+    );
+    console.log(JSON.stringify(finalData));
+    setIsEditModalShow(false);
+  };
 
   return (
     <div className="card">
@@ -113,7 +128,7 @@ const DivisionInput = () => {
         </form>
       </div>
 
-      {/* <!-- Page Wrapper --> */}
+      {/* <!-- Table Section --> */}
       <div>
         <div className="content container-fluid">
           {/* <!-- Page Header --> */}
@@ -144,17 +159,14 @@ const DivisionInput = () => {
                         {currentDivision.map((singleDivision, index) => {
                           return (
                             <tr key={index}>
-                              <td>{singleDivision.id}</td>
+                              <td>{(currentPage - 1) * postPerPage + 1 + index}</td>
                               <td>{singleDivision.name}</td>
                               <td>
                                 <div className="actions">
                                   <a
                                     className="btn btn-sm bg-success-light"
                                     onClick={() =>
-                                      handleEditClick(
-                                        singleDivision.name,
-                                        singleDivision.id
-                                      )
+                                      handleEditClick(singleDivision)
                                     }
                                   >
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
@@ -186,7 +198,7 @@ const DivisionInput = () => {
           </div>
           {/* <!-- Pagination --> */}
           <div className="d-flex justify-content-center">
-            <PaginationReact
+            <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
               totalPost={divisionList.length}
@@ -195,7 +207,7 @@ const DivisionInput = () => {
           </div>
         </div>
       </div>
-      {/* <!-- /Page Wrapper --> */}
+      {/* <!-- /Table Section --> */}
 
       {/* <!-- Delete Modal --> */}
       <DeleteModal
@@ -214,6 +226,7 @@ const DivisionInput = () => {
         editValue={selectedItemName}
         handleChange={handleEditValueChange}
         id={selectedItemId}
+        confirmEdit={handleConfirmEdit}
       />
       {/* <!-- /Edit Modal --> */}
     </div>

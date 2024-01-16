@@ -18,7 +18,7 @@ const DeleteModal = ({ isOpen, onClose, onConfirm, itemId }) => {
   return (
     <Modal show={isOpen} onHide={handleCancel}>
       <Modal.Header closeButton>
-        <Modal.Title>Do you want to delete ?</Modal.Title>
+        <Modal.Title>Do you want to delete? {itemId} </Modal.Title>
       </Modal.Header>
       <Modal.Footer>
         <Button className="btn btn-secondary" onClick={handleCancel}>

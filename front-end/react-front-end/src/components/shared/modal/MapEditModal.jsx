@@ -2,7 +2,14 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 
-const EditModal = ({isShow, handleClose, modalTitle, editValue, id, handleChange, confirmEdit, fieldName}) => {
+const MapEditModal = ({
+  isShow,
+  handleClose,
+  modalTitle,
+  mapInfo,
+  handleChange,
+  handleEditSubmit,
+}) => {
   return (
     <Modal show={isShow} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -11,12 +18,21 @@ const EditModal = ({isShow, handleClose, modalTitle, editValue, id, handleChange
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Label>Latitude</Form.Label>
             <Form.Control
-              type="text"
+              type="number"
+              name="latitude"
               autoFocus
-              value={editValue}
+              value={mapInfo.latitude}
               onChange={handleChange}
-              name={fieldName}
+            />
+            <Form.Label>Longitude</Form.Label>
+            <Form.Control
+              type="number"
+              name="longitude"
+              autoFocus
+              value={mapInfo.longitude}
+              onChange={handleChange}
             />
           </Form.Group>
         </Form>
@@ -25,7 +41,7 @@ const EditModal = ({isShow, handleClose, modalTitle, editValue, id, handleChange
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={confirmEdit}>
+        <Button variant="primary" onClick={handleEditSubmit}>
           Save Changes
         </Button>
       </Modal.Footer>
@@ -33,4 +49,4 @@ const EditModal = ({isShow, handleClose, modalTitle, editValue, id, handleChange
   );
 };
 
-export default EditModal;
+export default MapEditModal;

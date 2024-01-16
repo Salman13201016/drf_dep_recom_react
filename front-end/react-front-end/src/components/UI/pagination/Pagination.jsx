@@ -1,7 +1,7 @@
 
 import Pagination from "react-bootstrap/Pagination";
 
-const PaginationReact = ({totalPost, postPerPage, currentPage, changePage}) => {
+const PaginationComponent = ({totalPost, postPerPage, currentPage, changePage}) => {
     let items = [];
     for (
       let number = 1;
@@ -43,4 +43,4 @@ const PaginationReact = ({totalPost, postPerPage, currentPage, changePage}) => {
   );
 }
 
-export default PaginationReact;
+export default PaginationComponent;

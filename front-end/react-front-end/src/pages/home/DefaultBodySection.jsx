@@ -1,3 +1,4 @@
+import UserLocation from "../../components/shared/locationInput/UserLocation";
 
 
 
@@ -16,6 +17,7 @@ const BodySection = () => {
                 </li>
                 <li className="breadcrumb-item active">Basic Inputs</li>
               </ul>
+              <UserLocation />
             </div>
           </div>
         </div>
