@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Role
+from .models import patient_or_admin
 
-admin.site.register(Role)
+admin.site.register(patient_or_admin)
