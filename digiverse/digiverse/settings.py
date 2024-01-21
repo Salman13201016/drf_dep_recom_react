@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'address', 
     'django_filters',
     'dj_rest_auth',
+    'token_manager',
    
     
 
@@ -70,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    
     
     
     
@@ -165,6 +167,8 @@ SIMPLE_JWT = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
@@ -229,10 +233,5 @@ AUTHENTICATION_BACKENDS = [
     # Add other authentication backends as needed
 ]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '229553171688-v842vpaunkrkch4ala37q5fep5errq5c.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
-SOCIAL_AUTH_PIPELINE = (
-    # ... other pipeline steps ...
-    'dashboard_from.pipeline.capture_social_auth_data',  # Add this line
-    # ... other pipeline steps ...
-)
+
+
