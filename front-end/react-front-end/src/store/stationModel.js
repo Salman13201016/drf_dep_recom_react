@@ -6,8 +6,12 @@ const stationModel = {
   updateStationList: action((state, payload) => {
     state.stationList.push(payload);
   }),
+  removeStationList: action((state) => {
+    state.stationList = [];
+  }),
   getStationFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
+    if(data){actions.removeStationList()}
     data.forEach((element) => {
       actions.updateStationList(element);
     });

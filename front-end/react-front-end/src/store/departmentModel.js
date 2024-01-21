@@ -6,8 +6,12 @@ const departmentModel = {
     updateDepartmentList : action((state, payload)=>{
         state.departmentList.push(payload)
     }),
+    removeDepartmentList : action((state)=>{
+        state.departmentList = [];
+    }),
     getDepartmentListFromServer : thunk( async (actions, payload)=>{
         const data =  await apiService.getData(payload);
+        if(data){actions.removeDepartmentList()}
         data.forEach(element => {
             actions.updateDepartmentList(element);
         });

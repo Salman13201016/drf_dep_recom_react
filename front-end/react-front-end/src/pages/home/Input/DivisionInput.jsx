@@ -5,8 +5,12 @@ import { useStoreState } from "easy-peasy";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
+import {useStoreActions} from 'easy-peasy';
 
 const DivisionInput = () => {
+  const { getDivisionListFromServer } = useStoreActions(
+    (actions) => actions.division
+  );
   const { divisionList } = useStoreState((state) => state.division);
   const [division, setdivision] = useState("");
   const [currentPage, setcurrentPage] = useState(1);
@@ -32,6 +36,9 @@ const DivisionInput = () => {
       if (response.statusText == 'Created') {
         toast.success("Division added successfully!");
         setdivision("");
+        await getDivisionListFromServer(
+          "http://127.0.0.1:8000/division/divisions/"
+        );
       }
     } else {
       toast.error('Please insert valid division')
@@ -55,6 +62,9 @@ const DivisionInput = () => {
       // Reset selectedItemId and close the modal
       setSelectedItemId(null);
       setIsDeleteModalOpen(false);
+       await getDivisionListFromServer(
+        "http://127.0.0.1:8000/division/divisions/"
+      );
     }else{
       toast.error('Something went wrong')
     }
@@ -82,17 +92,22 @@ const DivisionInput = () => {
     setSelectedItemName(e.target.value);
   };
 
-  const handleConfirmEdit = () => {
+  const handleConfirmEdit = async () => {
     setSelectedItemId(null);
     setSelectedItemName("");
-
     const finalData = { ...selectedEditItem, name: selectedItemName };
-    apiService.updateData(
+    const response = await apiService.updateData(
       `http://127.0.0.1:8000/division/divisions/${finalData.id}/`,
       JSON.stringify(finalData)
     );
-    console.log(JSON.stringify(finalData));
-    setIsEditModalShow(false);
+
+    if(response.statusText == 'OK'){
+      setIsEditModalShow(false);
+      toast.success('Successfully Updated');
+      await getDivisionListFromServer(
+        "http://127.0.0.1:8000/division/divisions/"
+      );
+    }
   };
 
   return (

@@ -1,44 +1,56 @@
 import { useState } from "react";
-import {useStoreState} from 'easy-peasy'
+import { useStoreState, useStoreActions } from "easy-peasy";
 import apiService from "../../../api";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
+import { ToastContainer, toast } from "react-toastify";
 
 const initialState = {
-  hospital : '',
-  name : '',
-  details : '',
-}
+  hospital: "",
+  name: "",
+  details: "",
+};
 const DepartmentInput = () => {
   const { hospitalInfo, department } = useStoreState((state) => state);
+  const { getDepartmentListFromServer } = useStoreActions(
+    (actions) => actions.department
+  );
   const [departmentInfo, setDepartmentInfo] = useState(initialState);
-    const [currentPage, setcurrentPage] = useState(1);
-    const [postPerPage, setpostPerPage] = useState(5);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isEditModalshow, setIsEditModalShow] = useState(false);
-    const [selectedItemId, setSelectedItemId] = useState(null);
-    const [selectedItem, setSelectedItem] = useState("");
-    const lastPostIndex = currentPage * postPerPage;
-    const firstPostIndex = lastPostIndex - postPerPage;
-    const currentDepartment = department.departmentList.slice(firstPostIndex, lastPostIndex);
-
+  const [currentPage, setcurrentPage] = useState(1);
+  const [postPerPage, setpostPerPage] = useState(5);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalshow, setIsEditModalShow] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedItem, setSelectedItem] = useState("");
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentDepartment = department.departmentList.slice(
+    firstPostIndex,
+    lastPostIndex
+  );
 
   const handleChange = (e) => {
-    setDepartmentInfo((prev)=>{
+    setDepartmentInfo((prev) => {
       return {
         ...prev,
-        [e.target.name] : e.target.value
-      }
-    })
+        [e.target.name]: e.target.value,
+      };
+    });
   };
 
-  const handleSubmit = () => {
-    
-    apiService.postData("http://127.0.0.1:8000/departments/department/",
-    JSON.stringify(departmentInfo)
+  const handleSubmit = async () => {
+    const response = await apiService.postData(
+      "http://127.0.0.1:8000/departments/department/",
+      JSON.stringify(departmentInfo)
     );
-    setDepartmentInfo(initialState)
+    if (response.status == 201) {
+      setDepartmentInfo(initialState);
+      toast.success("Sucessfully added");
+      await getDepartmentListFromServer(
+        "http://127.0.0.1:8000/departments/department/"
+      );
+    }
   };
 
   const getCurrentPage = (pageNumber) => {
@@ -51,13 +63,18 @@ const DepartmentInput = () => {
   };
 
   const handleDeleteConfirm = async (itemId) => {
-    const response = apiService.deleteData(
+    const response = await apiService.deleteData(
       `http://127.0.0.1:8000/departments/department/${itemId}/`
     );
-
-    // Reset selectedItemId and close the modal
-    setSelectedItemId(null);
-    setIsDeleteModalOpen(false);
+    if (response.status == 204) {
+      // Reset selectedItemId and close the modal
+      setSelectedItemId(null);
+      setIsDeleteModalOpen(false);
+      toast.warn("Department Deleted");
+      await getDepartmentListFromServer(
+        "http://127.0.0.1:8000/departments/department/"
+      );
+    } else alert("Insert valid info");
   };
 
   const handleDeleteModalClose = () => {
@@ -76,20 +93,30 @@ const DepartmentInput = () => {
     setIsEditModalShow(true);
   };
   const handleEditValueChange = (e) => {
-    setSelectedItem((prev)=>{
+    setSelectedItem((prev) => {
       return {
         ...prev,
-        [e.target.name] : e.target.value,
-      }
+        [e.target.name]: e.target.value,
+      };
     });
   };
-    const handleConfirmEdit = async () => {
-      const response = apiService.updateData(`http://127.0.0.1:8000/departments/department/${selectedItem.id}/`, JSON.stringify(selectedItem));
+  const handleConfirmEdit = async () => {
+    const response = await apiService.updateData(
+      `http://127.0.0.1:8000/departments/department/${selectedItem.id}/`,
+      JSON.stringify(selectedItem)
+    );
+    if (response.status == 200) {
       setSelectedItemId(null);
       setIsEditModalShow(false);
-    };
+      toast.success("Successfully Updated");
+      await getDepartmentListFromServer(
+        "http://127.0.0.1:8000/departments/department/"
+      );
+    }
+  };
   return (
     <div className="card">
+      <ToastContainer />
       <div className="card-header">
         <h4 className="card-title">Department Data Input</h4>
       </div>
@@ -97,7 +124,7 @@ const DepartmentInput = () => {
       {/* select hospital */}
       <div className="card-body">
         <div className="form-group row">
-          <label className="col-form-label col-md-2">Select Division</label>
+          <label className="col-form-label col-md-2">Select Hospital</label>
           <div className="col-md-10">
             <select
               className="form-control"
@@ -126,7 +153,7 @@ const DepartmentInput = () => {
               <input
                 className="form-control"
                 type="text"
-                value={hospitalInfo.depName}
+                value={departmentInfo.name}
                 onChange={handleChange}
                 name="name"
               />
@@ -139,7 +166,7 @@ const DepartmentInput = () => {
 
       <div className="card-body">
         <div className="form-group row">
-          <label className="col-form-label col-md-2">Details</label>
+          <label className="col-form-label col-md-2">Department Details</label>
           <div className="col-md-10">
             <textarea
               rows="4"
@@ -148,7 +175,7 @@ const DepartmentInput = () => {
               placeholder="Enter Department Details Here"
               name="details"
               onChange={handleChange}
-              value={hospitalInfo.depDetails}
+              value={departmentInfo.details}
             ></textarea>
             <div className="input-group-append" style={{ marginTop: "20px" }}>
               <button
@@ -271,4 +298,4 @@ const DepartmentInput = () => {
   );
 };
 
-export default DepartmentInput
+export default DepartmentInput;

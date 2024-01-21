@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 import apiService from "../../../api";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
+import { ToastContainer, toast } from "react-toastify";
 
 const DistrictInput = () => {
   const { divisionList } = useStoreState((state) => state.division);
   const { districtList } = useStoreState((state) => state.district);
+  const { getDistrictListFromServer } = useStoreActions(
+    (actions) => actions.district
+  );
   const [district, setdistrict] = useState("");
   const [division, setdivision] = useState("");
     const [currentPage, setcurrentPage] = useState(1);
@@ -28,19 +32,25 @@ const DistrictInput = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (district.length > 0) {
       const newData = {
         name: district,
         division: division,
       };
-      apiService.postData(
+      const response = await apiService.postData(
         "http://127.0.0.1:8000/district/districts/",
         JSON.stringify(newData)
       );
-      setdistrict("");
+      if (response.statusText == "Created") {
+        toast.success("District added successfully!");
+        setdistrict("");
+        await getDistrictListFromServer(
+          "http://127.0.0.1:8000/district/districts/"
+        );
+      }
     } else {
-      alert("Please Insert district");
+      alert("Please Insert District Name");
     }
   };
 
@@ -54,12 +64,19 @@ const DistrictInput = () => {
   };
 
   const handleDeleteConfirm = async (itemId) => {
-    const response = apiService.deleteData(
+    const response = await apiService.deleteData(
       `http://127.0.0.1:8000/district/districts/${itemId}/`
     );
-    // Reset selectedItemId and close the modal
-    setSelectedItemId(null);
-    setIsDeleteModalOpen(false);
+    if (response.status == 204) {
+      toast.warn("District has been deleted");
+      // Reset selectedItemId and close the modal
+          setSelectedItemId(null);
+          setIsDeleteModalOpen(false);
+      await getDistrictListFromServer(
+        "http://127.0.0.1:8000/district/districts/"
+      );
+    }
+
   };
 
   const handleDeleteModalClose = () => {
@@ -86,22 +103,29 @@ const DistrictInput = () => {
     });
   };
 
-    const handleConfirmEdit = () => {
+    const handleConfirmEdit = async () => {
       const editedData = {
         id : selectedItem.id,
         name: selectedItem.name,
         division: selectedItem.division.id
       }
       setSelectedItemId(null);
-      apiService.updateData(
+      const response = await apiService.updateData(
         `http://127.0.0.1:8000/district/districts/${selectedItem.id}/`,
         JSON.stringify(editedData)
       );
+      if(response.statusText == 'OK'){
+        toast.success('Successfully Updated');
+        await getDistrictListFromServer(
+          "http://127.0.0.1:8000/district/districts/"
+        );
+      }
       setIsEditModalShow(false);
     };
 
   return (
     <div className="card">
+      <ToastContainer />
       <div className="card-header">
         <h4 className="card-title">District Data Input</h4>
       </div>

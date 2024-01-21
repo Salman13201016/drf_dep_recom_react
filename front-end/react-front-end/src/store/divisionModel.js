@@ -6,8 +6,12 @@ const divisionModel = {
     updateDivisionList : action((state, payload)=>{
         state.divisionList.push(payload)
     }),
+    removeDivisionList : action((state)=>{
+        state.divisionList = [];
+    }),
     getDivisionListFromServer : thunk(async(actions, payload)=>{
         const data =  await apiService.getData(payload);
+        actions.removeDivisionList();
         data.forEach(element => {
             actions.updateDivisionList(element);
         });

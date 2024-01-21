@@ -6,8 +6,12 @@ const diseaseModel = {
   updateDiseaseList: action((state, payload) => {
     state.diseaseList.push(payload);
   }),
+  removeDiseaseList: action((state) => {
+    state.diseaseList = [];
+  }),
   getDiseaseListFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
+    if(data){actions.removeDiseaseList()}
     data.forEach((singleDisease) => {
       actions.updateDiseaseList(singleDisease);
     });

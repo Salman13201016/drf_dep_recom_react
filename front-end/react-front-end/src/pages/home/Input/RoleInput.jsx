@@ -1,124 +1,114 @@
 import { useState } from "react";
 import apiService from "../../../api";
-import { useStoreState, useStoreActions } from "easy-peasy";
-import PaginationComponent from "../../../components/UI/pagination/Pagination";
+import { ToastContainer, toast } from "react-toastify";
+import { useStoreState } from "easy-peasy";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
-import { toast, ToastContainer } from "react-toastify";
+import PaginationComponent from "../../../components/UI/pagination/Pagination";
 
-const HospitalCategoryInput = () => {
-  const { categoryList } = useStoreState((state) => state.hospitalCategory);
-  const { getCategoryListFromServer } = useStoreActions(
-    (actions) => actions.hospitalCategory
-  );
-  const [hospitalCategory, sethospitalCategory] = useState("");
-  const [currentPage, setcurrentPage] = useState(1);
-  const [postPerPage, setpostPerPage] = useState(5);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isEditModalshow, setIsEditModalShow] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState(null);
-  const [selectedItem, setSelectedItem] = useState("");
-  const lastPostIndex = currentPage * postPerPage;
-  const firstPostIndex = lastPostIndex - postPerPage;
-  const currentCategory = categoryList.slice(firstPostIndex, lastPostIndex);
-  const handleChange = (e) => {
-    sethospitalCategory(e.target.value);
-  };
-  const handleSubmit = async () => {
-    if (hospitalCategory.length > 0) {
-      const response = await apiService.postData(
-        "http://127.0.0.1:8000/hospital_category/hospital_categories/",
-        JSON.stringify({ name: hospitalCategory })
-      );
-      if (response.statusText == "Created") {
-        sethospitalCategory("");
-        toast.success("Successfully added");
-        getCategoryListFromServer(
-          "http://127.0.0.1:8000/hospital_category/hospital_categories/"
-        );
-      }
-    } else {
-      alert("Please Insert Information");
-    }
-  };
-  const getCurrentPage = (pageNumber) => {
-    setcurrentPage(pageNumber);
-  };
+const RoleInput = () => {
+      const { divisionList } = useStoreState((state) => state.division);
+      const [roleName, setRolName] = useState("");
+      const [currentPage, setcurrentPage] = useState(1);
+      const [postPerPage, setpostPerPage] = useState(5);
+      const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+      const [isEditModalshow, setIsEditModalShow] = useState(false);
+      const [selectedItemId, setSelectedItemId] = useState(null);
+      const [selectedItemName, setSelectedItemName] = useState("");
+      const [selectedEditItem, setSelectedEditItem] = useState("");
+      const lastPostIndex = currentPage * postPerPage;
+      const firstPostIndex = lastPostIndex - postPerPage;
+      const currentDivision = divisionList.slice(firstPostIndex, lastPostIndex);
 
-  const handleDeleteClick = (itemId) => {
-    setSelectedItemId(itemId);
-    setIsDeleteModalOpen(true);
-  };
-
-  const handleDeleteConfirm = async (itemId) => {
-    const response = await apiService.deleteData(
-      `http://127.0.0.1:8000/hospital_category/hospital_categories/${itemId}`
-    );
-    if (response.status == 204) {
-      // Reset selectedItemId and close the modal
-      setSelectedItemId(null);
-      setIsDeleteModalOpen(false);
-      toast.warn("Category Deleted");
-      getCategoryListFromServer(
-        "http://127.0.0.1:8000/hospital_category/hospital_categories/"
-      );
-    }
-  };
-
-  const handleDeleteModalClose = () => {
-    // Reset selectedItemId and close the modal
-    setSelectedItemId(null);
-    setIsDeleteModalOpen(false);
-  };
-  const handleEditModalClose = () => {
-    setSelectedItemId(null);
-    setIsEditModalShow(false);
-  };
-
-  const handleEditClick = (item) => {
-    setSelectedItemId(item.id);
-    setSelectedItem(item);
-    setIsEditModalShow(true);
-  };
-  const handleEditValueChange = (e) => {
-    setSelectedItem((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
+      const handleChange = (e) => {
+        setRolName(e.target.value);
       };
-    });
-  };
+      const handleSubmit = async () => {
+        if (roleName.length > 0) {
+          const response = await apiService.postData(
+            "http://127.0.0.1:8000/division/divisions/",
+            JSON.stringify({ name: roleName })
+          );
+          if (response.statusText == "Created") {
+            toast.success("Role name added successfully!");
+            setRolName("");
+          }
+        } else {
+          toast.error("Please insert valid role");
+        }
+      };
+      const getCurrentPage = (pageNumber) => {
+        setcurrentPage(pageNumber);
+      };
 
-  const handleConfirmEdit = async () => {
-    const response = await apiService.updateData(
-      `http://127.0.0.1:8000/hospital_category/hospital_categories/${selectedItem.id}/`,
-      JSON.stringify(selectedItem)
-    );
-    if (response.statusText == "OK") {
-      setSelectedItemId(null);
-      setIsEditModalShow(false);
-      toast.success("Updated Successfully");
-      getCategoryListFromServer(
-        "http://127.0.0.1:8000/hospital_category/hospital_categories/"
-      );
-    }
-  };
+      const handleDeleteClick = (itemId) => {
+        setSelectedItemId(itemId);
+        setIsDeleteModalOpen(true);
+      };
+
+      const handleDeleteConfirm = async (itemId) => {
+        const response = await apiService.deleteData(
+          `http://127.0.0.1:8000/division/divisions/${itemId}/`
+        );
+        if (response.status == 204) {
+          toast.warn("Division has been deleted");
+          // Reset selectedItemId and close the modal
+          setSelectedItemId(null);
+          setIsDeleteModalOpen(false);
+        } else {
+          toast.error("Something went wrong");
+        }
+      };
+
+      const handleDeleteModalClose = () => {
+        // Reset selectedItemId and close the modal
+        setSelectedItemId(null);
+        setIsDeleteModalOpen(false);
+      };
+      const handleEditModalClose = () => {
+        setSelectedItemId(null);
+        setSelectedItemName("");
+        setIsEditModalShow(false);
+      };
+
+      const handleEditClick = (singleDiv) => {
+        setSelectedItemId(singleDiv.id);
+        setSelectedItemName(singleDiv.name);
+        setSelectedEditItem(singleDiv);
+        setIsEditModalShow(true);
+      };
+      const handleEditValueChange = (e) => {
+        setSelectedItemName(e.target.value);
+      };
+
+      const handleConfirmEdit = () => {
+        setSelectedItemId(null);
+        setSelectedItemName("");
+
+        const finalData = { ...selectedEditItem, name: selectedItemName };
+        apiService.updateData(
+          `http://127.0.0.1:8000/division/divisions/${finalData.id}/`,
+          JSON.stringify(finalData)
+        );
+        console.log(JSON.stringify(finalData));
+        setIsEditModalShow(false);
+      };
   return (
     <div className="card">
       <ToastContainer />
       <div className="card-header">
-        <h4 className="card-title">Hospital Category Input</h4>
+        <h4 className="card-title">Role Data Input</h4>
       </div>
       <div className="card-body">
         <form action="#">
           <div className="form-group mb-0 row">
-            <label className="col-form-label col-md-2">Hospital Category</label>
+            <label className="col-form-label col-md-2">Admin/Doctor Name</label>
             <div className="col-md-10">
               <div className="input-group">
                 <input
                   className="form-control"
                   type="text"
-                  value={hospitalCategory}
+                  value={roleName}
                   onChange={handleChange}
                 />
                 <div className="input-group-append">
@@ -135,6 +125,7 @@ const HospitalCategoryInput = () => {
           </div>
         </form>
       </div>
+
       {/* <!-- Table Section --> */}
       <div>
         <div className="content container-fluid">
@@ -142,7 +133,7 @@ const HospitalCategoryInput = () => {
           <div>
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Divisions List</h3>
+                <h3 className="page-title">Roles List</h3>
               </div>
             </div>
           </div>
@@ -163,19 +154,19 @@ const HospitalCategoryInput = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {currentCategory.map((singleCategory, index) => {
+                        {currentDivision.map((singleDivision, index) => {
                           return (
                             <tr key={index}>
                               <td>
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
-                              <td>{singleCategory.name}</td>
+                              <td>{singleDivision.name}</td>
                               <td>
                                 <div className="actions">
                                   <a
                                     className="btn btn-sm bg-success-light"
                                     onClick={() =>
-                                      handleEditClick(singleCategory)
+                                      handleEditClick(singleDivision)
                                     }
                                   >
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
@@ -188,7 +179,7 @@ const HospitalCategoryInput = () => {
                                   <a
                                     className="btn btn-sm bg-danger-light"
                                     onClick={() =>
-                                      handleDeleteClick(singleCategory.id)
+                                      handleDeleteClick(singleDivision.id)
                                     }
                                   >
                                     <i className="fa fa-trash"></i> Delete
@@ -210,7 +201,7 @@ const HospitalCategoryInput = () => {
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={categoryList.length}
+              totalPost={divisionList.length}
               changePage={getCurrentPage}
             />
           </div>
@@ -231,11 +222,10 @@ const HospitalCategoryInput = () => {
       <EditModal
         isShow={isEditModalshow}
         handleClose={handleEditModalClose}
-        modalTitle={"Category Name"}
-        editValue={selectedItem.name}
+        modalTitle={"Division Name"}
+        editValue={selectedItemName}
         handleChange={handleEditValueChange}
         id={selectedItemId}
-        fieldName={"name"}
         confirmEdit={handleConfirmEdit}
       />
       {/* <!-- /Edit Modal --> */}
@@ -243,4 +233,4 @@ const HospitalCategoryInput = () => {
   );
 };
 
-export default HospitalCategoryInput;
+export default RoleInput;

@@ -92,6 +92,16 @@ const SideBarSection = ({
                     Symtoms
                   </a>
                 </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent("role")}>
+                    Role
+                  </a>
+                </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent("roleUser")}>
+                    Role User
+                  </a>
+                </li>
               </ul>
             </li>
 

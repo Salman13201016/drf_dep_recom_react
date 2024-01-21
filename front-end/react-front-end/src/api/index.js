@@ -46,7 +46,7 @@ const apiService = {
       });
       return data;
     } catch (error) {
-      console.log("Error making POST Request:", error.message);
+      return error
     }
   },
   updateDataAsFormData: async function (url, postData) {

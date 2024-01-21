@@ -1,158 +1,138 @@
-import { useStoreState, useStoreActions } from "easy-peasy";
+import { useStoreState } from "easy-peasy";
 import { useEffect, useState } from "react";
 import apiService from "../../../api";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
-import { toast, ToastContainer } from "react-toastify";
 const initalValue = {
   name: "",
   division: "",
   district: "",
 };
-const StationInput = () => {
-  const {
-    division: divisionFromServer,
-    district: districtFromServer,
-    station: stationFromServer,
-  } = useStoreState((state) => state);
-  const { getStationFromServer } = useStoreActions(
-    (actions) => actions.station
-  );
-  const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
-  const [stationInfo, setstationInfo] = useState(initalValue);
-  const [currentPage, setcurrentPage] = useState(1);
-  const [postPerPage, setpostPerPage] = useState(5);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isEditModalshow, setIsEditModalShow] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState(null);
-  const [selectedItem, setSelectedItem] = useState("");
-  const lastPostIndex = currentPage * postPerPage;
-  const firstPostIndex = lastPostIndex - postPerPage;
-  const currentStation = stationFromServer.stationList.slice(
-    firstPostIndex,
-    lastPostIndex
-  );
+const RoleUser = () => {
+    const {
+      division: divisionFromServer,
+      district: districtFromServer,
+      station: stationFromServer,
+    } = useStoreState((state) => state);
+    const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
+    const [stationInfo, setstationInfo] = useState(initalValue);
+    const [currentPage, setcurrentPage] = useState(1);
+    const [postPerPage, setpostPerPage] = useState(5);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isEditModalshow, setIsEditModalShow] = useState(false);
+    const [selectedItemId, setSelectedItemId] = useState(null);
+    const [selectedItem, setSelectedItem] = useState("");
+    const lastPostIndex = currentPage * postPerPage;
+    const firstPostIndex = lastPostIndex - postPerPage;
+    const currentStation = stationFromServer.stationList.slice(
+      firstPostIndex,
+      lastPostIndex
+    );
 
-  useEffect(() => {
-    let selectedDistrict = [];
-    districtFromServer.districtList.forEach((element) => {
-      if (element.division.id == stationInfo.division) {
-        selectedDistrict.push(element);
+    useEffect(() => {
+      let selectedDistrict = [];
+      districtFromServer.districtList.forEach((element) => {
+        if (element.division.id == stationInfo.division) {
+          selectedDistrict.push(element);
+        }
+      });
+      setshowDistrictInJSX(selectedDistrict);
+      selectedDistrict = [];
+
+      if (!showDistrictInJSX.length > 0) {
+        setstationInfo((prev) => {
+          return {
+            ...prev,
+            district: "",
+          };
+        });
       }
-    });
-    setshowDistrictInJSX(selectedDistrict);
-    selectedDistrict = [];
+    }, [
+      districtFromServer.districtList,
+      showDistrictInJSX.length,
+      stationInfo.division,
+    ]);
 
-    if (!showDistrictInJSX.length > 0) {
+    const handleChange = (e) => {
       setstationInfo((prev) => {
         return {
           ...prev,
-          district: "",
+          [e.target.name]: e.target.value,
         };
       });
-    }
-  }, [
-    districtFromServer.districtList,
-    showDistrictInJSX.length,
-    stationInfo.division,
-  ]);
+    };
 
-  const handleChange = (e) => {
-    setstationInfo((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
-    });
-  };
-
-  const handleSubmit = async () => {
-    if (stationInfo.name.length > 0) {
-      const response = await apiService.postData(
-        "http://127.0.0.1:8000/station/stations/",
-        JSON.stringify(stationInfo)
-      );
-      if (response.statusText == "Created"){
+    const handleSubmit = () => {
+      if (stationInfo.name.length > 0) {
+        apiService.postData(
+          "http://127.0.0.1:8000/station/stations/",
+          JSON.stringify(stationInfo)
+        );
         setstationInfo(initalValue);
-        toast.success('Station successfully added');
-        getStationFromServer('http://127.0.0.1:8000/station/stations/');
-      } 
-      
-    } else {
-      alert("Please Enter Valid Station Name");
-    }
-  };
+      } else {
+        alert("Please Enter Valid Station Name");
+      }
+    };
 
-  const getCurrentPage = (pageNumber) => {
-    setcurrentPage(pageNumber);
-  };
+    const getCurrentPage = (pageNumber) => {
+      setcurrentPage(pageNumber);
+    };
 
-  const handleDeleteClick = (itemId) => {
-    setSelectedItemId(itemId);
-    setIsDeleteModalOpen(true);
-  };
+    const handleDeleteClick = (itemId) => {
+      setSelectedItemId(itemId);
+      setIsDeleteModalOpen(true);
+    };
 
-  const handleDeleteConfirm = async (itemId) => {
-    const response = await apiService.deleteData(`http://127.0.0.1:8000/station/stations/${itemId}`);
-    if(response.status == 204){
+    const handleDeleteConfirm = (itemId) => {
+      apiService.deleteData(`http://127.0.0.1:8000/station/stations/${itemId}`);
       // Reset selectedItemId and close the modal
       setSelectedItemId(null);
       setIsDeleteModalOpen(false);
-      toast.warn('Station has been deleted');
-      getStationFromServer("http://127.0.0.1:8000/station/stations/");
-    }
+    };
 
-  };
+    const handleDeleteModalClose = () => {
+      // Reset selectedItemId and close the modal
+      setSelectedItemId(null);
+      setIsDeleteModalOpen(false);
+    };
 
-  const handleDeleteModalClose = () => {
-    // Reset selectedItemId and close the modal
-    setSelectedItemId(null);
-    setIsDeleteModalOpen(false);
-  };
-  const handleEditModalClose = () => {
-    setSelectedItemId(null);
-    setIsEditModalShow(false);
-  };
-
-  const handleEditClick = (item) => {
-    setSelectedItemId(item.id);
-    setSelectedItem(item);
-    setIsEditModalShow(true);
-  };
-  const handleEditValueChange = (e) => {
-    setSelectedItem((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
-    });
-  };
-
-  const handleConfirmEdit = async () => {
-    const response = await apiService.updateData(
-      `http://127.0.0.1:8000/station/stations/${selectedItem.id}/`,
-      JSON.stringify(selectedItem)
-    );
-    if(response.statusText == 'OK'){
+    const handleEditModalClose = () => {
       setSelectedItemId(null);
       setIsEditModalShow(false);
-      toast.success('Updated Successfully');
-      getStationFromServer("http://127.0.0.1:8000/station/stations/");
-    }
-    
-  };
+    };
 
+    const handleEditClick = (item) => {
+      setSelectedItemId(item.id);
+      setSelectedItem(item);
+      setIsEditModalShow(true);
+    };
+    const handleEditValueChange = (e) => {
+      setSelectedItem((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
+    };
+
+    const handleConfirmEdit = async () => {
+      const response = apiService.updateData(
+        `http://127.0.0.1:8000/station/stations/${selectedItem.id}/`,
+        JSON.stringify(selectedItem)
+      );
+      setSelectedItemId(null);
+      setIsEditModalShow(false);
+    };
   return (
     <div className="card">
-      <ToastContainer />
       <div className="card-header">
-        <h4 className="card-title">Station Data Input</h4>
+        <h4 className="card-title">Role User Data Input</h4>
       </div>
       <div className="card-body">
         {/* Division input start from here */}
         <div className="form-group row">
-          <label className="col-form-label col-md-2">Select Division</label>
+          <label className="col-form-label col-md-2">Select Role</label>
           <div className="col-md-10">
             <select
               className="form-control"
@@ -180,7 +160,7 @@ const StationInput = () => {
         >
           {showDistrictInJSX.length > 0 ? (
             <div className="form-group row">
-              <label className="col-form-label col-md-2">Select District</label>
+              <label className="col-form-label col-md-2">Select Username</label>
               <div className="col-md-10">
                 <select
                   className="form-control"
@@ -242,7 +222,7 @@ const StationInput = () => {
           <div>
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Station List</h3>
+                <h3 className="page-title">Role Users List</h3>
               </div>
             </div>
           </div>
@@ -343,4 +323,4 @@ const StationInput = () => {
   );
 };
 
-export default StationInput;
+export default RoleUser;

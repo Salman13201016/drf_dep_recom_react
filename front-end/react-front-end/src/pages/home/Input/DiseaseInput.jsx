@@ -1,15 +1,19 @@
 import { useState } from "react";
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 import apiService from "../../../api";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
+import { ToastContainer, toast } from "react-toastify";
 const initalState = {
   department: "",
   name: "",
 };
 const DiseaseInput = () => {
   const { department, disease } = useStoreState((state) => state);
+  const { getDiseaseListFromServer } = useStoreActions(
+    (actions) => actions.disease
+  );
   const [diseaseInfo, setdiseaseInfo] = useState(initalState);
     const [currentPage, setcurrentPage] = useState(1);
     const [postPerPage, setpostPerPage] = useState(5);
@@ -34,9 +38,22 @@ const DiseaseInput = () => {
     });
   };
 
-  const handleSubmit = () => {
-    apiService.postData("http://127.0.0.1:8000/diseases/disease/", JSON.stringify(diseaseInfo));
-    setdiseaseInfo(initalState);
+  const handleSubmit = async () => {
+    if(diseaseInfo.department && diseaseInfo.name){
+      const response = await apiService.postData(
+        "http://127.0.0.1:8000/diseases/disease/",
+        JSON.stringify(diseaseInfo)
+      );
+      if (response.status == 201) {
+        setdiseaseInfo(initalState);
+        toast.success("Successfully added");
+        await getDiseaseListFromServer(
+          "http://127.0.0.1:8000/diseases/disease/"
+        );
+      }
+    }else{
+      alert('Please insert all the field')
+    }
   };
 
   const getCurrentPage = (pageNumber) => {
@@ -91,6 +108,7 @@ const DiseaseInput = () => {
 
   return (
     <div className="card">
+      <ToastContainer />
       <div className="card-header">
         <h4 className="card-title">Disease Details Data Input</h4>
       </div>

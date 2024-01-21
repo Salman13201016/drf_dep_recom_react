@@ -1,107 +1,125 @@
-import {useStoreState} from 'easy-peasy';
-import { useState } from 'react';
-import apiService from '../../../api';
-import PaginationComponent from '../../../components/UI/pagination/Pagination';
-import MapEditModal from '../../../components/shared/modal/MapEditModal';
-import DeleteModal from '../../../components/shared/modal/DeleteModal';
+import { useStoreState, useStoreActions } from "easy-peasy";
+import { useState } from "react";
+import apiService from "../../../api";
+import PaginationComponent from "../../../components/UI/pagination/Pagination";
+import MapEditModal from "../../../components/shared/modal/MapEditModal";
+import DeleteModal from "../../../components/shared/modal/DeleteModal";
+import { ToastContainer, toast } from "react-toastify";
 
 const initalValue = {
-    hospital : '',
-    longitude : '',
-    latitude : ''
-}
+  hospital: "",
+  longitude: "",
+  latitude: "",
+};
 const HospitalMap = () => {
-    const { hospitalInfo, hospitalMap } = useStoreState((state) => state);
-    const [hospitalMapInfo, setHospitalMapInfo] = useState(initalValue);
-      const [currentPage, setcurrentPage] = useState(1);
-      const [postPerPage, setpostPerPage] = useState(5);
-      const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-      const [isEditModalshow, setIsEditModalShow] = useState(false);
-      const [selectedItemId, setSelectedItemId] = useState(null);
-      const [selectedItem, setSelectedItem] = useState("");
-      const lastPostIndex = currentPage * postPerPage;
-      const firstPostIndex = lastPostIndex - postPerPage;
-      const currentHospitalMapList = hospitalMap.hospitalMapList.slice(
-        firstPostIndex,
-        lastPostIndex
+  const { hospitalInfo, hospitalMap } = useStoreState((state) => state);
+  const { getHospitalMapListFromServer } = useStoreActions(
+    (actions) => actions.hospitalMap
+  );
+  const [hospitalMapInfo, setHospitalMapInfo] = useState(initalValue);
+  const [currentPage, setcurrentPage] = useState(1);
+  const [postPerPage, setpostPerPage] = useState(5);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalshow, setIsEditModalShow] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedItem, setSelectedItem] = useState("");
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentHospitalMapList = hospitalMap.hospitalMapList.slice(
+    firstPostIndex,
+    lastPostIndex
+  );
+
+  const handleChange = (e) => {
+    setHospitalMapInfo((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+  const handleSubmit = async () => {
+    const res = await apiService.postData(
+      "http://127.0.0.1:8000/hospital-map-app/hospital-maps/",
+      JSON.stringify(hospitalMapInfo)
+    );
+    if (res.status == 201) {
+      setHospitalMapInfo(initalValue);
+      toast.success("Successfully added");
+      await getHospitalMapListFromServer(
+        "http://127.0.0.1:8000/hospital-map-app/hospital-maps/"
       );
-    // console.log(hospitalMap.hospitalMapList)
-    const handleChange = (e) =>{
-        setHospitalMapInfo((prev) => {
-          return {
-            ...prev,
-            [e.target.name]: e.target.value,
-          };
-        });
-        console.log(hospitalMapInfo)
     }
-    const handleSubmit = async () =>{
-      console.log(hospitalMapInfo)
-      const res = await apiService.postData(
-        "http://127.0.0.1:8000/hospital-map-app/hospital-maps/",
-        JSON.stringify(hospitalMapInfo)
-      );
-      if(res.status == 201){
-        setHospitalMapInfo('');
-      }
+  };
 
-    }
+  const getCurrentPage = (pageNumber) => {
+    setcurrentPage(pageNumber);
+  };
 
-    const getCurrentPage = (pageNumber) => {
-      setcurrentPage(pageNumber);
-    };
+  const handleDeleteClick = (itemId) => {
+    setSelectedItemId(itemId);
+    setIsDeleteModalOpen(true);
+  };
 
-    const handleDeleteClick = (itemId) => {
-      setSelectedItemId(itemId);
-      setIsDeleteModalOpen(true);
-    };
-
-    const handleDeleteConfirm = async (itemId) => {
-      // Perform the actual delete operation with the itemId
-      const response = await apiService.deleteData(
-        `http://127.0.0.1:8000/hospital-map-app/hospital-maps/${itemId}/`
-      );
+  const handleDeleteConfirm = async (itemId) => {
+    // Perform the actual delete operation with the itemId
+    const response = await apiService.deleteData(
+      `http://127.0.0.1:8000/hospital-map-app/hospital-maps/${itemId}/`
+    );
+    if (response.status == 204) {
       // Reset selectedItemId and close the modal
       setSelectedItemId(null);
       setIsDeleteModalOpen(false);
-    };
+      toast.warn("Map has been deleted");
+      await getHospitalMapListFromServer(
+        "http://127.0.0.1:8000/hospital-map-app/hospital-maps/"
+      );
+    }
+  };
 
-    const handleDeleteModalClose = () => {
-      // Reset selectedItemId and close the modal
-      setSelectedItemId(null);
-      setIsDeleteModalOpen(false);
-    };
-    const handleEditModalClose = () => {
-      // setSelectedEditItem("");
+  const handleDeleteModalClose = () => {
+    // Reset selectedItemId and close the modal
+    setSelectedItemId(null);
+    setIsDeleteModalOpen(false);
+  };
+  const handleEditModalClose = () => {
+    // setSelectedEditItem("");
+    setSelectedItemId(null);
+    setIsEditModalShow(false);
+  };
+
+  const handleEditClick = (item) => {
+    setSelectedItemId(item.id);
+    setSelectedItem(item);
+    setIsEditModalShow(true);
+  };
+  const handleEditValueChange = (e) => {
+    setSelectedItem((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const handleConfirmEdit = async () => {
+    const response = await apiService.updateData(
+      `http://127.0.0.1:8000/hospital-map-app/hospital-maps/${selectedItem.id}/`,
+      JSON.stringify(selectedItem)
+    );
+    if (response.status == 200) {
       setSelectedItemId(null);
       setIsEditModalShow(false);
-    };
-
-    const handleEditClick = (item) => {
-      setSelectedItemId(item.id);
-      setSelectedItem(item);
-      setIsEditModalShow(true);
-    };
-    const handleEditValueChange = (e) => {
-      setSelectedItem((prev) => {
-        return {
-          ...prev,
-          [e.target.name]: e.target.value,
-        };
-      });
-    };
-    
-      const handleConfirmEdit = () => {
-        apiService.updateData(
-          `http://127.0.0.1:8000/hospital-map-app/hospital-maps/${selectedItem.id}/`, JSON.stringify(selectedItem)
-        );
-        setSelectedItemId(null);
-        setIsEditModalShow(false);
-      };
-
+      toast.success('Updated Successfully');
+      await getHospitalMapListFromServer(
+        "http://127.0.0.1:8000/hospital-map-app/hospital-maps/"
+      );
+    }
+  };
 
   return (
     <div className="card">
+      <ToastContainer />
       <div className="card-header">
         <h4 className="card-title">Hospital Map Data Input</h4>
       </div>
@@ -140,7 +158,7 @@ const HospitalMap = () => {
                     type="number"
                     name="longitude"
                     onChange={handleChange}
-                    value={hospitalInfo.longitude}
+                    value={hospitalMapInfo.longitude}
                   />
                 </div>
               </div>
@@ -158,7 +176,7 @@ const HospitalMap = () => {
                     type="number"
                     name="latitude"
                     onChange={handleChange}
-                    value={hospitalInfo.latitude}
+                    value={hospitalMapInfo.latitude}
                   />
                   <div className="input-group-append">
                     <button
@@ -283,6 +301,6 @@ const HospitalMap = () => {
       {/* <!-- /Edit Modal --> */}
     </div>
   );
-}
+};
 
-export default HospitalMap
+export default HospitalMap;

@@ -11,6 +11,8 @@ import DepartmentDetails from "./Input/DepartmentDetails";
 import DiseaseInput from "./Input/DiseaseInput";
 import SymtomsInput from "./Input/SymtomsInput";
 import DigiverseMain from "../digiverse";
+import RoleInput from "./Input/RoleInput";
+import RoleUser from "./Input/RoleUser";
 
 
 const HospitalBody = ({ componentShow }) => {
@@ -37,6 +39,10 @@ const HospitalBody = ({ componentShow }) => {
     renderComponent = <SymtomsInput />;
   } else if (componentShow == "digiverseBody") {
     renderComponent = <DigiverseMain />
+  }else if (componentShow == "role") {
+    renderComponent = <RoleInput />
+  }else if (componentShow == "roleUser") {
+    renderComponent = <RoleUser />
   }
 
     return (

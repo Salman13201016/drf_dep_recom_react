@@ -6,8 +6,12 @@ const districtModel = {
   updateDistrictList: action((state, payload) => {
     state.districtList.push(payload);
   }),
+  removeDistrictList: action((state) => {
+    state.districtList = [];
+  }),
   getDistrictListFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
+    actions.removeDistrictList();
     data.forEach((element) => {
     actions.updateDistrictList(element)
     });

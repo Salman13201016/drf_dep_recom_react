@@ -1,9 +1,10 @@
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 import { useState, useEffect } from "react";
 import apiService from '../../../api/index'
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import HospitalEditModal from "../../../components/shared/modal/HospitalEditModal";
+import { toast, ToastContainer } from "react-toastify";
 const initalState = {
   division: "",
   district: "",
@@ -19,6 +20,9 @@ const initalState = {
 const HospitalAppInput = () => {
   const { division, district, station, hospitalCategory, hospitalInfo: hospitalInfoFromServer } =
     useStoreState((state) => state);
+    const { getHospitalInfoFromServer } = useStoreActions(
+      (actions) => actions.hospitalInfo
+    );
   const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
   const [showStationInJSX, setshowStationInJSX] = useState("");
   const [hospitalInfo, setHospitalInfo] = useState(initalState);
@@ -36,6 +40,72 @@ const HospitalAppInput = () => {
       lastPostIndex
     );
 
+      useEffect(() => {
+        let selectedDistrict = [];
+        district.districtList.forEach((element) => {
+          if (element.division.id == hospitalInfo.division) {
+            selectedDistrict.push(element);
+          }
+        });
+        setshowDistrictInJSX(selectedDistrict);
+        selectedDistrict = [];
+      }, [district.districtList, hospitalInfo.division]);
+
+      useEffect(() => {
+        let selectedStation = [];
+        station.stationList.forEach((element) => {
+          if (element.district == hospitalInfo.district) {
+            selectedStation.push(element);
+          }
+        });
+        setshowStationInJSX(selectedStation);
+        selectedStation = [];
+      }, [hospitalInfo.district, station.stationList]);
+
+      const handleChange = (e) => {
+        setHospitalInfo((prev) => {
+          return {
+            ...prev,
+            [e.target.name]: e.target.value,
+          };
+        });
+      };
+
+      const handlePicture = (e) => {
+        setHospitalInfo((prev) => {
+          return {
+            ...prev,
+            [e.target.name]: e.target.files[0],
+          };
+        });
+      };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("division", hospitalInfo.division);
+        formData.append("district", hospitalInfo.district);
+        formData.append("station", hospitalInfo.station);
+        formData.append("name", hospitalInfo.name);
+        formData.append("zip_code", hospitalInfo.zip_code);
+        formData.append("address", hospitalInfo.address);
+        formData.append("image", hospitalInfo.image);
+        formData.append("hos_type", hospitalInfo.hos_type);
+        formData.append("description", hospitalInfo.description);
+
+        const response = await apiService.postDataAsFormData(
+          "http://127.0.0.1:8000/hospital/hospitals/",
+          formData
+        );
+          setHospitalInfo(initalState);
+          toast.success('Successfully Added');
+          await getHospitalInfoFromServer(
+            "http://127.0.0.1:8000/hospital/hospitals/"
+          );
+        
+        
+      };
+
     const getCurrentPage = (pageNumber) => {
       setcurrentPage(pageNumber);
     };
@@ -45,11 +115,18 @@ const HospitalAppInput = () => {
       setIsDeleteModalOpen(true);
     };
 
-    const handleDeleteConfirm = (itemId) => {
-      apiService.deleteData(`http://127.0.0.1:8000/hospital/hospitals/${itemId}/`);
-      // Reset selectedItemId and close the modal
-      setSelectedItemId(null);
-      setIsDeleteModalOpen(false);
+    const handleDeleteConfirm = async (itemId) => {
+      const response = await apiService.deleteData(`http://127.0.0.1:8000/hospital/hospitals/${itemId}/`);
+      if(response.status == 204){
+        // Reset selectedItemId and close the modal
+        setSelectedItemId(null);
+        setIsDeleteModalOpen(false);
+        toast.warn("Hospital info deleted");
+        await getHospitalInfoFromServer(
+          "http://127.0.0.1:8000/hospital/hospitals/"
+        );
+      }
+      
     };
 
     const handleDeleteModalClose = () => {
@@ -85,74 +162,18 @@ const HospitalAppInput = () => {
         `http://127.0.0.1:8000/hospital/hospitals/${selectedItem.id}/`, formDataEdit
       );
       setIsEditModalShow(false);
+      toast.warn('Updated Successfully');
+      await getHospitalInfoFromServer(
+        "http://127.0.0.1:8000/hospital/hospitals/"
+      );
+
     }
 
-  useEffect(() => {
-    let selectedDistrict = [];
-    district.districtList.forEach((element) => {
-      if (element.division.id == hospitalInfo.division) {
-        selectedDistrict.push(element);
-      }
-    });
-    setshowDistrictInJSX(selectedDistrict);
-    selectedDistrict = [];
-  }, [district.districtList, hospitalInfo.division]);
 
-  useEffect(() => {
-    let selectedStation = [];
-    station.stationList.forEach((element) => {
-      if (element.district == hospitalInfo.district) {
-        selectedStation.push(element);
-      }
-    });
-    setshowStationInJSX(selectedStation);
-    selectedStation = [];
-
-  }, [hospitalInfo.district, station.stationList]);
-
-  const handleChange = (e) => {
-    setHospitalInfo((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
-    });
-  };
-
-  
-  const handlePicture = (e) => {
-    setHospitalInfo((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.files[0],
-      };
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const formData = new FormData();
-    formData.append("division", hospitalInfo.division)
-    formData.append("district", hospitalInfo.district);
-    formData.append("station", hospitalInfo.station);
-    formData.append("name", hospitalInfo.name);
-    formData.append("zip_code", hospitalInfo.zip_code);
-    formData.append("address", hospitalInfo.address);
-    formData.append("image", hospitalInfo.image);
-    formData.append("hos_type", hospitalInfo.hos_type);
-    formData.append("description", hospitalInfo.description);
-    console.log(formData.values())
-    apiService.postDataAsFormData(
-      "http://127.0.0.1:8000/hospital/hospitals/",
-      formData
-    );
-
-    setHospitalInfo(initalState)
-
-  };
   return (
     <>
       <div className="card">
+        <ToastContainer />
         <div className="card-header">
           <h4 className="card-title">Hospital Application</h4>
         </div>
