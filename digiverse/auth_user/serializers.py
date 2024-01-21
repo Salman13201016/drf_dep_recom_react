@@ -12,6 +12,7 @@ import random
 from django.utils.html import format_html
 from rest_framework import serializers
 from datetime import datetime
+
 class UserIndexPanelSerializer(serializers.Serializer):
     all_data = serializers.ListField()
     status = serializers.BooleanField()

@@ -1,26 +1,25 @@
 # serializers.py
 from rest_framework import serializers
 from .models import user_role_management
-from role.models import patient_or_admin
-from auth_user.models import user_register
+from role.serializers import PatientOrAdminSerializer  # Import the PatientOrAdminSerializer
+from auth_user.serializers import SignUpSerializer  # Import the UserRegisterSerializer
 
-class PatientOrAdminSerializer(serializers.ModelSerializer):
+
+class UserRoleSerializer(serializers.ModelSerializer):
+    select_role = PatientOrAdminSerializer()
+    select_user = SignUpSerializer()
+
     class Meta:
-        model = patient_or_admin
+        model = user_role_management
         fields = '__all__'
 
-class UserRegisterSerializer(serializers.ModelSerializer):
+class UserRoleSerializer(serializers.ModelSerializer):
     class Meta:
-        model = user_register
+        model = user_role_management
         fields = '__all__'
 
-class UserRoleManagementSerializer(serializers.ModelSerializer):
-    # Use the PatientOrAdminSerializer for the 'patient_or_admin' field
-    patient_or_admin = PatientOrAdminSerializer()
 
-    # Use the UserRegisterSerializer for the 'user_register' field
-    user_register = UserRegisterSerializer()
-
+class UserRoleDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_role_management
         fields = '__all__'

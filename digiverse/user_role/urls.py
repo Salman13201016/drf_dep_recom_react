@@ -1,14 +1,8 @@
-# urls.py
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import UserRolePanelViewSet, UserRoleStoreViewSet, UserRoleDeleteViewSet
-
-router = DefaultRouter()
-router.register(r'user-role', UserRolePanelViewSet, basename='user-role')
-router.register(r'user-role-store', UserRoleStoreViewSet, basename='user-role-store')
-router.register(r'user-role-delete', UserRoleDeleteViewSet, basename='user-role-delete')
+from django.urls import path
+from .views import UserRolePanelView, UserRoleStoreAPIView, UserRoleDeleteAPIView
 
 urlpatterns = [
-    path('user-role-management/', include(router.urls)),
-    # Your other URL patterns...
+    path('user-role-panel/', UserRolePanelView.as_view(), name='user-role-panel'),
+    path('user-role-store/', UserRoleStoreAPIView.as_view(), name='user_role_store_api'),
+    path('user-role-delete/<int:id>/', UserRoleDeleteAPIView.as_view(), name='user_role_delete'),
 ]

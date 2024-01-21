@@ -1,63 +1,58 @@
 # views.py
-from rest_framework import viewsets, permissions
+from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import user_role_management
-from .serializers import PatientOrAdminSerializer, UserRegisterSerializer, UserRoleManagementSerializer
+from .serializers import UserRoleSerializer, UserRoleSerializer, UserRoleDeleteSerializer
+from django.shortcuts import redirect
+from rest_framework.views import APIView
 from django.db import IntegrityError
+from rest_framework import status
 from django.shortcuts import get_object_or_404
-from django. contrib import messages
-from auth_user.models import user_register
-from role.models import patient_or_admin
+from django.contrib import messages
 
-class UserRolePanelViewSet(viewsets.ViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-    def list(self, request):
-        print(request.headers)  # Print request headers
-        print(request.session.keys())  # Print session keys
 
-        google_data = request.session.get('social_auth_google-oauth2')
-        if 'user_id' in request.session or google_data:
-            role_fk_data = patient_or_admin.objects.all()
-            user_register_fk_ = user_register.objects.all()
-            user_role_data = user_role_management.objects.all()
+class UserRolePanelView(generics.ListAPIView):
+    serializer_class = UserRoleSerializer
 
-            serializer_role = PatientOrAdminSerializer(role_fk_data, many=True)
-            serializer_user = UserRegisterSerializer(user_register_fk_, many=True)
-            serializer_user_role = UserRoleManagementSerializer(user_role_data, many=True)
-
-            response_data = {
-                "user_role_data": serializer_user_role.data,
-                "user_fk": serializer_user.data,
-                "role_fk": serializer_role.data,
-            }
-            return Response(response_data)
+    def get_queryset(self):
+        google_data = self.request.session.get('social_auth_google-oauth2')
+        if 'user_id' in self.request.session or google_data:
+            return user_role_management.objects.all()
         else:
-            return Response({"detail": "User not authenticated"}, status=401)
-        
-class UserRoleStoreViewSet(viewsets.ViewSet):
-    def create(self, request):
+            return user_role_management.objects.none()
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        # Your post logic here, add the necessary code
+        return redirect('login_auth_panel')  # Redirect as needed
+
+class UserRoleStoreAPIView(APIView):
+    def post(self, request, *args, **kwargs):
         try:
             role_fk = request.data.get('role_fk') 
             user_fk = request.data.get('user_fk') 
-
+            
             role_user_model = user_role_management()
             role_user_model.select_role_id = role_fk
-            role_user_model.select_user_id = user_fk      
+            role_user_model.select_user_id = user_fk
             role_user_model.save()
+            
+            serializer = UserRoleSerializer(role_user_model)  # Serialize the saved instance
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except IntegrityError as e:
+            return Response({'detail': 'Data has not been inserted successfully'}, status=status.HTTP_400_BAD_REQUEST)
 
-            messages.success(request, 'Data has been inserted successfully')
-            return Response({"detail": "Data has been inserted successfully"})
-        except IntegrityError:
-            messages.error(request, 'IntegrityError: Duplicate entry')
-            return Response({"detail": "IntegrityError: Duplicate entry"}, status=400)
-        
-class UserRoleDeleteViewSet(viewsets.ViewSet):
-    def destroy(self, request, pk):
+class UserRoleDeleteAPIView(APIView):
+    def delete(self, request, id, *args, **kwargs):
         try:
-            data = get_object_or_404(user_role_management, id=pk)
+            data = get_object_or_404(user_role_management, id=id)
             data.delete()
             messages.success(request, 'Data name has been deleted successfully')
-            return Response({"detail": "Data name has been deleted successfully"})
-        except IntegrityError:
-            messages.error(request, 'IntegrityError: Unable to delete data')
-            return Response({"detail": "IntegrityError: Unable to delete data"}, status=400)
+            return Response({'detail': 'Data name has been deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError as e: 
+            messages.error(request, 'Data name has not been deleted successfully')
+            return Response({'detail': 'Data name has not been deleted successfully'}, status=status.HTTP_400_BAD_REQUEST)
