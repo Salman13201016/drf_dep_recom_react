@@ -1,7 +1,9 @@
+# serializers.py
 from rest_framework import serializers
-from .models import Role
+from .models import patient_or_admin
 
-class RoleSerializer(serializers.ModelSerializer):
+class PatientOrAdminSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Role
-        fields = ['id', 'role_name']
+        model = patient_or_admin
+        def __str__(self):
+            return self.patient_name
