@@ -1,13 +1,13 @@
-from django.contrib import admin
+# urls.py
 from django.urls import path
-from . import views as prediction
+from .views import PredictionPanelAPIView, GetDataAPIView, GetDeptDataAPIView, \
+    PredictionStoreAPIView, PredictionHistoryStoreAPIView
 
-
-urlpatterns = [  
-    path('', prediction.prediction_panel,name='prediction_panel'),
-    path('get_data/', prediction.get_data, name='get_data'),
-    path('get_dept_data/', prediction.get_dept_data, name='get_dept_data'),
-    path('prediction_store/', prediction.prediction_store,name='prediction_store'),
-    path('send_history_data/', prediction.prediction_history_store,name='prediction_history_store'),
-    
+urlpatterns = [
+    path('prediction/prediction/', PredictionPanelAPIView.as_view(), name='prediction_api'),
+    path('prediction/get_data/', GetDataAPIView.as_view(), name='get_data_api'),
+    path('prediction/get_dept_data/', GetDeptDataAPIView.as_view(), name='get_dept_data_api'),
+    path('prediction/prediction_store/', PredictionStoreAPIView.as_view(), name='prediction_store_api'),
+    path('prediction/prediction_history_store/', PredictionHistoryStoreAPIView.as_view(), name='prediction_history_store_api'),
+    # Add other paths as needed
 ]

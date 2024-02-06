@@ -18,7 +18,8 @@ urlpatterns = [
     path('auth_user/', include('auth_user.urls')),
     path('dashboard-form/', include('dashboard_from.urls')),
     path('address/', include('address.urls')),
-    # path('prediction/', include('prediction.urls')),
+    path('prediction/', include('prediction.urls')),
+    path('user_role/', include('user_role.urls')),
     
 
     

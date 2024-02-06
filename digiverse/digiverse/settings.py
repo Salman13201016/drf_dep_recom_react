@@ -24,7 +24,6 @@ AUTHENTICATION_BACKENDS = [
     # Other authentication backends
 ]
 
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -34,6 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'rest_framework',
     'rest_framework.authtoken',
+    'user',
     'role',
     'user_role', 
     'divisions',
@@ -55,27 +55,10 @@ INSTALLED_APPS = [
     'address', 
     'django_filters',
     'dj_rest_auth',
-    'token_manager',
+    
    
     
 
-    
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    
-    
-    
     
 ]
 
@@ -115,6 +98,15 @@ DATABASES = {
 
     }
 }
+MIDDLEWARE = [
+    # ... other middleware ...
+
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+
+    # ... other middleware ...
+]
 
 
 # Password validation
@@ -169,8 +161,6 @@ SIMPLE_JWT = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
@@ -234,3 +224,11 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default Django authentication backend
     # Add other authentication backends as needed
 ]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '229553171688-v842vpaunkrkch4ala37q5fep5errq5c.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_PIPELINE = (
+    # ... other pipeline steps ...
+    'dashboard_from.pipeline.capture_social_auth_data',  # Add this line
+    # ... other pipeline steps ...
+)
