@@ -1,7 +1,7 @@
 
 import re
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from datetime import datetime, timedelta
 import random
@@ -17,6 +17,9 @@ from rest_framework import viewsets
 
 from .serializers import UserIndexPanelSerializer
 
+from rest_framework.response import Response
+from rest_framework import status
+
 class UserIndexPanelView(viewsets.GenericViewSet):
     serializer_class = UserIndexPanelSerializer
 
@@ -30,7 +33,10 @@ class UserIndexPanelView(viewsets.GenericViewSet):
         msg = messages.get_messages(request)
         data = {'all_data': all_data, 'status': status, 'msg': msg}
         serializer = self.get_serializer(data)
-        return render(request, 'update_design/signup.html', serializer.data)
+        
+        # Return a JSON response
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 from .serializers import SignUpSerializer, LoginAuthSerializer, LogoutAuthSerializer, CsrfFailureSerializer
 from .models import user_register
@@ -85,7 +91,9 @@ class EmailVerificationView(APIView):
         user.save()
 
         user_data = {"u_data": user}
-        return render(request, 'update_design/welcome.html', user_data)
+        # Return a JSON response
+        return Response(user_data, status=status.HTTP_200_OK)
+
 
 
 
@@ -94,26 +102,19 @@ class LoginAuthView(viewsets.GenericViewSet):
     serializer_class = LoginAuthSerializer
 
     def login_auth_panel(self, request):
-        if 'user_id' in request.session:
-            return redirect('prediction_panel')
-
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
-            try:
-                user = user_register.objects.get(email=email)
-                if user.password == password:
-                    request.session['user_id'] = user.id
-                    request.session['user_email'] = user.email
-                    request.session['user_fname'] = user.fname
-                    return redirect('prediction_panel')
-                else:
-                    messages.success(request, 'Wrong Password')
-                    return redirect('/login/')
-            except user_register.DoesNotExist:
-                messages.success(request, 'This user is not available')
-                return redirect('/login/')
+
+            user = get_object_or_404(user_register, email=email)
+
+            if user.check_password(password):
+                # Assuming you have a PredictionPanelAPIView
+                prediction_panel_view = PredictionPanelAPIView.as_view()
+                return prediction_panel_view(request)
+            else:
+                return Response({"error": "Wrong Password"}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
