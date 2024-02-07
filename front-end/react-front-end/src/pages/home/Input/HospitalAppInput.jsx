@@ -5,6 +5,8 @@ import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import HospitalEditModal from "../../../components/shared/modal/HospitalEditModal";
 import { toast, ToastContainer } from "react-toastify";
+import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
+import SearchInput from "../../../components/shared/input/SearchInput";
 const initalState = {
   division: "",
   district: "",
@@ -23,6 +25,13 @@ const HospitalAppInput = () => {
     const { getHospitalInfoFromServer } = useStoreActions(
       (actions) => actions.hospitalInfo
     );
+
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredHospital, setFilteredHospital] = useState(
+    hospitalInfoFromServer.hospitalInfoList
+  );
+
+
   const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
   const [showStationInJSX, setshowStationInJSX] = useState("");
   const [hospitalInfo, setHospitalInfo] = useState(initalState);
@@ -35,10 +44,35 @@ const HospitalAppInput = () => {
     const [selectedItemId, setSelectedItemId] = useState(null);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
-    const currentHospitalInfo = hospitalInfoFromServer.hospitalInfoList.slice(
+    const currentHospitalInfo = filteredHospital.slice(
       firstPostIndex,
       lastPostIndex
     );
+
+      useEffect(() => {
+        const result = hospitalInfoFromServer.hospitalInfoList.filter(
+          (item) => {
+            return searchInput.toLowerCase() === ""
+              ? item
+              : item.name.toLowerCase().includes(searchInput);
+          }
+        );
+
+        if (result.length) {
+          setFilteredHospital(result);
+        } else if (!searchInput.length) {
+          setFilteredHospital(divisionList);
+        } else {
+          setFilteredHospital([]);
+        }
+      }, [searchInput, hospitalInfoFromServer.hospitalInfoList]);
+
+      if (filteredHospital.length) {
+        if (Math.ceil(filteredHospital.length / postPerPage) < currentPage) {
+          setcurrentPage(1);
+        }
+      }
+
 
       useEffect(() => {
         let selectedDistrict = [];
@@ -178,7 +212,7 @@ const HospitalAppInput = () => {
           <h4 className="card-title">Hospital Application</h4>
         </div>
         <div className="card-body">
-          <form action="#">
+          <form action="#" onSubmit={handleSubmit}>
             {/* Division input start from here */}
             <div className="form-group row">
               <label className="col-form-label col-md-2">Select Division</label>
@@ -187,6 +221,7 @@ const HospitalAppInput = () => {
                   className="form-control"
                   onChange={handleChange}
                   name="division"
+                  required
                 >
                   <option value="">Select</option>
                   {division.divisionList.map((singleDivision) => {
@@ -201,60 +236,56 @@ const HospitalAppInput = () => {
             </div>
 
             {/* district input start from here */}
-            {showDistrictInJSX.length ? (
-              <div
-                style={{
-                  display: hospitalInfo.division.length > 0 ? "block" : "none",
-                  marginBottom: "20px",
-                }}
-              >
-                {showDistrictInJSX.length > 0 ? (
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Select District
-                    </label>
-                    <div className="col-md-10">
-                      <select
-                        className="form-control"
-                        onChange={handleChange}
-                        name="district"
-                      >
-                        <option value="">Select</option>
-                        {showDistrictInJSX.map((singleDistrict) => {
-                          return (
-                            <option
-                              key={singleDistrict.id}
-                              value={singleDistrict.id}
-                            >
-                              {singleDistrict.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                  </div>
-                ) : (
-                  <p>
-                    {" "}
-                    District May Not Be Available or Please Select Division
-                  </p>
-                )}
-              </div>
-            ) : (
-              <p>Please Select Divison Above</p>
-            )}
+            <div className="form-group row">
+              <label className="col-form-label col-md-2">Select District</label>
+
+              {showDistrictInJSX.length ? (
+                <div className="col-md-10">
+                  <select
+                    className="form-control"
+                    onChange={handleChange}
+                    name="district"
+                    required
+                  >
+                    <option value="">Select</option>
+                    {showDistrictInJSX.map((singleDistrict) => {
+                      return (
+                        <option
+                          key={singleDistrict.id}
+                          value={singleDistrict.id}
+                        >
+                          {singleDistrict.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              ) : (
+                <div className="col-md-10">
+                  <select
+                    className="form-control"
+                    onChange={handleChange}
+                    name="district"
+                    required
+                  >
+                    <option value="">
+                      District is not available under this division
+                    </option>
+                  </select>
+                </div>
+              )}
+            </div>
 
             {/* station input start from here */}
-            {showStationInJSX.length ? (
-              <div className="form-group row">
-                <label className="col-form-label col-md-2">
-                  Select Station
-                </label>
+            <div className="form-group row">
+              <label className="col-form-label col-md-2">Select Station</label>
+              {showStationInJSX.length ? (
                 <div className="col-md-10">
                   <select
                     className="form-control"
                     onChange={handleChange}
                     name="station"
+                    required
                   >
                     <option value="">Select</option>
                     {showStationInJSX.map((singleStation) => {
@@ -266,10 +297,19 @@ const HospitalAppInput = () => {
                     })}
                   </select>
                 </div>
-              </div>
-            ) : (
-              <p>Please Select District Above</p>
-            )}
+              ) : (
+                <div className="col-md-10">
+                  <select
+                    className="form-control"
+                    onChange={handleChange}
+                    name="station"
+                    required
+                  >
+                    <option value="">Station is not available</option>
+                  </select>
+                </div>
+              )}
+            </div>
 
             {/* hospital name input start from here */}
 
@@ -283,6 +323,7 @@ const HospitalAppInput = () => {
                       name="name"
                       type="text"
                       onChange={handleChange}
+                      required
                     />
                   </div>
                 </div>
@@ -301,6 +342,7 @@ const HospitalAppInput = () => {
                       type="number"
                       onChange={handleChange}
                       name="zip_code"
+                      required
                     />
                   </div>
                 </div>
@@ -319,6 +361,7 @@ const HospitalAppInput = () => {
                       name="address"
                       type="text"
                       onChange={handleChange}
+                      required
                     />
                   </div>
                 </div>
@@ -337,6 +380,7 @@ const HospitalAppInput = () => {
                       name="image"
                       type="file"
                       onChange={handlePicture}
+                      required
                     />
                   </div>
                 </div>
@@ -346,49 +390,37 @@ const HospitalAppInput = () => {
             {/* category input start from here */}
             <div className="form-group row">
               <label className="col-form-label col-md-2">Select Category</label>
-              <div className="col-md-10">
-                <select
-                  className="form-control"
-                  onChange={handleChange}
-                  name="hos_type"
-                >
-                  <option value="">Select</option>
-                  {hospitalCategory.categoryList.map((singleCategory) => {
-                    return (
-                      <option key={singleCategory.id} value={singleCategory.id}>
-                        {singleCategory.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
+              {hospitalCategory.categoryList.length ? (
+                <div className="col-md-10">
+                  <select
+                    className="form-control"
+                    onChange={handleChange}
+                    name="hos_type"
+                    required
+                  >
+                    <option value="">Select</option>
+                    {hospitalCategory.categoryList.map((singleCategory) => {
+                      return (
+                        <option
+                          key={singleCategory.id}
+                          value={singleCategory.id}
+                        >
+                          {singleCategory.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              ) : (
+                <div className="col-md-10">
+                  <select className="form-control">
+                    <option value="">Select category is not available</option>
+                  </select>
+                </div>
+              )}
             </div>
 
-            {/* <div className="form-group row">
-              <label className="col-form-label col-md-2">
-                Hospital Category
-              </label>
-              <div className="col-md-10">
-                {hospitalCategory.categoryList.map((category, index) => {
-                  return (
-                    <div className="radio" key={index}>
-                      <label>
-                        <input
-                          type="radio"
-                          name="hos_type"
-                          value={category.id}
-                          onChange={handleChange}
-                        />{" "}
-                        {category.name}
-                      </label>
-                    </div>
-                  );
-                })}
-              </div>
-            </div> */}
-
             {/* description input start from here */}
-
             <div style={{ marginBottom: "20px" }}>
               <div className="form-group mb-0 row">
                 <label className="col-form-label col-md-2"> Description</label>
@@ -399,13 +431,10 @@ const HospitalAppInput = () => {
                       type="text"
                       onChange={handleChange}
                       name="description"
+                      required
                     />
                     <div className="input-group-append">
-                      <button
-                        className="btn btn-primary"
-                        type="submit"
-                        onClick={handleSubmit}
-                      >
+                      <button className="btn btn-primary" type="submit">
                         Submit
                       </button>
                     </div>
@@ -415,6 +444,8 @@ const HospitalAppInput = () => {
             </div>
           </form>
         </div>
+
+        <hr style={{ background: "black" }} />
 
         {/* <!-- Table Section --> */}
         <div>
@@ -428,6 +459,16 @@ const HospitalAppInput = () => {
               </div>
             </div>
             {/* <!-- /Page Header --> */}
+
+            {/* <!--select post per page and search input --> */}
+            <div className="showTop d-flex w-100 justify-content-between">
+              <SelectPostPerPage setpostPerPage={setpostPerPage} />
+              <SearchInput
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+              />
+            </div>
+            {/* <!--/select post per page and search input --> */}
 
             <div className="row">
               <div className="col-sm-12">
@@ -495,7 +536,7 @@ const HospitalAppInput = () => {
               <PaginationComponent
                 currentPage={currentPage}
                 postPerPage={postPerPage}
-                totalPost={hospitalInfoFromServer.hospitalInfoList.length}
+                totalPost={filteredHospital.length}
                 changePage={getCurrentPage}
               />
             </div>

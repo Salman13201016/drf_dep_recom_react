@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import apiService from "../../../api";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
 import { ToastContainer, toast } from "react-toastify";
+import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
+import SearchInput from "../../../components/shared/input/SearchInput";
 const initalState = {
   department: "",
   name: "",
@@ -15,6 +17,10 @@ const DiseaseInput = () => {
     (actions) => actions.disease
   );
   const [diseaseInfo, setdiseaseInfo] = useState(initalState);
+    const [searchInput, setSearchInput] = useState("");
+    const [filteredDisease, setFilteredDisease] = useState(
+      disease.diseaseList
+    );
     const [currentPage, setcurrentPage] = useState(1);
     const [postPerPage, setpostPerPage] = useState(5);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -23,10 +29,31 @@ const DiseaseInput = () => {
     const [selectedItem, setSelectedItem] = useState("");
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
-    const currentDisease = disease.diseaseList.slice(
-      firstPostIndex,
-      lastPostIndex
-    );
+    const currentDisease = filteredDisease.slice(firstPostIndex, lastPostIndex);
+
+    
+  if (filteredDisease.length) {
+    if (Math.ceil(filteredDisease.length / postPerPage) < currentPage) {
+      setcurrentPage(1);
+    }
+  }
+
+
+      useEffect(() => {
+        const result = disease.diseaseList.filter((item) => {
+          return searchInput.toLowerCase() === ""
+            ? item
+            : item.name.toLowerCase().includes(searchInput);
+        });
+
+        if (result.length) {
+          setFilteredDisease(result);
+        } else if (!searchInput.length) {
+          setFilteredDisease(disease.diseaseList);
+        } else {
+          setFilteredDisease([]);
+        }
+      }, [searchInput, disease.diseaseList]);
 
   
   const handleChange = (e) => {
@@ -38,7 +65,8 @@ const DiseaseInput = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if(diseaseInfo.department && diseaseInfo.name){
       const response = await apiService.postData(
         "http://127.0.0.1:8000/diseases/disease/",
@@ -113,7 +141,7 @@ const DiseaseInput = () => {
         <h4 className="card-title">Disease Details Data Input</h4>
       </div>
       <div className="card-body">
-        <form action="#">
+        <form action="#" onSubmit={handleSubmit}>
           {/* Department input start from here */}
           <div className="form-group row">
             <label className="col-form-label col-md-2">Select Department</label>
@@ -122,6 +150,7 @@ const DiseaseInput = () => {
                 className="form-control"
                 onChange={handleChange}
                 name="department"
+                required
               >
                 <option value="">Select</option>
                 {department.departmentList.map((singleDepartment) => {
@@ -140,7 +169,7 @@ const DiseaseInput = () => {
 
           {/* Disease input start from here */}
 
-          <div style={{ display: diseaseInfo.department ? "block" : "none" }}>
+          <div>
             <div className="form-group mb-0 row">
               <label className="col-form-label col-md-2">Disease Name</label>
               <div className="col-md-10">
@@ -151,12 +180,12 @@ const DiseaseInput = () => {
                     value={diseaseInfo.name}
                     onChange={handleChange}
                     name="name"
+                    required
                   />
                   <div className="input-group-append">
                     <button
                       className="btn btn-primary"
-                      type="button"
-                      onClick={handleSubmit}
+                      type="submit"
                     >
                       Submit
                     </button>
@@ -167,6 +196,8 @@ const DiseaseInput = () => {
           </div>
         </form>
       </div>
+
+      <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
       <div>
@@ -180,6 +211,16 @@ const DiseaseInput = () => {
             </div>
           </div>
           {/* <!-- /Page Header --> */}
+
+          {/* <!--select post per page and search input --> */}
+          <div className="showTop d-flex w-100 justify-content-between">
+            <SelectPostPerPage setpostPerPage={setpostPerPage} />
+            <SearchInput
+              searchInput={searchInput}
+              setSearchInput={setSearchInput}
+            />
+          </div>
+          {/* <!--/select post per page and search input --> */}
 
           <div className="row">
             <div className="col-sm-12">
@@ -243,7 +284,7 @@ const DiseaseInput = () => {
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={disease.diseaseList.length}
+              totalPost={filteredDisease.length}
               changePage={getCurrentPage}
             />
           </div>

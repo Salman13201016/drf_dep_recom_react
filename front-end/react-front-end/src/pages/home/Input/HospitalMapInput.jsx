@@ -5,6 +5,8 @@ import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import MapEditModal from "../../../components/shared/modal/MapEditModal";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import { ToastContainer, toast } from "react-toastify";
+import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
+import SearchInput from "../../../components/shared/input/SearchInput";
 
 const initalValue = {
   hospital: "",
@@ -17,6 +19,12 @@ const HospitalMap = () => {
     (actions) => actions.hospitalMap
   );
   const [hospitalMapInfo, setHospitalMapInfo] = useState(initalValue);
+  const [searchInput, setSearchInput] = useState("");
+  const filteredMapList = hospitalMap.hospitalMapList.filter((item) => {
+    return searchInput.toLowerCase() == ""
+      ? item
+      : item.hospital_name.toLowerCase().includes(searchInput);
+  });
   const [currentPage, setcurrentPage] = useState(1);
   const [postPerPage, setpostPerPage] = useState(5);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -25,10 +33,16 @@ const HospitalMap = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
-  const currentHospitalMapList = hospitalMap.hospitalMapList.slice(
+  const currentHospitalMapList = filteredMapList.slice(
     firstPostIndex,
     lastPostIndex
   );
+
+  if (filteredMapList.length) {
+    if (Math.ceil(filteredMapList.length / postPerPage) < currentPage) {
+      setcurrentPage(1);
+    }
+  }
 
   const handleChange = (e) => {
     setHospitalMapInfo((prev) => {
@@ -38,7 +52,8 @@ const HospitalMap = () => {
       };
     });
   };
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const res = await apiService.postData(
       "http://127.0.0.1:8000/hospital-map-app/hospital-maps/",
       JSON.stringify(hospitalMapInfo)
@@ -110,7 +125,7 @@ const HospitalMap = () => {
     if (response.status == 200) {
       setSelectedItemId(null);
       setIsEditModalShow(false);
-      toast.success('Updated Successfully');
+      toast.success("Updated Successfully");
       await getHospitalMapListFromServer(
         "http://127.0.0.1:8000/hospital-map-app/hospital-maps/"
       );
@@ -124,7 +139,7 @@ const HospitalMap = () => {
         <h4 className="card-title">Hospital Map Data Input</h4>
       </div>
       <div className="card-body">
-        <form action="#">
+        <form action="#" onSubmit={handleSubmit} >
           {/* hospital input start from here */}
           <div className="form-group row">
             <label className="col-form-label col-md-2">Select Hospital</label>
@@ -133,6 +148,7 @@ const HospitalMap = () => {
                 className="form-control"
                 onChange={handleChange}
                 name="hospital"
+                required
               >
                 <option value="">Select</option>
                 {hospitalInfo.hospitalInfoList.map((singleHospital) => {
@@ -159,6 +175,7 @@ const HospitalMap = () => {
                     name="longitude"
                     onChange={handleChange}
                     value={hospitalMapInfo.longitude}
+                    required
                   />
                 </div>
               </div>
@@ -177,12 +194,12 @@ const HospitalMap = () => {
                     name="latitude"
                     onChange={handleChange}
                     value={hospitalMapInfo.latitude}
+                    required
                   />
                   <div className="input-group-append">
                     <button
                       className="btn btn-primary"
-                      type="button"
-                      onClick={handleSubmit}
+                      type="submit"
                     >
                       Submit
                     </button>
@@ -193,6 +210,8 @@ const HospitalMap = () => {
           </div>
         </form>
       </div>
+
+      <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
       <div>
@@ -206,6 +225,16 @@ const HospitalMap = () => {
             </div>
           </div>
           {/* <!-- /Page Header --> */}
+
+          {/* <!--select post per page and search input --> */}
+          <div className="showTop d-flex w-100 justify-content-between">
+            <SelectPostPerPage setpostPerPage={setpostPerPage} />
+            <SearchInput
+              searchInput={searchInput}
+              setSearchInput={setSearchInput}
+            />
+          </div>
+          {/* <!--/select post per page and search input --> */}
 
           <div className="row">
             <div className="col-sm-12">
@@ -271,7 +300,7 @@ const HospitalMap = () => {
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={hospitalMap.hospitalMapList.length}
+              totalPost={filteredMapList.length}
               changePage={getCurrentPage}
             />
           </div>

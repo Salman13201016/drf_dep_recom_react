@@ -133,7 +133,7 @@ const RoleInput = () => {
           <div>
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Roles List</h3>
+                <h3 className="page-title">Roles  List</h3>
               </div>
             </div>
           </div>

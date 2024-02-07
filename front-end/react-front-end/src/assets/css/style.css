@@ -87,6 +87,18 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
 }
+.showEntiresSelect{
+	margin: 0 5px;
+	border-radius: 5px;
+	height: 30px;
+	line-height: 30px;
+	padding: 0 5px;
+	outline: none;
+}
+
+.showEntiresSelect:focus{
+	box-shadow: 1px 1px 6px 4px #a4d2ec;
+}
 .form-control {
     border: 1px solid #ddd;
     box-shadow: none;
@@ -1665,13 +1677,14 @@ html.menu-opened body {
 -----------------------*/
 
 .sidebar {
-    background-color: #1b5a90;
+    /* background-color: #1b5a90; */
    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+   background: url('../../../src/assets/img/sidebar/sideBar.png');
     bottom: 0;
     left: 0;
     margin-top: 0;
     position: fixed;
-    top: 60px;
+    top: 0;
     transition: all 0.2s ease-in-out 0s;
     width: 240px;
     z-index: 1001;
@@ -1979,6 +1992,7 @@ html.menu-opened body {
 }
 .page-wrapper > .content {
 	padding: 1.875rem 1.875rem 0;
+	background-color: #1A395A;
 }
 .page-header {
 	margin-bottom: 1.875rem;

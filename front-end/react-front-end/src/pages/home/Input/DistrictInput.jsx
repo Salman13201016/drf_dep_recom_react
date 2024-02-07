@@ -5,6 +5,8 @@ import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
 import { ToastContainer, toast } from "react-toastify";
+import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
+import SearchInput from "../../../components/shared/input/SearchInput";
 
 const DistrictInput = () => {
   const { divisionList } = useStoreState((state) => state.division);
@@ -14,15 +16,27 @@ const DistrictInput = () => {
   );
   const [district, setdistrict] = useState("");
   const [division, setdivision] = useState("");
-    const [currentPage, setcurrentPage] = useState(1);
-    const [postPerPage, setpostPerPage] = useState(5);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isEditModalshow, setIsEditModalShow] = useState(false);
-    const [selectedItemId, setSelectedItemId] = useState(null);
-    const [selectedItem, setSelectedItem] = useState("")
-    const lastPostIndex = currentPage * postPerPage;
-    const firstPostIndex = lastPostIndex - postPerPage;
-    const currentDistrict = districtList.slice(firstPostIndex, lastPostIndex);
+  const [searchInput, setSearchInput] = useState("");
+  const filteredDistrict = districtList.filter((item) => {
+    return searchInput.toLowerCase() == ""
+      ? item
+      : item.name.toLowerCase().includes(searchInput);
+  });
+  const [currentPage, setcurrentPage] = useState(1);
+  const [postPerPage, setpostPerPage] = useState(5);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalshow, setIsEditModalShow] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedItem, setSelectedItem] = useState("");
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentDistrict = filteredDistrict.slice(firstPostIndex, lastPostIndex);
+
+  if(filteredDistrict.length){
+    if (Math.ceil(filteredDistrict.length / postPerPage) < currentPage) {
+      setcurrentPage(1);
+    }
+  }
 
   const handleChange = (e) => {
     if (e.target.name == "division") {
@@ -32,7 +46,8 @@ const DistrictInput = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (district.length > 0) {
       const newData = {
         name: district,
@@ -70,13 +85,12 @@ const DistrictInput = () => {
     if (response.status == 204) {
       toast.warn("District has been deleted");
       // Reset selectedItemId and close the modal
-          setSelectedItemId(null);
-          setIsDeleteModalOpen(false);
+      setSelectedItemId(null);
+      setIsDeleteModalOpen(false);
       await getDistrictListFromServer(
         "http://127.0.0.1:8000/district/districts/"
       );
     }
-
   };
 
   const handleDeleteModalClose = () => {
@@ -91,37 +105,37 @@ const DistrictInput = () => {
 
   const handleEditClick = (item) => {
     setSelectedItemId(item.id);
-    setSelectedItem(item)
+    setSelectedItem(item);
     setIsEditModalShow(true);
   };
   const handleEditValueChange = (e) => {
-    setSelectedItem((prev)=>{
-      return{
+    setSelectedItem((prev) => {
+      return {
         ...prev,
-        [e.target.name]: e.target.value
-      }
+        [e.target.name]: e.target.value,
+      };
     });
   };
 
-    const handleConfirmEdit = async () => {
-      const editedData = {
-        id : selectedItem.id,
-        name: selectedItem.name,
-        division: selectedItem.division.id
-      }
-      setSelectedItemId(null);
-      const response = await apiService.updateData(
-        `http://127.0.0.1:8000/district/districts/${selectedItem.id}/`,
-        JSON.stringify(editedData)
-      );
-      if(response.statusText == 'OK'){
-        toast.success('Successfully Updated');
-        await getDistrictListFromServer(
-          "http://127.0.0.1:8000/district/districts/"
-        );
-      }
-      setIsEditModalShow(false);
+  const handleConfirmEdit = async () => {
+    const editedData = {
+      id: selectedItem.id,
+      name: selectedItem.name,
+      division: selectedItem.division.id,
     };
+    setSelectedItemId(null);
+    const response = await apiService.updateData(
+      `http://127.0.0.1:8000/district/districts/${selectedItem.id}/`,
+      JSON.stringify(editedData)
+    );
+    if (response.statusText == "OK") {
+      toast.success("Successfully Updated");
+      await getDistrictListFromServer(
+        "http://127.0.0.1:8000/district/districts/"
+      );
+    }
+    setIsEditModalShow(false);
+  };
 
   return (
     <div className="card">
@@ -130,7 +144,7 @@ const DistrictInput = () => {
         <h4 className="card-title">District Data Input</h4>
       </div>
       <div className="card-body">
-        <form action="#">
+        <form action="#" onSubmit={handleSubmit}>
           {/* Division input start from here */}
           <div className="form-group row">
             <label className="col-form-label col-md-2">Select Division</label>
@@ -139,6 +153,7 @@ const DistrictInput = () => {
                 className="form-control"
                 onChange={handleChange}
                 name="division"
+                required
               >
                 <option value="">Select</option>
                 {divisionList.map((singleDivision) => {
@@ -153,7 +168,7 @@ const DistrictInput = () => {
           </div>
 
           {/* district input start from here */}
-          <div style={{ display: division ? "block" : "none" }}>
+          <div>
             <div className="form-group mb-0 row">
               <label className="col-form-label col-md-2">District Name</label>
               <div className="col-md-10">
@@ -163,13 +178,10 @@ const DistrictInput = () => {
                     type="text"
                     value={district}
                     onChange={handleChange}
+                    required
                   />
                   <div className="input-group-append">
-                    <button
-                      className="btn btn-primary"
-                      type="button"
-                      onClick={handleSubmit}
-                    >
+                    <button className="btn btn-primary" type="submit">
                       Submit
                     </button>
                   </div>
@@ -179,6 +191,7 @@ const DistrictInput = () => {
           </div>
         </form>
       </div>
+      <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
       <div>
@@ -193,6 +206,16 @@ const DistrictInput = () => {
           </div>
           {/* <!-- /Page Header --> */}
 
+          {/* <!--select post per page and search input --> */}
+          <div className="showTop d-flex w-100 justify-content-between">
+            <SelectPostPerPage setpostPerPage={setpostPerPage} />
+            <SearchInput
+              searchInput={searchInput}
+              setSearchInput={setSearchInput}
+            />
+          </div>
+          {/* <!--/select post per page and search input --> */}
+
           <div className="row">
             <div className="col-sm-12">
               <div className="card">
@@ -201,10 +224,9 @@ const DistrictInput = () => {
                     <table className="datatable table table-hover table-center mb-0">
                       <thead>
                         <tr>
-                          <th>Serial Number</th>
+                          <th>Serial</th>
                           <th>Name</th>
-                          <th>Update</th>
-                          <th>Delete</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -216,29 +238,25 @@ const DistrictInput = () => {
                               </td>
                               <td>{singleDistrict.name}</td>
                               <td>
-                                <div className="actions">
-                                  <a
-                                    className="btn btn-sm bg-success-light"
-                                    onClick={() =>
-                                      handleEditClick(singleDistrict)
-                                    }
-                                  >
-                                    <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Edit
-                                  </a>
-                                </div>
+                                <a
+                                  className="btn btn-sm bg-success-light px-3 mr-2"
+                                  onClick={() =>
+                                    handleEditClick(singleDistrict)
+                                  }
+                                >
+                                  <i className="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a
+                                  className="btn btn-sm bg-danger-light px-3"
+                                  onClick={() =>
+                                    handleDeleteClick(singleDistrict.id)
+                                  }
+                                >
+                                  <i className="fa fa-trash"></i>
+                                </a>
                               </td>
                               <td>
-                                <div className="actions">
-                                  <a
-                                    className="btn btn-sm bg-danger-light"
-                                    onClick={() =>
-                                      handleDeleteClick(singleDistrict.id)
-                                    }
-                                  >
-                                    <i className="fa fa-trash"></i> Delete
-                                  </a>
-                                </div>
+                                <div className="actions"></div>
                               </td>
                             </tr>
                           );
@@ -255,7 +273,7 @@ const DistrictInput = () => {
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={districtList.length}
+              totalPost={filteredDistrict.length}
               changePage={getCurrentPage}
             />
           </div>
