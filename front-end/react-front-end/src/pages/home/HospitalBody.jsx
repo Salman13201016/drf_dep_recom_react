@@ -13,10 +13,11 @@ import SymtomsInput from "./Input/SymtomsInput";
 import DigiverseMain from "../digiverse";
 import RoleInput from "./Input/RoleInput";
 import RoleUser from "./Input/RoleUser";
+import DashBoard from "./DefaultBodySection";
 
 
 const HospitalBody = ({ componentShow }) => {
-  let renderComponent;
+  let renderComponent = <DashBoard />
   if (componentShow == "division") {
     renderComponent = <DivisionInput />;
   } else if (componentShow == "district") {
@@ -43,6 +44,8 @@ const HospitalBody = ({ componentShow }) => {
     renderComponent = <RoleInput />
   }else if (componentShow == "roleUser") {
     renderComponent = <RoleUser />
+  }else if (componentShow == "dashboard") {
+    renderComponent = <DashBoard />
   }
 
     return (

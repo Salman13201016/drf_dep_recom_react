@@ -5,12 +5,20 @@ import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
 import { toast, ToastContainer } from "react-toastify";
+import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
+import SearchInput from "../../../components/shared/input/SearchInput";
 
 const HospitalCategoryInput = () => {
   const { categoryList } = useStoreState((state) => state.hospitalCategory);
   const { getCategoryListFromServer } = useStoreActions(
     (actions) => actions.hospitalCategory
   );
+  const [searchInput, setSearchInput] = useState("");
+  const filteredCategory = categoryList.filter((item) => {
+    return searchInput.toLowerCase() == ""
+      ? item
+      : item.name.toLowerCase().includes(searchInput);
+  });
   const [hospitalCategory, sethospitalCategory] = useState("");
   const [currentPage, setcurrentPage] = useState(1);
   const [postPerPage, setpostPerPage] = useState(5);
@@ -20,11 +28,17 @@ const HospitalCategoryInput = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
-  const currentCategory = categoryList.slice(firstPostIndex, lastPostIndex);
+  const currentCategory = filteredCategory.slice(firstPostIndex, lastPostIndex);
+  if (filteredCategory.length) {
+    if (Math.ceil(filteredCategory.length / postPerPage) < currentPage) {
+      setcurrentPage(1);
+    }
+  }
   const handleChange = (e) => {
     sethospitalCategory(e.target.value);
   };
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (hospitalCategory.length > 0) {
       const response = await apiService.postData(
         "http://127.0.0.1:8000/hospital_category/hospital_categories/",
@@ -110,7 +124,7 @@ const HospitalCategoryInput = () => {
         <h4 className="card-title">Hospital Category Input</h4>
       </div>
       <div className="card-body">
-        <form action="#">
+        <form action="#" onSubmit={handleSubmit}>
           <div className="form-group mb-0 row">
             <label className="col-form-label col-md-2">Hospital Category</label>
             <div className="col-md-10">
@@ -120,13 +134,10 @@ const HospitalCategoryInput = () => {
                   type="text"
                   value={hospitalCategory}
                   onChange={handleChange}
+                  required
                 />
                 <div className="input-group-append">
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={handleSubmit}
-                  >
+                  <button className="btn btn-primary" type="submit">
                     Submit
                   </button>
                 </div>
@@ -135,6 +146,7 @@ const HospitalCategoryInput = () => {
           </div>
         </form>
       </div>
+      <hr style={{ background: "black" }} />
       {/* <!-- Table Section --> */}
       <div>
         <div className="content container-fluid">
@@ -142,11 +154,21 @@ const HospitalCategoryInput = () => {
           <div>
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Divisions List</h3>
+                <h3 className="page-title">Category List</h3>
               </div>
             </div>
           </div>
           {/* <!-- /Page Header --> */}
+
+          {/* <!--select post per page and search input --> */}
+          <div className="showTop d-flex w-100 justify-content-between">
+            <SelectPostPerPage setpostPerPage={setpostPerPage} />
+            <SearchInput
+              searchInput={searchInput}
+              setSearchInput={setSearchInput}
+            />
+          </div>
+          {/* <!--/select post per page and search input --> */}
 
           <div className="row">
             <div className="col-sm-12">
@@ -210,7 +232,7 @@ const HospitalCategoryInput = () => {
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={categoryList.length}
+              totalPost={filteredCategory.length}
               changePage={getCurrentPage}
             />
           </div>

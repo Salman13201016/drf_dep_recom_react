@@ -25,6 +25,7 @@ const App = () => {
     department,
     disease,
     hospitalMap,
+    symptom,
   } = useStoreActions((actions) => actions);
   division.getDivisionListFromServer(
     "http://127.0.0.1:8000/division/divisions/"
@@ -53,6 +54,8 @@ const App = () => {
   hospitalMap.getHospitalMapListFromServer(
     "http://127.0.0.1:8000/hospital-map-app/hospital-maps/"
   );
+
+  symptom.getSymptomListFromServer("http://127.0.0.1:8000/symptoms/symptom/");
 
   return (
     <BrowserRouter>

@@ -1,17 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import apiService from "../../../api";
 import { ToastContainer, toast } from "react-toastify";
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
-import {useStoreActions} from 'easy-peasy';
+import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
+import SearchInput from "../../../components/shared/input/SearchInput";
 
 const DivisionInput = () => {
   const { getDivisionListFromServer } = useStoreActions(
     (actions) => actions.division
   );
   const { divisionList } = useStoreState((state) => state.division);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredDivision, setFilteredDivision] = useState(divisionList);
   const [division, setdivision] = useState("");
   const [currentPage, setcurrentPage] = useState(1);
   const [postPerPage, setpostPerPage] = useState(5);
@@ -22,7 +25,29 @@ const DivisionInput = () => {
   const [selectedEditItem, setSelectedEditItem] = useState("");
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
-  const currentDivision = divisionList.slice(firstPostIndex, lastPostIndex);
+  const currentDivision = filteredDivision.slice(firstPostIndex, lastPostIndex);
+
+  useEffect(() => {
+    const result = divisionList.filter((item) => {
+      return searchInput.toLowerCase() === ""
+        ? item
+        : item.name.toLowerCase().includes(searchInput);
+    });
+
+    if (result.length) {
+      setFilteredDivision(result);
+    } else if (!searchInput.length) {
+      setFilteredDivision(divisionList);
+    } else {
+      setFilteredDivision([]);
+    }
+  }, [searchInput, divisionList]);
+
+  if (filteredDivision.length) {
+    if (Math.ceil(filteredDivision.length / postPerPage) < currentPage) {
+      setcurrentPage(1);
+    }
+  }
 
   const handleChange = (e) => {
     setdivision(e.target.value);
@@ -31,9 +56,9 @@ const DivisionInput = () => {
     if (division.length > 0) {
       const response = await apiService.postData(
         "http://127.0.0.1:8000/division/divisions/",
-        JSON.stringify({name:division})
+        JSON.stringify({ name: division })
       );
-      if (response.statusText == 'Created') {
+      if (response.statusText == "Created") {
         toast.success("Division added successfully!");
         setdivision("");
         await getDivisionListFromServer(
@@ -41,7 +66,7 @@ const DivisionInput = () => {
         );
       }
     } else {
-      toast.error('Please insert valid division')
+      toast.error("Please insert valid division");
     }
   };
   const getCurrentPage = (pageNumber) => {
@@ -57,18 +82,17 @@ const DivisionInput = () => {
     const response = await apiService.deleteData(
       `http://127.0.0.1:8000/division/divisions/${itemId}/`
     );
-    if(response.status == 204){
-      toast.warn("Division has been deleted", );
+    if (response.status == 204) {
+      toast.warn("Division has been deleted");
       // Reset selectedItemId and close the modal
       setSelectedItemId(null);
       setIsDeleteModalOpen(false);
-       await getDivisionListFromServer(
+      await getDivisionListFromServer(
         "http://127.0.0.1:8000/division/divisions/"
       );
-    }else{
-      toast.error('Something went wrong')
+    } else {
+      toast.error("Something went wrong");
     }
-
   };
 
   const handleDeleteModalClose = () => {
@@ -101,9 +125,9 @@ console.log(divisionList)
       JSON.stringify(finalData)
     );
 
-    if(response.statusText == 'OK'){
+    if (response.statusText == "OK") {
       setIsEditModalShow(false);
-      toast.success('Successfully Updated');
+      toast.success("Successfully Updated");
       await getDivisionListFromServer(
         "http://127.0.0.1:8000/division/divisions/"
       );
@@ -142,6 +166,7 @@ console.log(divisionList)
           </div>
         </form>
       </div>
+      <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
       <div>
@@ -156,6 +181,16 @@ console.log(divisionList)
           </div>
           {/* <!-- /Page Header --> */}
 
+          {/* <!--select post per page and search input --> */}
+          <div className="showTop d-flex w-100 justify-content-between">
+            <SelectPostPerPage setpostPerPage={setpostPerPage} />
+            <SearchInput
+              searchInput={searchInput}
+              setSearchInput={setSearchInput}
+            />
+          </div>
+          {/* <!--/select post per page and search input --> */}
+
           <div className="row">
             <div className="col-sm-12">
               <div className="card">
@@ -164,42 +199,36 @@ console.log(divisionList)
                     <table className="datatable table table-hover table-center mb-0">
                       <thead>
                         <tr>
-                          <th>Serial Number</th>
+                          <th>Serial</th>
                           <th>Name</th>
-                          <th>Update</th>
-                          <th>Delete</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {currentDivision.map((singleDivision, index) => {
                           return (
                             <tr key={index}>
-                              <td>{(currentPage - 1) * postPerPage + 1 + index}</td>
+                              <td>
+                                {(currentPage - 1) * postPerPage + 1 + index}
+                              </td>
                               <td>{singleDivision.name}</td>
                               <td>
-                                <div className="actions">
-                                  <a
-                                    className="btn btn-sm bg-success-light"
-                                    onClick={() =>
-                                      handleEditClick(singleDivision)
-                                    }
-                                  >
-                                    <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Edit
-                                  </a>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="actions">
-                                  <a
-                                    className="btn btn-sm bg-danger-light"
-                                    onClick={() =>
-                                      handleDeleteClick(singleDivision.id)
-                                    }
-                                  >
-                                    <i className="fa fa-trash"></i> Delete
-                                  </a>
-                                </div>
+                                <a
+                                  className="btn btn-sm bg-success-light mr-2 px-3"
+                                  onClick={() =>
+                                    handleEditClick(singleDivision)
+                                  }
+                                >
+                                  <i className="fa-solid fa-pen-to-square"></i>{" "}
+                                </a>
+                                <a
+                                  className="btn btn-sm bg-danger-light px-3"
+                                  onClick={() =>
+                                    handleDeleteClick(singleDivision.id)
+                                  }
+                                >
+                                  <i className="fa fa-trash"></i>
+                                </a>
                               </td>
                             </tr>
                           );
@@ -216,7 +245,7 @@ console.log(divisionList)
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={divisionList.length}
+              totalPost={filteredDivision.length}
               changePage={getCurrentPage}
             />
           </div>

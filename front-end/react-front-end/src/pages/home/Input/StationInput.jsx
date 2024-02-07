@@ -5,6 +5,8 @@ import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
 import { toast, ToastContainer } from "react-toastify";
+import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
+import SearchInput from "../../../components/shared/input/SearchInput";
 const initalValue = {
   name: "",
   division: "",
@@ -19,6 +21,12 @@ const StationInput = () => {
   const { getStationFromServer } = useStoreActions(
     (actions) => actions.station
   );
+  const [searchInput, setSearchInput] = useState("");
+  const filteredStation = stationFromServer.stationList.filter((item) => {
+    return searchInput.toLowerCase() == ""
+      ? item
+      : item.name.toLowerCase().includes(searchInput);
+  });
   const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
   const [stationInfo, setstationInfo] = useState(initalValue);
   const [currentPage, setcurrentPage] = useState(1);
@@ -29,10 +37,13 @@ const StationInput = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
-  const currentStation = stationFromServer.stationList.slice(
-    firstPostIndex,
-    lastPostIndex
-  );
+  const currentStation = filteredStation.slice(firstPostIndex, lastPostIndex);
+
+     if(filteredStation.length){
+       if (Math.ceil(filteredStation.length / postPerPage) < currentPage) {
+         setcurrentPage(1);
+       }
+     }
 
   useEffect(() => {
     let selectedDistrict = [];
@@ -67,7 +78,8 @@ const StationInput = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (stationInfo.name.length > 0) {
       const response = await apiService.postData(
         "http://127.0.0.1:8000/station/stations/",
@@ -150,91 +162,103 @@ const StationInput = () => {
         <h4 className="card-title">Station Data Input</h4>
       </div>
       <div className="card-body">
-        {/* Division input start from here */}
-        <div className="form-group row">
-          <label className="col-form-label col-md-2">Select Division</label>
-          <div className="col-md-10">
-            <select
-              className="form-control"
-              onChange={handleChange}
-              name="division"
-            >
-              <option value="">Select</option>
-              {divisionFromServer.divisionList.map((singleDivision) => {
-                return (
-                  <option key={singleDivision.id} value={singleDivision.id}>
-                    {singleDivision.name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-        </div>
-
-        {/* District input start from here */}
-        <div
-          style={{
-            display: stationInfo.division.length > 0 ? "block" : "none",
-            marginBottom: "20px",
-          }}
-        >
-          {showDistrictInJSX.length > 0 ? (
-            <div className="form-group row">
-              <label className="col-form-label col-md-2">Select District</label>
-              <div className="col-md-10">
-                <select
-                  className="form-control"
-                  onChange={handleChange}
-                  name="district"
-                >
-                  <option value="">Select</option>
-                  {showDistrictInJSX.map((singleDistrict) => {
-                    return (
-                      <option key={singleDistrict.id} value={singleDistrict.id}>
-                        {singleDistrict.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
-          ) : (
-            <p> District May Not Be Available or Please Select Division</p>
-          )}
-        </div>
-
-        {/* station input start from here */}
-
-        <div
-          style={{
-            display: stationInfo.district.length ? "block" : "none",
-          }}
-        >
-          <div className="form-group mb-0 row">
-            <label className="col-form-label col-md-2">Station Name</label>
+        <form action="#" onSubmit={handleSubmit}>
+          {/* Division input start from here */}
+          <div className="form-group row">
+            <label className="col-form-label col-md-2">Select Division</label>
             <div className="col-md-10">
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={stationInfo.name}
-                  onChange={handleChange}
-                  name="name"
-                />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={handleSubmit}
+              <select
+                className="form-control"
+                onChange={handleChange}
+                name="division"
+                required
+              >
+                <option value="">Select</option>
+                {divisionFromServer.divisionList.map((singleDivision) => {
+                  return (
+                    <option key={singleDivision.id} value={singleDivision.id}>
+                      {singleDivision.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          </div>
+
+          {/* District input start from here */}
+          <div>
+            {showDistrictInJSX.length > 0 ? (
+              <div className="form-group row">
+                <label className="col-form-label col-md-2">
+                  Select District
+                </label>
+                <div className="col-md-10">
+                  <select
+                    className="form-control"
+                    onChange={handleChange}
+                    name="district"
+                    required
                   >
-                    Submit
-                  </button>
+                    <option value="">Select</option>
+                    {showDistrictInJSX.map((singleDistrict) => {
+                      return (
+                        <option
+                          key={singleDistrict.id}
+                          value={singleDistrict.id}
+                        >
+                          {singleDistrict.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+            ) : (
+              <div className="form-group row">
+                <label className="col-form-label col-md-2">
+                  Select District
+                </label>
+                <div className="col-md-10">
+                  <select
+                    className="form-control"
+                    onChange={handleChange}
+                    name="district"
+                    required
+                  >
+                    <option value="">District is not available in under this division</option>
+                  </select>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* station input start from here */}
+
+          <div>
+            <div className="form-group mb-0 row">
+              <label className="col-form-label col-md-2">Station Name</label>
+              <div className="col-md-10">
+                <div className="input-group">
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={stationInfo.name}
+                    onChange={handleChange}
+                    name="name"
+                    required
+                  />
+                  <div className="input-group-append">
+                    <button className="btn btn-primary" type="submit">
+                      Submit
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
+      <hr style={{background:'black'}} />
       {/* <!-- Table Section --> */}
       <div>
         <div className="content container-fluid">
@@ -247,6 +271,16 @@ const StationInput = () => {
             </div>
           </div>
           {/* <!-- /Page Header --> */}
+
+          {/* <!--select post per page and search input --> */}
+          <div className="showTop d-flex w-100 justify-content-between">
+            <SelectPostPerPage setpostPerPage={setpostPerPage} />
+            <SearchInput
+              searchInput={searchInput}
+              setSearchInput={setSearchInput}
+            />
+          </div>
+          {/* <!--/select post per page and search input --> */}
 
           <div className="row">
             <div className="col-sm-12">
@@ -310,7 +344,7 @@ const StationInput = () => {
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={stationFromServer.stationList.length}
+              totalPost={filteredStation.length}
               changePage={getCurrentPage}
             />
           </div>

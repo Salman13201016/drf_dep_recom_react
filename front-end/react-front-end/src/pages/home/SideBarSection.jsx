@@ -1,6 +1,5 @@
-
-import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -8,13 +7,18 @@ import {
   faChevronUp,
   faChevronDown,
   faUserDoctor,
+  faLocationCrosshairs,
+  faBuilding,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 const SideBarSection = ({
   selectComponent,
-  isDisplayNone,
-  setisDisplayNone,
+  ishospitalLocationMenuDisplay,
+  ishospitalMenuDisplay,
+  isSymptomMenuDisplay,
+  isRoleMenuDisplay,
+  changeDisplayMenu,
 }) => {
-  // const [isDisplayNone, setisDisplayNone] = useState(true);
   return (
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner slimscroll">
@@ -22,23 +26,38 @@ const SideBarSection = ({
           <ul>
             <li>
               <a href="#">
+                <span>
+                  <img
+                    src="../../../src/assets/img/logo/White-DigiVerse-Logo1.png"
+                    alt=""
+                  />
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="#" onClick={() => selectComponent("dashboard")}>
                 <FontAwesomeIcon icon={faHouse} /> <span>Dashboard</span>
               </a>
             </li>
             <li className="submenu">
-              <a href="#" onClick={() => setisDisplayNone(!isDisplayNone)}>
-                <FontAwesomeIcon icon={faHospital} /> <span> Hospital</span>{" "}
-                {isDisplayNone ? (
-                  <span>
-                    <FontAwesomeIcon icon={faChevronDown} />
-                  </span>
-                ) : (
+              <a href="#" onClick={() => changeDisplayMenu("hospitalLocation")}>
+                <FontAwesomeIcon icon={faLocationCrosshairs} />{" "}
+                <span> Hospital Location</span>{" "}
+                {ishospitalLocationMenuDisplay ? (
                   <span>
                     <FontAwesomeIcon icon={faChevronUp} />
                   </span>
+                ) : (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </span>
                 )}
               </a>
-              <ul style={{ display: isDisplayNone ? "none" : "block" }}>
+              <ul
+                style={{
+                  display: ishospitalLocationMenuDisplay ? "block" : "none",
+                }}
+              >
                 <li>
                   <a href="#" onClick={() => selectComponent("division")}>
                     Division
@@ -54,6 +73,28 @@ const SideBarSection = ({
                     Station
                   </a>
                 </li>
+              </ul>
+            </li>
+
+            <li className="submenu">
+              <a href="#" onClick={() => changeDisplayMenu("hospitalMenu")}>
+                <FontAwesomeIcon icon={faHospital} />{" "}
+                <span> Hospital Menu</span>{" "}
+                {ishospitalMenuDisplay ? (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronUp} />
+                  </span>
+                ) : (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </span>
+                )}
+              </a>
+              <ul
+                style={{
+                  display: ishospitalMenuDisplay ? "block" : "none",
+                }}
+              >
                 <li>
                   <a href="#" onClick={() => selectComponent("hospitalCtg")}>
                     Hospital Category
@@ -69,17 +110,30 @@ const SideBarSection = ({
                     Hospital Map
                   </a>
                 </li>
+              </ul>
+            </li>
+
+            <li className="submenu">
+              <a href="#" onClick={() => changeDisplayMenu("symptomMenu")}>
+                <FontAwesomeIcon icon={faBuilding} /> <span> Symptom</span>{" "}
+                {isSymptomMenuDisplay ? (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronUp} />
+                  </span>
+                ) : (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </span>
+                )}
+              </a>
+              <ul
+                style={{
+                  display: isSymptomMenuDisplay ? "block" : "none",
+                }}
+              >
                 <li>
                   <a href="#" onClick={() => selectComponent("department")}>
                     Department
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    onClick={() => selectComponent("departmentDetails")}
-                  >
-                    Department Details
                   </a>
                 </li>
                 <li>
@@ -92,6 +146,27 @@ const SideBarSection = ({
                     Symtoms
                   </a>
                 </li>
+              </ul>
+            </li>
+
+            <li className="submenu">
+              <a href="#" onClick={() => changeDisplayMenu("roleMenu")}>
+                <FontAwesomeIcon icon={faUser} /> <span> Role</span>{" "}
+                {isRoleMenuDisplay ? (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronUp} />
+                  </span>
+                ) : (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </span>
+                )}
+              </a>
+              <ul
+                style={{
+                  display: isRoleMenuDisplay ? "block" : "none",
+                }}
+              >
                 <li>
                   <a href="#" onClick={() => selectComponent("role")}>
                     Role
@@ -106,9 +181,8 @@ const SideBarSection = ({
             </li>
 
             <li>
-              <Link to={'/digiverse'} >
-                  <FontAwesomeIcon icon={faUserDoctor} />{" "}
-                  <span> Digiverse</span>{" "}
+              <Link to={"/digiverse"}>
+                <FontAwesomeIcon icon={faUserDoctor} /> <span> Digiverse</span>{" "}
               </Link>
             </li>
           </ul>
@@ -119,9 +193,12 @@ const SideBarSection = ({
 };
 
 SideBarSection.propTypes = {
-  setisDisplayNone: PropTypes.func,
   selectComponent: PropTypes.func,
-  isDisplayNone : PropTypes.bool
+  changeDisplayMenu: PropTypes.func,
+  ishospitalLocationMenuDisplay: PropTypes.bool,
+  ishospitalMenuDisplay: PropTypes.bool,
+  isSymptomMenuDisplay: PropTypes.bool,
+  isRoleMenuDisplay: PropTypes.bool,
 };
 
-export default SideBarSection
+export default SideBarSection;
