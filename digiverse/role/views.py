@@ -6,11 +6,11 @@ from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from rest_framework import status
 
-from .models import patient_or_admin
+from .models import UserRole
 from .serializers import PatientOrAdminSerializer
 
 class PatientOrAdminViewSet(viewsets.ModelViewSet):
-    queryset = patient_or_admin.objects.all()
+    queryset = UserRole.objects.all()
     serializer_class = PatientOrAdminSerializer
 
     @action(detail=False, methods=['post'])
@@ -20,7 +20,7 @@ class PatientOrAdminViewSet(viewsets.ModelViewSet):
             if len(patient_name) < 4:
                 return Response({'error': 'Minimum 4 characters required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            if patient_or_admin.objects.filter(patient_name=patient_name).exists():
+            if UserRole.objects.filter(patient_name=patient_name).exists():
                 return Response({'info': 'This name already exists.'}, status=status.HTTP_200_OK)
             else:
                 serializer = self.get_serializer(data=request.data)

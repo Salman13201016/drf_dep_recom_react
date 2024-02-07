@@ -27,8 +27,11 @@ class UserRolePanelView(generics.ListAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        # Your post logic here, add the necessary code
-        return redirect('login_auth_panel')  # Redirect as needed
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserRoleStoreAPIView(APIView):
     def post(self, request, *args, **kwargs):

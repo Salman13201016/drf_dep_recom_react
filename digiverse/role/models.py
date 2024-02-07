@@ -1,7 +1,15 @@
 from django.db import models
 
-# Create your models here.
+class UserRole(models.Model):
+    ROLE_CHOICES = [
+        ('Admin', 'Admin'),
+        ('Subadmin', 'Subadmin'),
+        ('Staff', 'Staff'),
+    ]
 
-class patient_or_admin(models.Model):
-    id = models.AutoField(primary_key=True)
-    patient_name = models.CharField(max_length=500, unique=True,null=True, blank=True)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+
+    def __str__(self):
+        return self.role
+
+

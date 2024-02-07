@@ -18,7 +18,7 @@ router.register(r'signup', SignUpView, basename='signup')
 
 urlpatterns = [
     path('user_index_panel/', UserIndexPanelView.as_view({'get': 'user_index_panel'}), name='user_index_panel'),
-    path('email_verification/<str:v_key>/', EmailVerificationView.as_view(), name='email_verification'),
+    path('email_verification/<str:v_key>/<str:fname>/', EmailVerificationView.as_view(), name='email_verification'),
     path('login_auth_panel/', LoginAuthView.as_view({'post': 'login_auth_panel'}), name='login_auth_panel'),
     path('logout_auth_panel/', LogoutAuthView.as_view({'post': 'logout_auth_panel'}), name='logout_auth_panel'),
     path('csrf_failure/', csrf_failure_view, name='csrf_failure'),
