@@ -10,5 +10,5 @@ from .models import UserRole
 from .serializers import PatientOrAdminSerializer
 
 class RoleViewSet(viewsets.ModelViewSet):
-    queryset = Role.objects.all()
-    serializer_class = RoleSerializer
+    queryset = UserRole.objects.all()
+    serializer_class = PatientOrAdminSerializer
