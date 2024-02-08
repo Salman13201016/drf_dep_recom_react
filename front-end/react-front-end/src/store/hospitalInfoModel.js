@@ -6,8 +6,12 @@ const hospitalInfoModel = {
   updateHospitalInfoList: action((state, payload) => {
     state.hospitalInfoList.push(payload);
   }),
+  removeHospitalInfoList: action((state) => {
+    state.hospitalInfoList = [];
+  }),
   getHospitalInfoFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
+    if(data){actions.removeHospitalInfoList()}
     data.forEach((singleHospital) => {
       actions.updateHospitalInfoList(singleHospital);
     });

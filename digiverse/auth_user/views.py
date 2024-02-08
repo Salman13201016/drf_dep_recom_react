@@ -1,7 +1,7 @@
 
 import re
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from datetime import datetime, timedelta
 import random
@@ -12,10 +12,31 @@ from django.utils.html import format_html
 from . models import user_register
 from rest_framework import serializers
 from rest_framework import viewsets
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import EmailVerificationSerializer, AuthUserIndexSerializer, TermsOfUseSerializer, PrivacyPolicySerializer
+from rest_framework import status, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import generics
+from .serializers import EmailGeneratorSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import SignUpSerializer, LoginAuthSerializer, LogoutAuthSerializer, CsrfFailureSerializer
+from .models import user_register
+# from prediction.views import PredictionPanelAPIView
 
+from .models import user_register  # Import your user_register model
+from .serializers import EmailVerificationSerializer  # Import your serializer
 
-
+from django.http import JsonResponse
+from django.core.serializers import serialize
 from .serializers import UserIndexPanelSerializer
+
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.hashers import check_password
 
 class UserIndexPanelView(viewsets.GenericViewSet):
     serializer_class = UserIndexPanelSerializer
@@ -30,19 +51,16 @@ class UserIndexPanelView(viewsets.GenericViewSet):
         msg = messages.get_messages(request)
         data = {'all_data': all_data, 'status': status, 'msg': msg}
         serializer = self.get_serializer(data)
-        return render(request, 'update_design/signup.html', serializer.data)
+        
+        # Return a JSON response
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-from .serializers import SignUpSerializer, LoginAuthSerializer, LogoutAuthSerializer, CsrfFailureSerializer
-from .models import user_register
+
 
 class SignUpView(viewsets.ModelViewSet):
     serializer_class = SignUpSerializer
     queryset = user_register.objects.all()
 
-from rest_framework import generics
-from .serializers import EmailGeneratorSerializer
-from rest_framework.response import Response
-from rest_framework import status
 
 class EmailGeneratorView(generics.CreateAPIView):
     serializer_class = EmailGeneratorSerializer
@@ -55,27 +73,17 @@ class EmailGeneratorView(generics.CreateAPIView):
 
         return Response({"encrypted_value": encrypted_value1, "formatted_link": formatted_link}, status=status.HTTP_200_OK)
     
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import EmailVerificationSerializer, AuthUserIndexSerializer, TermsOfUseSerializer, PrivacyPolicySerializer
-from rest_framework import status, viewsets
-from rest_framework.response import Response
-from rest_framework.views import APIView
-
-from .models import user_register  # Import your user_register model
-from .serializers import EmailVerificationSerializer  # Import your serializer
-
 class EmailVerificationView(APIView):
     serializer_class = EmailVerificationSerializer
 
     def get(self, request, *args, **kwargs):
         v_key = kwargs.get('v_key')
+        fname = kwargs.get('fname')
         print(f"Verifying email for key: {v_key}")
-        serializer = self.serializer_class(data={'v_key': v_key})
-        serializer.is_valid(raise_exception=True)
+        # serializer = self.serializer_class(data={'v_key': v_key})
+        # serializer.is_valid(raise_exception=True)
 
-        fname = serializer.validated_data.get('fname')
+        # fname = serializer.validated_data.get('fname')
         try:
             user = user_register.objects.get(fname=fname)  # Replace with your actual model
         except user_register.DoesNotExist:
@@ -84,40 +92,79 @@ class EmailVerificationView(APIView):
         user.v_status = 1
         user.save()
 
-        user_data = {"u_data": user}
-        return render(request, 'update_design/welcome.html', user_data)
+        user_data = {"u_data": serialize('json', [user])}  # Convert to JSON-serializable format
+        return JsonResponse(user_data, status=status.HTTP_200_OK, safe=False)
 
+# class EmailVerificationView(APIView):
+#     serializer_class = EmailVerificationSerializer
 
+#     def get(self, request, *args, **kwargs):
+#         v_key = kwargs.get('v_key')
+#         fname = kwargs.get('fname')
+#         print(f"Verifying email for key: {v_key}")
+#         serializer = self.serializer_class(data={'v_key': v_key})
+#         serializer.is_valid(raise_exception=True)
+
+#         fname = serializer.validated_data.get('fname')
+#         try:
+#             user = user_register.objects.get(fname=fname)  # Replace with your actual model
+#         except user_register.DoesNotExist:
+#             return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+#         user.v_status = 1
+#         user.save()
+
+#         user_data = {"u_data": user}
+#         return render(request, 'update_design/welcome.html', user_data)
 
 # views.py
+# class LoginAuthView(viewsets.GenericViewSet):
+#     serializer_class = LoginAuthSerializer
+
+#     def login_auth_panel(self, request):
+#         serializer = self.get_serializer(data=request.data)
+#         if serializer.is_valid():
+#             email = serializer.validated_data['email']
+#             password = serializer.validated_data['password']
+
+#             user = get_object_or_404(user_register, email=email)
+
+#             if check_password(password, user.password):
+#                 prediction_panel_view = PredictionPanelAPIView.as_view()
+#                 return prediction_panel_view(request)
+#             else:
+#                 return Response({"error": "Wrong Password"}, status=status.HTTP_400_BAD_REQUEST)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 class LoginAuthView(viewsets.GenericViewSet):
     serializer_class = LoginAuthSerializer
 
     def login_auth_panel(self, request):
         if 'user_id' in request.session:
-            return redirect('prediction_panel')
+            return Response({"message": "User is already logged in"}, status=status.HTTP_200_OK)
 
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
+
             try:
                 user = user_register.objects.get(email=email)
+
                 if user.password == password:
                     request.session['user_id'] = user.id
                     request.session['user_email'] = user.email
                     request.session['user_fname'] = user.fname
-                    return redirect('prediction_panel')
+                    return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
                 else:
                     messages.success(request, 'Wrong Password')
-                    return redirect('/login/')
+                    return Response({"error": "Wrong Password"}, status=status.HTTP_400_BAD_REQUEST)
             except user_register.DoesNotExist:
                 messages.success(request, 'This user is not available')
-                return redirect('/login/')
+                return Response({"error": "This user is not available"}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 class LogoutAuthView(viewsets.GenericViewSet):
     serializer_class = LogoutAuthSerializer
@@ -127,7 +174,7 @@ class LogoutAuthView(viewsets.GenericViewSet):
             request.session.flush()
         if 'social_auth_google-oauth2' in request.session:
             del request.session['social_auth_google-oauth2']
-        return redirect('aut_index')
+        return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
     
 def csrf_failure_view(request, reason=""):
     return HttpResponse(render(request, 'auth_user/csrf_failure.html'), status=403)

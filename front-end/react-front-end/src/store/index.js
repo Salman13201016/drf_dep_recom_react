@@ -6,6 +6,10 @@ import hospitalCategoryModel from './hospitalCategoryModel';
 import departmentModel from './departmentModel';
 import diseaseModel from './diseaseModel';
 import hospitalInfoModel from './hospitalInfoModel';
+import hospitalMapModel from './hospitalMapModel';
+import roleModel from './roleModel';
+import roleUserModel from './roleUserModel';
+import symptomModel from './symptomModel';
 
 
 
@@ -18,6 +22,10 @@ const store = createStore({
     hospitalInfo : hospitalInfoModel,
     department : departmentModel,
     disease : diseaseModel,
+    hospitalMap : hospitalMapModel,
+    role : roleModel,
+    roleUser : roleUserModel,
+    symptom : symptomModel,
 })
 
 export default store;

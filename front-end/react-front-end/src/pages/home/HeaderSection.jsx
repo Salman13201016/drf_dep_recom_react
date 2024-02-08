@@ -2,38 +2,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import {
   faAlignLeft,
-  faMagnifyingGlass,
   faBell,
 } from "@fortawesome/free-solid-svg-icons";
 
 
 
-const HeaderSection = ({ isDisplayNone, setisDisplayNone }) => {
-  const handleToggle = () =>{
-    if(!isDisplayNone){
-      setisDisplayNone(!isDisplayNone);
-    }
-  }
+const HeaderSection = ({makeDefaultMenu}) => {
   return (
     <div className="header">
       <div className="header-left">
-        <a href="index.html" className="logo">
-          <img src="/src/assets/img/logo.png" alt="Logo" />
+        <a href="#" className="logo">
+          {/* <img src="/src/assets/img/logo.png" alt="Logo" /> */}
         </a>
-        <a href="index.html" className="logo logo-small">
-          <img
+        <a href="#" className="logo logo-small">
+          {/* <img
             src="/src/assets/img/logo-small.png"
             alt="Logo"
             width="30"
             height="30"
-          />
+          /> */}
         </a>
       </div>
 
-      <a href="#" id="toggle_btn" onClick={handleToggle}>
+      <a href="#" id="toggle_btn" onClick={makeDefaultMenu}>
         <FontAwesomeIcon icon={faAlignLeft} />
       </a>
-
+      {/* 
       <div className="top-nav-search">
         <form>
           <input
@@ -45,7 +39,7 @@ const HeaderSection = ({ isDisplayNone, setisDisplayNone }) => {
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </button>
         </form>
-      </div>
+      </div> */}
 
       <a className="mobile_btn" id="mobile_btn">
         <i className="fa fa-bars"></i>
@@ -217,7 +211,6 @@ const HeaderSection = ({ isDisplayNone, setisDisplayNone }) => {
 };
 
 HeaderSection.propTypes = {
-  setisDisplayNone: PropTypes.func,
-  isDisplayNone: PropTypes.bool,
+  makeDefaultMenu: PropTypes.func,
 };
 export default HeaderSection;

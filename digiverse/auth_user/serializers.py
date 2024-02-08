@@ -12,6 +12,11 @@ import random
 from django.utils.html import format_html
 from rest_framework import serializers
 from datetime import datetime
+from django.core.signing import BadSignature
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.hashers import check_password
+
+
 class UserIndexPanelSerializer(serializers.Serializer):
     all_data = serializers.ListField()
     status = serializers.BooleanField()
@@ -113,27 +118,38 @@ class EmailGeneratorSerializer(serializers.Serializer):
         encrypted_value = signer.sign(v_c)
         encrypted_value1 = signer.sign(v_c).split(":")[1]
         decrypted_value = signer.unsign(encrypted_value)
-
-        link = f"<p>Congratulations Mr {validated_data['fname']} ! For registering as a user in our doctor appointment system. To confirm the registration </p><a href='http://127.0.0.1:8000/email_verification/{encrypted_value1}' target='_blank'>please click this Activation link</a>"
+        
+        link = f"<p>Congratulations Mr {validated_data['fname']} ! For registering as a user in our doctor appointment system. To confirm the registration </p><a href='http://127.0.0.1:8000/auth_user/email_verification/{encrypted_value1}/' target='_blank'>please click this Activation link</a>"
+        print(encrypted_value)
 
         formatted_link = format_html(link)
         return encrypted_value1, formatted_link
 
-
 class EmailVerificationSerializer(serializers.Serializer):
-    fname = serializers.CharField()
+    fname = serializers.CharField(required=False)
 
     def validate_fname(self, value):
-        # Perform additional validation if needed
-        if not user_register.objects.filter(fname=value).exists():
-            raise serializers.ValidationError("User not found.")
-        
+        if value:
+            if not user_register.objects.filter(fname=value).exists():
+                raise serializers.ValidationError("User not found.")
         return value
+
+
+# class EmailVerificationSerializer(serializers.Serializer):
+#     fname = serializers.CharField(required=False)
+
+#     def validate_fname(self, value):
+#         if value:
+#             if not user_register.objects.filter(fname=value).exists():
+#                 raise serializers.ValidationError("User not found.")
+#         return value
+
 
 # serializers.py
 class LoginAuthSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
 
 # serializers.py
 class LogoutAuthSerializer(serializers.Serializer):
@@ -155,7 +171,7 @@ class TermsOfUseSerializer(serializers.Serializer):
 class PrivacyPolicySerializer(serializers.Serializer):
     pass
 
-# views.py
+
 
 
 
