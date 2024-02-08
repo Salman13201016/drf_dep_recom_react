@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'address', 
     'django_filters',
     'dj_rest_auth',
+    'privacy_policy',
    
     
 
