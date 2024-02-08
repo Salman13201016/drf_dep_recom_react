@@ -20,7 +20,10 @@ urlpatterns = [
     path('address/', include('address.urls')),
     # path('prediction/', include('prediction.urls')),
     path('user_role/', include('user_role.urls')),
+<<<<<<< HEAD
     path('privacy/', include('privacy_policy.urls')),
+=======
+>>>>>>> 67523bcb46389d5b5814794611aaf15bf6689ea3
    
     
 
