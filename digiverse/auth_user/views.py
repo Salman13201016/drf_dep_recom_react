@@ -118,6 +118,7 @@ class EmailVerificationView(APIView):
 #         return render(request, 'update_design/welcome.html', user_data)
 
 # views.py
+
 # class LoginAuthView(viewsets.GenericViewSet):
 #     serializer_class = LoginAuthSerializer
 
@@ -154,7 +155,7 @@ class EmailVerificationView(APIView):
 #             else:
 #                 return Response({"error": "Wrong Password"}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class LoginAuthView(viewsets.GenericViewSet):
     serializer_class = LoginAuthSerializer
 
@@ -183,6 +184,27 @@ class LoginAuthView(viewsets.GenericViewSet):
                 return Response({"error": "This user is not available"}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+# class LoginAuthView(viewsets.GenericViewSet):
+#     serializer_class = LoginAuthSerializer
+
+#     def login_auth_panel(self, request):
+#         serializer = self.get_serializer(data=request.data)
+#         if serializer.is_valid():
+#             email = serializer.validated_data['email']
+#             password = serializer.validated_data['password']
+
+#             user = get_object_or_404(user_register, email=email)
+
+#             if check_password(password, user.password):
+#                 prediction_panel_view = PredictionPanelAPIView.as_view()
+#                 return prediction_panel_view(request)
+#             else:
+#                 return Response({"error": "Wrong Password"}, status=status.HTTP_400_BAD_REQUEST)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LogoutAuthView(viewsets.GenericViewSet):
     serializer_class = LogoutAuthSerializer

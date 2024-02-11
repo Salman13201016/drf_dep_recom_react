@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import RoleViewSet, CRUDPermissionViewSet, MenuPermissionViewSet
+from .views import RoleViewSet
 
 app_name = 'role'
 

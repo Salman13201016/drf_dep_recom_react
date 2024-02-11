@@ -23,3 +23,4 @@ class CRUDPermissionViewSet(viewsets.ModelViewSet):
 class MenuPermissionViewSet(viewsets.ModelViewSet):
     queryset = MenuPermission.objects.all()
     serializer_class = MenuPermissionSerializer
+    serializer_class = PatientOrAdminSerializer

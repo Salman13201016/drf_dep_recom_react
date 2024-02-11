@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import  Department_history_prediction
 from symptom.models import Symptom
 from nltk.corpus import stopwords
-import nltk
+
 
 class SymptomSerializer(serializers.ModelSerializer):
     class Meta:
