@@ -49,14 +49,28 @@ INSTALLED_APPS = [
     # 'registration',
     'dashboard_from',
     'auth_user',
-    'prediction',
+    # 'prediction',
     'static',
     'social_django',
     'address', 
     'django_filters',
     'dj_rest_auth',
-    
+    'privacy_policy',
    
+    
+
+    
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
     
 
     
@@ -98,15 +112,6 @@ DATABASES = {
 
     }
 }
-MIDDLEWARE = [
-    # ... other middleware ...
-
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-
-    # ... other middleware ...
-]
 
 
 # Password validation
