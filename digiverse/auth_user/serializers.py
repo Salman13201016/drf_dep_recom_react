@@ -171,7 +171,7 @@ class TermsOfUseSerializer(serializers.Serializer):
 class PrivacyPolicySerializer(serializers.Serializer):
     pass
 
-# views.py
+
 
 
 

@@ -11,5 +11,6 @@ class DistrictSerializer(serializers.ModelSerializer):
         division = instance.division
         representation['division'] = {
             'id': division.id,
+            'name' : division.name,
         }
         return representation
