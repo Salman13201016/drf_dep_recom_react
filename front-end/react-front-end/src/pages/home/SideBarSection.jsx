@@ -177,6 +177,11 @@ const SideBarSection = ({
                     Role User
                   </a>
                 </li>
+                <li>
+                  <a href="#" onClick={() => selectComponent("rolePermission")}>
+                    Role Permission
+                  </a>
+                </li>
               </ul>
             </li>
 

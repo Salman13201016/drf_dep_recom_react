@@ -36,7 +36,7 @@ const SymtomsInput = () => {
   const [showDiseaseInJSX, setshowDiseaseInJSX] = useState("");
   const [initialInputNumber, setinitialInputNumber] = useState(5);
   const [searchInput, setSearchInput] = useState("");
-  const filteredDistrict = symptomFromServer.symptomList.filter((item) => {
+  const filteredSymptom = symptomFromServer.symptomList.filter((item) => {
     return searchInput.toLowerCase() == ""
       ? item
       : item.name.toLowerCase().includes(searchInput);
@@ -49,7 +49,7 @@ const SymtomsInput = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
-  const currentDistrict = filteredDistrict.slice(firstPostIndex, lastPostIndex);
+  const currentSymptom = filteredSymptom.slice(firstPostIndex, lastPostIndex);
   const initalInput = [];
   for (let i = 0; i < initialInputNumber; i++) {
     initalInput.push(`symptom${i+1}`);
@@ -185,6 +185,7 @@ const SymtomsInput = () => {
 
   return (
     <div className="card">
+      <ToastContainer />
       <div className="card-header">
         <h4 className="card-title">Symptom Data Input</h4>
       </div>
@@ -306,7 +307,7 @@ const SymtomsInput = () => {
           <div>
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">District List</h3>
+                <h3 className="page-title">Symptom List</h3>
               </div>
             </div>
           </div>
@@ -331,18 +332,18 @@ const SymtomsInput = () => {
                       <thead>
                         <tr>
                           <th>Serial</th>
-                          <th>Name</th>
+                          <th>Symptom</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {currentDistrict.map((singleDistrict, index) => {
+                        {currentSymptom.map((singleDistrict, index) => {
                           return (
                             <tr key={index}>
                               <td>
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
-                              <td>{singleDistrict.name}</td>
+                              <td>{singleDistrict.symptom1}</td>
                               <td>
                                 <a
                                   className="btn btn-sm bg-success-light px-3 mr-2"
@@ -379,7 +380,7 @@ const SymtomsInput = () => {
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={filteredDistrict.length}
+              totalPost={filteredSymptom.length}
               changePage={getCurrentPage}
             />
           </div>
@@ -399,8 +400,8 @@ const SymtomsInput = () => {
       <EditModal
         isShow={isEditModalshow}
         handleClose={handleEditModalClose}
-        modalTitle={"District Name"}
-        editValue={selectedItem.name}
+        modalTitle={"Symptom Field"}
+        editValue={selectedItem.symptom1}
         handleChange={handleEditValueChange}
         id={selectedItemId}
         fieldName="name"

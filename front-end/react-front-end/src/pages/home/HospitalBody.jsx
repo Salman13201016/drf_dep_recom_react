@@ -14,6 +14,7 @@ import DigiverseMain from "../digiverse";
 import RoleInput from "./Input/RoleInput";
 import RoleUser from "./Input/RoleUser";
 import DashBoard from "./DefaultBodySection";
+import RolePermissionInput from "./Input/RolePermissionInput";
 
 
 const HospitalBody = ({ componentShow }) => {
@@ -46,6 +47,8 @@ const HospitalBody = ({ componentShow }) => {
     renderComponent = <RoleUser />
   }else if (componentShow == "dashboard") {
     renderComponent = <DashBoard />
+  }else if (componentShow == "rolePermission") {
+    renderComponent = <RolePermissionInput />
   }
 
     return (

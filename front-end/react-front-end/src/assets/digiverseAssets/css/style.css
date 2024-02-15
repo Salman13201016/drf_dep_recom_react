@@ -1,5 +1,5 @@
 /* Reset CSS */
-.digiverseBody{
+*{
     margin: 0;
     box-sizing: border-box;
 }
@@ -13,7 +13,12 @@
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
+    /* cursor: none; */
 }
+
+ h1, h2, h3, h4, h5, h6{
+    font-family: 'Montserrat', sans-serif;
+ }
 ::placeholder{
     color: #ffffff;
 }
@@ -28,28 +33,23 @@ img{
     max-width: 100%;
 }
 .cursor{
-    width: 1.2rem;
-    height: 1.2rem;
-    background: #004164;
+    width: 20px;
+    height: 20px;
     position: absolute;
-    overflow: hidden;
-    box-shadow: 0 0 2px 1px #012b42;
-    z-index: 1;
-    transform: translate(-50%, -50%);
+    top: -100%;
+    left: -100%;
+    z-index: 99999999999999999999999999999999999999999;
     pointer-events: none;
+    transform: translate(-20%, -30%);
 }
-.cursor2{
-    background: transparent;
-    width: 1.2rem;
-    height: 1.2rem;
-    transform: translate(40%, 40%);
-    
-}
+
+
+
 
 /*========== Global CSS Start ===========*/
 .container{
-    width: 100%;
-    max-width: 1920px;
+    width: 100vw;
+    max-width: 100%;
     padding: 0 3rem;
     margin: 0 auto;
     height: 100%;
@@ -59,18 +59,63 @@ img{
 
 
 /*======== Styling Started =============*/
+/* ChatBoot */
+.chat_bot{
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: transparent;
+    width: 90%;
+    max-width: 23rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: right;
+}
+.chat_bot .chat_bot_button{
+    width: 3rem;
+    height: 3rem;
+    line-height: 3.6rem;
+    text-align: center;
+    border-radius: 50%;
+    background: #2b3d66;
+    border: 1px solid rgba(255, 255, 255, .7);
+    outline: none;
+    position: relative;
+    margin-left: auto;
+}
+.chat_bot .chat_bot_button i{
+    font-size: 1.8rem;
+    color: #c1bfbf;
+}
+.chat_bot .chat_bot_body{
+    width: 100%;
+    height: 25rem;
+    background: #ffffff;
+    border-radius: 1rem;
+    position: absolute;
+    right: 0;
+    bottom: 3.5rem;
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+
 /*==== Preeloder Start =====*/
 .onLoad{
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
+    max-width: 100%;
     height: 100%;
     /* background:#0101a8; */
     background: url('../img/background/welcome.jpg'), no-repeat;
     background-position: center;
     background-size: cover;
-    z-index: 999999999999999;
+    z-index: 999;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -106,20 +151,20 @@ img{
 .onLoad_body .icon{
     text-align: center;
     cursor: pointer;
-    display: block !important;
+    display: block;
     position: absolute;
     bottom: 22vh;
     left: 50%;
     transform: translate(-50%);
 }
 .onLoad_body .icon .dot{
-    cursor: pointer;
     transition-duration: 1s;
     border: 1px solid #ffffff;
     width: 1.4rem;
     height: 3rem;
     margin-top: 5rem;
     position: absolute;
+    cursor: pointer;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -142,6 +187,7 @@ img{
     left: 50%;
     transform: translate(-50%, 0);
     animation: scrolldown 2s infinite;
+    cursor: pointer;
 }
 @keyframes scrolldown {
     0%{
@@ -188,6 +234,11 @@ img{
     z-index: 1;
     /* box-shadow: 0 0 2px 0 rgb(1, 1, 79); */
 }
+.header_logo .home_page_logo{
+    height: fit-content;
+    position: relative;
+    z-index: 1;
+}
 
 .body_main .header_logo{
     /* background: #ebf7fb; */
@@ -198,18 +249,19 @@ img{
     text-align: center;
     padding: 0.3rem 0;
     background: transparent;
+    height: fit-content;
 }
 .body_main .header_logo .home_page_logo img{
     max-width: 12rem;
     margin: auto;
 }
-.header_logo a img{
+.header_logo .home_page_logo img{
     max-width: 100%;
+    height: auto;
 }
 
 .slider_main .slider_box{
     text-align: center;
-    position: absolute;
     transform: translate(0) scale(0);
     transition: transform 1s;
 }
@@ -219,7 +271,6 @@ img{
 }
 .content .slider_main{
     width: 100%;
-    max-width: 50rem;
     margin-top: 28vh;
     margin-left: auto;
     margin-right: auto;
@@ -326,6 +377,7 @@ img{
 }
 .signup_main_div{
     width: 100vw;
+    max-width: 100%;
     min-height: 100vh;
     background: url('../img/signup/signup.jpg'), no-repeat;
     background-position: center;
@@ -357,21 +409,31 @@ img{
 }
 .login{
     width: 100%;
-    max-width: 576px;
+    max-width: 470px;
     position: absolute;
     top: 45%;
     left: 50%;
     transform: translate(-50%, -45%);
 }
+.login_error h4{
+    color: #CD201F;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
 .signup{
     position: relative;
     width: 100%;
     top: unset;
-    max-width: 576px;
+    max-width: 470px;
     margin-left: auto !important;
     margin-right: auto !important;
     margin-top: 5rem;
     transform: unset;
+}
+.form_inner_div .require_mark{
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-bottom: -.5rem;
 }
 
 .header_main{
@@ -407,7 +469,7 @@ img{
     align-items: center;
     column-gap: .5rem;
     margin-bottom: 1rem;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, .4);
     padding-bottom: 1px;
 }
 .login_inner form .form_inner_div i{
@@ -415,6 +477,9 @@ img{
     font-size: .8rem;
     color: #ffffff;
     margin-top: 0.5rem;
+}
+.login_inner form .form_inner_div label{
+    cursor: none;
 }
 .login_inner form .form_inner_div input::placeholder{
     font-size: .8rem;
@@ -424,17 +489,33 @@ img{
 .login_inner form .form_inner_div input{
     display: block;
     width: 100%;
-    padding: .6rem .6rem 0 .6rem;
+    padding: .6rem 0 0 .6rem;
     border-color: transparent;
     outline-color: transparent;
     background: transparent;
+} 
+.login_inner form .form_inner_div input.empty{
+    cursor: text;
+}
+.form_inner_div input[type="date"]::-webkit-calendar-picker-indicator{
+  --webkit--cursor: pointer;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 2px;
+  --webkit--opacity: 0.8;
+  opacity: 0.8;
+  filter: invert(0.8);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1
 }
 .login_inner form .form_inner_div input:focus{
     outline: none;
     caret-color: #ffffff;
 }
 
-.login_inner form .auth_btn{
+.login_inner .auth_btn{
     width: fit-content;
     font-size: .9rem;
     font-weight: 700;
@@ -445,13 +526,13 @@ img{
     transition: .3s;
     background: transparent;
 }
-.login_inner form .auth_btns .auth_login_btn{
-    width: 6rem;
+.login_inner .auth_btns .auth_login_btn{
+    width: 7rem;
     height: 3rem;
     line-height: 3rem;
     text-align: left;
 }
-.login_inner form .auth_btn:hover{
+.login_inner .auth_btn:hover{
     font-size: 1.1rem;
 }
 .auth_btn_back{
@@ -499,7 +580,7 @@ img{
     font-size: .9rem;
 }
 .login_inner form .signup_btn_div{
-    width: 6rem;
+    width: 7rem;
     height: 3rem;
     line-height: 3rem;
     text-align: center;
@@ -509,7 +590,7 @@ img{
 /*============= Footer section ===========*/
 .privacy_footer{
     position: unset !important;
-    margin-top: 2rem;
+    margin-top: -3rem;
 }
 .footer_main{
     /* border-top: 1px solid rgb(1, 1, 65); */
@@ -548,7 +629,6 @@ img{
 .footer_main .login_privacy{
     text-align: center;
     width: fit-content;
-    margin-left: -.3rem;
 }
 .footer_main .login_privacy a{
     font-size: .7rem;
@@ -566,13 +646,20 @@ img{
 .footer_main .login_privacy a:last-child{
     border-color: transparent;
 }
-.login_inner form .or{
+.login_inner .or{
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 2rem auto;
     display: none;
+}
+#view_pass{
+    cursor: pointer;
+    color: rgba(255, 255, 255, .7);
+}
+#view_pass:hover{
+    color: #ffffff;
 }
 .login_inner form .or .ordiv{
     width: 45%;
@@ -652,6 +739,7 @@ img{
     color: #ffffff;
     text-align: center;
     text-transform: uppercase;
+    margin-bottom: 1.5rem;
 }
 .privacy_top .privacy_data_bold{
     font-size: 1.1rem;
@@ -665,32 +753,35 @@ img{
     font-weight: 700;
     color: #ffffff;
     line-height: 2.2rem;
-    margin-bottom: 0;
+    margin-bottom: 1rem;
 }
 .privacy_top .privacy_data_color{
     font-size: 1rem;
     font-weight: 500;
-    color: rgb(1, 1, 79);
+    color: #ffffff;
     line-height: 1.6rem;
-    padding: 1rem;
-    background: #ffffff;
     border-radius: .3rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
+    text-align: justify;
+    padding-left: 1rem;
 }
 .privacy_top .privacy_data{
+
     font-size: .9rem;
     font-weight: 500;
     color: #ffffff;
     line-height: 1.4rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     padding-left: 1rem;
+    text-align: justify;
 }
 .privacy_top ul li{
     font-size: .9rem;
     font-weight: 500;
     color: #ffffff;
     line-height: 1.4rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 2.5rem;
+    text-align: justify;
 }
 .privacy_top ul{
     margin-bottom: 2rem;
@@ -817,10 +908,192 @@ img{
    font-size: 1.2rem;
 }
 
+
+/*============ About Section Start ===============*/
+
+.about_section{
+    width: 100vw;
+    max-width: 100%;
+    margin: 0 0 2.5rem 0;
+
+}
+.bgdurkabout{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .7);
+    z-index: -1;
+}
+
+.about_main .about_inner{
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-top: 1rem;
+}
+.about_inner .about_single_div{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 350px;
+    position: relative;
+    overflow: hidden;
+}
+.about_inner .about_single_div.right_align{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 350px;
+    position: relative;
+    overflow: hidden;
+}
+
+.about_single_div .single_bg_img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+.about_single_div .about_single_text{
+    width: 50%;
+    height: 100%;
+    background: rgba(0, 0, 0, .7);
+    transition: .3s;
+    padding: 2rem;
+    position: relative;
+}
+.about_single_div:hover .about_single_text{
+    background: #1A2D5A;
+}
+.about_single_div .about_single_img{
+    width: 50%;
+    height: 100%;
+}
+.about_title{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-align: left;
+    line-height: 140%;
+}
+.about_paragraph{
+    font-size: .9rem;
+    font-weight: 400;
+    color: #ffffff;
+    text-align: left;
+    line-height: 140%;
+    letter-spacing: .1px;
+}
+.about_single_text .seemore, .less{
+    font-size: .9rem;
+    font-weight: 500;
+    background: transparent;
+    outline: none;
+    border: none;
+    color: #ffffff;
+    padding-left: 0;
+    text-transform: uppercase;
+    opacity: .6;
+    transition: .3s;
+}
+
+.about_single_text .seemore:hover{
+    opacity: 1;
+}
+.about_single_text .less:hover{
+    opacity: 1;
+}
+.aboutcontentList{
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+    color: #ffffff;
+}
+.aboutcontentList li{
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.link_ath_bmrc{
+    font-size: .6rem;
+    font-weight: 500;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: .3s;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: block;
+    width: fit-content;
+    margin-right: auto;
+}
+.link_ath_bmrc:hover{
+    opacity: .6;
+}
+
+.about_finished {
+    margin-top: .5rem;
+    text-align: left;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.about_finished .finished_para{
+    font-size: .6rem;
+    font-weight: 500;
+    color: #ffffff;
+}
+.about_finished .finished_para a{
+    text-decoration: none;
+    transition: all .4s;
+    color: #ffffff;
+    opacity: .5;
+}
+.about_finished .finished_para a:hover{
+    opacity: 1;
+}
 /*========== Start Responsive ===========*/
-
-/*------- max-width: 1400px  --------*/
-
+/*------- max-width: 1200px  --------*/
+@media (max-width: 1200px) {
+    .about_dobble_inner .dobble_inner_content{
+        height: 380px;
+    }
+    .dobble_inner_text{
+        height: 380px;
+    }
+    .about_dabble_section .about_dobble_inner .win_box{
+        height: 380px;
+    }
+    .service_bottom_content_text{
+        height: 380px;
+    }
+    .about_service_bottom_inner .about_service_bottom_content{
+        height: 380px;
+    }
+}
+@media (max-width: 1100px) {
+    .about_dobble_inner .dobble_inner_content{
+        height: 400px;
+    }
+    .dobble_inner_text{
+        height: 400px;
+    }
+    .about_dabble_section .about_dobble_inner .win_box{
+        height: 400px;
+    }
+    .service_bottom_content_text{
+        height: 400px;
+    }
+    .about_service_bottom_inner .about_service_bottom_content{
+        height: 400px;
+    }
+}
 /*------- max-width: 1024px  --------*/
 @media (max-width: 1024px) {
     .social .social_inner a i{
@@ -828,6 +1101,21 @@ img{
         width: 1.7rem !important;
         height: 1.7rem !important;
         line-height: 1.7rem !important;
+    }
+    .about_dobble_inner .dobble_inner_content{
+        height: 420px;
+    }
+    .dobble_inner_text{
+        height: 420px;
+    }
+    .about_dabble_section .about_dobble_inner .win_box{
+        height: 420px;
+    }
+    .service_bottom_content_text{
+        height: 420px;
+    }
+    .about_service_bottom_inner .about_service_bottom_content{
+        height: 420px;
     }
 }
 
@@ -849,14 +1137,88 @@ img{
         margin-bottom: 3rem;
     }
     .body_main .header_logo{
-        width: 100% !important;
+        width: 100% ;
         text-align: center;
     }
     .body_main .header_logo .home_page_logo img{
         width: 11rem !important;
     }
 
+    /* max-width: 992px for about page */
+    .about_main .about_full_width.top{
+        max-height: 650px;
+    }
+    .about_service_bottom .about_service_bottom_inner{
+        grid-template-columns: auto;
+    }
+    
+    .service_bottom_content_text{
+        width: 100%;
+        background: rgba(0, 0, 0, .8);
+        border-top: 1px solid #ffffff;
+    }
+    .services_halfText{
+        display: none;
+    }
+    .services_fullText{
+        display: block !important;
+    }
+    .about_service_bottom_content button{
+        display: none;
+    }
+    .about_service_bottom_content .service_bottom_content_img{
+        display: none;
+    }
+    .about_dobble_inner{
+       grid-template-columns: 1fr;
+        
+    }
+    .about_dobble_inner > * {
+       grid-column: 1 / -1
+        
+    }
+    
+    .about_dabble_section .about_dobble_inner .win_box{
+        height: unset;
+    }
+    .dobble_inner_content .dobble_inner_img{
+        display: none;
+    }
+    .values_halfContent{
+        display: none;
+    }
+    .dobble_inner_text{
+        width: 100%;
+        border-bottom: 1px solid #ffffff;
+        height: unset;
+    }
+    .dobble_inner_text.win_together{
+        height: fit-content;
+    }
+    .dobble_inner_text:first-child{
+        border-top: 1px solid #ffffff;
+    }
+    .dobble_inner_text button{
+        display: none;
+    }
+    .values_fullContent{
+        display: block !important;
+    }
+    
 }
+
+
+/*----------- Max-width: 800px -----------------*/
+/* about us page */
+@media (max-width: 800px) {
+    .about_main .about_full_width.top{
+        max-height: 600px;
+    }
+    .dobble_inner_text{
+        height: fit-content;
+    }
+}
+
 
 
 /*----------- max-width: 768px -------------*/
@@ -907,6 +1269,87 @@ img{
     .footer_main.home_page_footer{
         padding: 0 1rem 1rem 1rem !important;
     }
+
+    /* 768px for Apout Page */ 
+    .about_main .about_full_width.top{
+        max-height: 600px;
+    }
+    .about_dabble_section .about_dabble_section_inner{
+        flex-direction: column;
+        height: fit-content;
+    }
+
+    .about_dabble_section_inner .about_left{
+        width: 100%;
+    }
+    .about_left .about_tech_content{
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+    .about_dabble_section_inner .about_right{
+        width: 100%;
+    }
+    .about_right .about_innovation_content{
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .about_right .about_innovation_content{
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .about_privacy_content .about_privacy_inner{
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .about_right .about_patient_content{
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .about_win_content .about_win_inner{
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .about_full_content .about_full_content{
+        flex-direction: column;
+    }
+    .about_full_content .about_text_div{
+        width: 100%;
+    }
+    .about_text_div .about_paragraph{
+        margin-right: auto;
+    }
+
+    .about_full_content .about_title{
+        padding-top: 2.5rem;
+    }
+    
+    .about_full_width_inner .ai_content{
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .about_full_width_inner .content_4th{
+        flex-direction: column;
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+    .content_4th .img_div_4th{
+        width: 100%;
+        margin-top: 2rem;
+        text-align: center;
+    }
+    .about_full_width_inner .content_values{
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+    .full_width_bottom .full_width_bottom_inner{
+        flex-direction: column;
+    }
+    .full_width_bottom_inner .full_b_right{
+        width: 100%;
+    }
+    .full_width_bottom_inner .full_b_left{
+        width: 100%;
+    }
 }
 
 /*----------- max-width: 576px -------------*/
@@ -930,9 +1373,7 @@ img{
         font-size: .8rem !important;
         padding: 0 .4rem !important;
     }
-    .body_main .btns a{
-        font-size: 1rem !important;
-    }
+    
     .container{
         padding: 0 1rem !important;
     }
@@ -943,12 +1384,6 @@ img{
     .login_main .login_inner .auth_title{
         font-size: 1.5rem !important;
         line-height: 2.2rem;
-    }
-    .login_inner form .auth_btn{
-        font-size: .9rem !important;
-    }
-    .login_inner form .auth_btn:hover{
-        font-size: 1rem;
     }
     .login_inner form .form_inner_div input::placeholder{
         font-size: .7rem !important;
@@ -969,6 +1404,7 @@ img{
     }
     .privacy_top .privacy_data_color{
         font-size: .9rem !important;
+        padding-left: 0;
     }
     .privacy_content{
         padding: 0 !important;
@@ -998,7 +1434,68 @@ img{
     .privacy_top ul{
         padding-left: 1rem !important;
     }
+
+    /* About Page for 576px*/
+    .about_main .about_full_width.top{
+        max-height: 550px;
+    }
+    .about_full_content .about_title{
+        margin-bottom: 1.5rem;
+    }
+    .about_title {
+        font-size: 1.2rem;
+    }
+    .about_sub_title{
+        font-size: .9rem;
+    }
+    .about_paragraph{
+        font-size: .85rem;
+    }
+    .b_single_inner .service_title{
+        font-size: 1rem;
+    }
+    .b_single_inner .service_list li .service_content{
+        font-size: .9rem;
+    }
+    .b_single_inner .bottom_finished{
+        font-size: .7rem;
+    }
+    .ai_content .about_full_content_ai{
+        column-gap: .2rem;
+        padding-left: 1rem;
+    }
+    .text_div_4th .aboutcontentList{
+        padding-left: 1rem;
+    }
+    .ai_full_width_inner .about_bg_full_small{
+        min-height: 370px;
+    }
+    .indu_full_width_inner .about_bg_full_small{
+        min-height: 370px;
+    }
+
+    .dobble_inner_text{
+        height: fit-content;
+    }
+
+    /* Auth section */
+    .login_inner .auth_btn{
+        font-size: 14px;
+    }
+    .login_inner .auth_btn:hover{
+        font-size: 1rem;
+    }
 }
+
+
+/*------------ Max-width: 520px -------------*/
+@media (max-width: 520px) {
+    /* about us page */
+    .about_main .about_full_width.top{
+        max-height: 500px;
+    }
+}
+
 
 /*----------- max-width: 420px -------------*/
 @media (max-width: 420px) {
@@ -1037,11 +1534,22 @@ img{
     .login_inner .google_btn i{
     font-size: 1.8rem !important;
     }
+    /* about us page */
+    .service_bottom_content_text{
+        padding: 2rem 1rem;
+    }
+    .dobble_inner_text{
+        padding: 2rem 1rem;
+    }
+    
+    .about_dobble_inner .dobble_inner_content{
+        height: fit-content;
+    }
 }
 
 /*----------- max-width: 369px -------------*/
 
-@media (max-width: 369px) {
+@media (max-width: 360px) {
     /* PreLoder*/
     .onLoad .onLoad_body .logo{
         width: 10rem;
@@ -1050,13 +1558,24 @@ img{
         font-size: 1rem !important;
     }
     .body_main .btns a{
-        font-size: .9rem !important;
+        font-size: .8rem;
+    }
+    .body_main .btns a:hover{
+        font-size: .9rem;
     }
     .privacy_content .privacy_title{
         font-size: 2.2rem !important;
     }
+    .about_main .about_full_width.top{
+        max-height: 420px;
+    }
 }
 
+@media (max-width: 320px) {
+    .about_title{
+        font-size: 1.1rem;
+    }
+}
 
 
 /* This is Height Controling */
@@ -1090,4 +1609,6 @@ img{
         left: 0;
     }
 }
+
+
 

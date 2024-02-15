@@ -115,7 +115,7 @@ const DivisionInput = () => {
   const handleEditValueChange = (e) => {
     setSelectedItemName(e.target.value);
   };
-console.log(divisionList)
+
   const handleConfirmEdit = async () => {
     setSelectedItemId(null);
     setSelectedItemName("");
