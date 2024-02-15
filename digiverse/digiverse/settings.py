@@ -113,8 +113,6 @@ DATABASES = {
 
     }
 }
-<<<<<<< HEAD
-=======
 MIDDLEWARE = [
     # ... other middleware ...
 
@@ -126,7 +124,6 @@ MIDDLEWARE = [
 
     # ... other middleware ...
 ]
->>>>>>> 96acf7817ef147d5c12c935d042e7f8decd11959
 
 
 # Password validation

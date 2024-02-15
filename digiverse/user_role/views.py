@@ -2,7 +2,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import user_role_management
-from .serializers import UserRoleSerializer, UserRoleSerializer, UserRoleDeleteSerializer
+from .serializers import UserRoleSerializer, UserRoleSerializer, UserRoleDeleteSerializer, UserRolesSerializer
 from django.shortcuts import redirect
 from rest_framework.views import APIView
 from django.db import IntegrityError
@@ -59,3 +59,7 @@ class UserRoleDeleteAPIView(APIView):
         except IntegrityError as e: 
             messages.error(request, 'Data name has not been deleted successfully')
             return Response({'detail': 'Data name has not been deleted successfully'}, status=status.HTTP_400_BAD_REQUEST)
+        
+class GetUserRolesAPIView(generics.ListAPIView):
+    queryset = user_role_management.objects.all()
+    serializer_class = UserRolesSerializer
