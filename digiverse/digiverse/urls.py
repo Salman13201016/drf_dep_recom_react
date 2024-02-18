@@ -21,6 +21,7 @@ urlpatterns = [
     # path('prediction/', include('prediction.urls')),
     path('user_role/', include('user_role.urls')),
     path('privacy/', include('privacy_policy.urls')),
+    path('role_permission/', include('permissions.urls')),
    
     
 
