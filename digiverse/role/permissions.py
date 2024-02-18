@@ -1,35 +1,34 @@
 from rest_framework import permissions
-
-class MenuPermission(permissions.BasePermission):
+from rest_framework import viewsets
+from .models import UserRole, CRUDPermission, MenuPermission
+from .serializers import PatientOrAdminSerializer, CRUDPermissionSerializer, MenuPermissionSerializer
+class CustomPermission(permissions.BasePermission):
     """
-    Custom permission to check if the user has access to a particular menu.
+    Custom permission to check if the user has the necessary permissions.
     """
 
     def has_permission(self, request, view):
-        # Check if the user is authenticated
-        if not request.user.is_authenticated:
-            return False
+        # Check if the user has the necessary permissions to perform the action
+        # You can implement your custom logic here based on the request and user roles
+        # For example, check if the user is an admin or has specific permissions
+        # Return True if the user has permission, False otherwise
+        return request.user.is_authenticated and request.user.has_perm('your_app.can_perform_action')
 
-        # Get the user's role
-        user_role = request.user.role  # Assuming you have a 'role' attribute in your user model
 
-        # Check if the user's role has permission to access the requested menu
-        # Implement your custom logic here based on the user's role and menu permissions
-        # For example:
-        if user_role == 'Admin':
-            # Admin has access to all menus
-            return True
-        elif user_role == 'Subadmin':
-            # Check if the requested menu is allowed for Subadmin
-            # Implement your logic here
-            return True  # Return True if allowed, False otherwise
-        elif user_role == 'Staff':
-            # Check if the requested menu is allowed for Staff
-            # Implement your logic here
-            return True  # Return True if allowed, False otherwise
-        elif user_role == 'user':
+class RoleViewSet(viewsets.ModelViewSet):
+    queryset = UserRole.objects.all()
+    serializer_class = PatientOrAdminSerializer
+    permission_classes = [CustomPermission]
 
-            return True
 
-        # If the user's role is not recognized or if no permission is granted, deny access
-        return False
+class CRUDPermissionViewSet(viewsets.ModelViewSet):
+    queryset = CRUDPermission.objects.all()
+    serializer_class = CRUDPermissionSerializer
+    lookup_field = 'id'
+    permission_classes = [CustomPermission]
+
+
+class MenuPermissionViewSet(viewsets.ModelViewSet):
+    queryset = MenuPermission.objects.all()
+    serializer_class = MenuPermissionSerializer
+    permission_classes = [CustomPermission]

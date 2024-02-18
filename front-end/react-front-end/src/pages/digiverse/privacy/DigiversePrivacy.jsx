@@ -25,86 +25,112 @@ const DigiversePrivacy = () => {
             <h1 className="privacy_title">Privacy policy</h1>
             <div className="privacy_top">
               <p className="privacy_data_bold">
-                This Terms of Service was last updated on{" "}
+                Privacy Policy of Digiverse Healthcare Limited.
                 <span>26/11/2023</span>
               </p>
-              <h2 className="pSubTitle">1. Short summery</h2>
+              <h2 className="pSubTitle">Introduction</h2>
               <p className="privacy_data_color">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore
-                earum unde rem, exercitationem fugit impedit corporis illum,
-                voluptatum, ipsa corrupti cupiditate assumenda aspernatur
-                molestias adipisci cum iusto nisi? Culpa, possimus delectus
-                accusantium, rem suscipit impedit rerum minima ea nobis nihil
-                sed adipisci ducimus omnis nulla odio quae consectetur, ipsam
-                maiores! Lorem ipsum dolor sit amet consectetur adipisicing
-                elit. Inventore officiis architecto molestiae ab possimus enim
-                illo? Dolore mollitia nemo omnis? Lorem, ipsum dolor sit amet
-                consectetur adipisicing elit. Doloribus tempora ipsam aperiam
-                rem temporibus dolorum esse odio veritatis quia voluptatum, sint
-                nulla aliquid, beatae, totam quam dolores ipsum. Error, aut.
+                Digiverse Healthcare Limited {'("we," "us," or "our")'} values the
+                privacy of our website visitors and users. This Privacy Policy
+                outlines how we collect, use, and protect personal information
+                obtained through our website.
               </p>
-              <h2 className="pSubTitle">2. Data You Provide to Us</h2>
+              <p className="privacy_data_color">
+                By using our website, you agree to this Privacy Policy and the
+                terms defined in our Terms of Use.
+              </p>
+              <h2 className="pSubTitle">1. nformation We Collect</h2>
               <p className="privacy_data">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Doloribus tempora ipsam aperiam rem temporibus dolorum esse odio
-                veritatis quia voluptatum, sint nulla aliquid, beatae, totam
-                quam dolores ipsum. Error, aut.
+                We gather information to improve and personalize your experience
+                on our site:
               </p>
-              <h2 className="pSubTitle">3. How we use personal information</h2>
+              <p className="privacy_data">Passively-Collected Information:</p>
+              <p className="privacy_data">
+                We automatically receive and store certain information when you
+                interact with our site, such as IP addresses and browser
+                details, collected through standard server logs, cookies, and
+                clear GIFs (Web beacons). This information is used for analysis
+                and site enhancement and generally does not identify users
+                personally.
+              </p>
+              <p className="privacy_data">
+                We utilize cookies to retrieve information when your web browser
+                accesses our site. You can adjust your browser settings to
+                manage cookies.
+              </p>
+              <p className="privacy_data">
+                Personally Identifiable Information (PII):
+              </p>
+              <p className="privacy_data">
+                Certain features require registration, and when you register, we
+                may collect PII like your name and email. We do not combine this
+                with passively collected information.
+              </p>
+              <h2 className="pSubTitle">
+                2. How We Use Your Personally Identifiable Information
+              </h2>
               <ul>
                 <li>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Eligendi, laudantium.
+                  Customer Service: We use the information provided for customer
+                  support purposes.
                 </li>
                 <li>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Eligendi, laudantium.
+                  Email Communications: Periodically, we may send emails about
+                  products or services you might find interesting. You can
+                  opt-out by contacting us.
                 </li>
                 <li>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Eligendi, laudantium Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Placeat, blanditiis?
-                </li>
-                <li>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Eligendi, laudantium Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Placeat, blanditiis?
-                </li>
-                <li>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Eligendi, laudantium Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Placeat, blanditiis?
+                  Enforcement of Terms and Law: Information collected may be
+                  used to enforce our Terms of Use and applicable laws.
                 </li>
               </ul>
-              <h2 className="pSubTitle">4. Your rights</h2>
+              <h2 className="pSubTitle">3. How We Share Your Information</h2>
               <ul>
                 <li>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Corrupti, illum.
-                </li>
-                <li>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Corrupti, illum.
-                </li>
-                <li>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Corrupti, illum. Lorem ipsum dolor sit amet.
-                </li>
-                <li>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Corrupti, illum. Lorem ipsum dolor sit amet.
-                </li>
-                <li>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Corrupti,{" "}
+                  Except as stated, we do not disclose your PII to third parties
+                  without consent, except under specific circumstances outlined
+                  in this policy.
                 </li>
               </ul>
-              <p className="privacy_data">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Doloribus tempora ipsam aperiam rem temporibus dolorum esse odio
-                veritatis quia voluptatum, sint nulla aliquid, beatae, totam
-                quam dolores ipsum. Error, aut.
-              </p>
+              <h2 className="pSubTitle">4. Security</h2>
+              <ul>
+                <li>
+                  While we take measures to protect your information, we cannot
+                  guarantee absolute security. We employ industry-standard
+                  safeguards to prevent unauthorized access.
+                </li>
+              </ul>
+              <h2 className="pSubTitle">5. Minors</h2>
+              <ul>
+                <li>
+                  Our site is intended for adults, and we do not knowingly
+                  collect information from individuals under 13 years of age.
+                </li>
+              </ul>
+              <h2 className="pSubTitle">6. International Users</h2>
+              <ul>
+                <li>
+                  Our site is designed for use byPeople&apos;s Republic of
+                  Bangladesh, and data provided on our site is governed by
+                  Bangladesh privacy laws.
+                </li>
+              </ul>
+              <h2 className="pSubTitle">7. Updates to This Policy</h2>
+              <ul>
+                <li>
+                  We may update this policy periodically. Your continued use of
+                  our site after changes will be subject to the revised policy.
+                </li>
+                <li>
+                  If you have questions about this policy, contact us at:
+                  help@digiverse.com.bd
+                </li>
+                <li>
+                  Please ensure to customize this Privacy Policy according to
+                  your specific data collection practices and legal
+                  requirements.
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -115,7 +141,7 @@ const DigiversePrivacy = () => {
           <div className="footer_main">
             <div className="copyrights">
               <p className="copy_content">
-                All Rights Reserved By <Link to={'digiverse'}>Digiverse</Link>
+                All Rights Reserved By <Link to={"digiverse"}>Digiverse</Link>
               </p>
             </div>
             <div className="login_privacy">

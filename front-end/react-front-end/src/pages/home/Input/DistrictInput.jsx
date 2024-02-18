@@ -14,6 +14,8 @@ const DistrictInput = () => {
   const { getDistrictListFromServer } = useStoreActions(
     (actions) => actions.district
   );
+
+
   const [district, setdistrict] = useState("");
   const [division, setdivision] = useState("");
   const [searchInput, setSearchInput] = useState("");
@@ -21,7 +23,7 @@ const DistrictInput = () => {
     return searchInput.toLowerCase() == ""
       ? item
       : item.name.toLowerCase().includes(searchInput);
-  });
+  }); 
   const [currentPage, setcurrentPage] = useState(1);
   const [postPerPage, setpostPerPage] = useState(5);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -226,6 +228,7 @@ const DistrictInput = () => {
                         <tr>
                           <th>Serial</th>
                           <th>Name</th>
+                          <th>Division</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -237,6 +240,7 @@ const DistrictInput = () => {
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
                               <td>{singleDistrict.name}</td>
+                              <td>{singleDistrict.division.name}</td>
                               <td>
                                 <a
                                   className="btn btn-sm bg-success-light px-3 mr-2"

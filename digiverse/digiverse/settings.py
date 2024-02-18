@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'disease',
     'symptom',
     'corsheaders',
-    # 'registration',
     'dashboard_from',
     'auth_user',
     # 'prediction',
@@ -72,6 +71,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     
 
     
@@ -113,6 +114,17 @@ DATABASES = {
 
     }
 }
+MIDDLEWARE = [
+    # ... other middleware ...
+
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+
+    # ... other middleware ...
+]
 
 
 # Password validation

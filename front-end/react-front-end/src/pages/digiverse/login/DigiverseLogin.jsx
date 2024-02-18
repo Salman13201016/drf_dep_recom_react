@@ -33,7 +33,7 @@ const DigiverseLogin = () => {
           </div>
         </section>
 
-        <section className="login">
+        <section className="login login_pase">
           <div className="container">
             <div className="login_main">
               {/* <div className="backToSignup">
@@ -70,6 +70,9 @@ const DigiverseLogin = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.email}
                     />
+                    {!formik.values.email && (
+                      <span className="require_mark">*</span>
+                    )}
                   </div>
 
                   {/* --------password input------------ */}
@@ -91,7 +94,17 @@ const DigiverseLogin = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                     />
+                    <button className="bg-transparent border-0" type='button'>
+                      <i
+                        id="view_pass"
+                        className="fa-solid fa-eye"
+                      ></i>
+                    </button>
+                    {!formik.values.password && (
+                      <span className="require_mark">*</span>
+                    )}
                   </div>
+
                   <div className="auth_btns">
                     <div className="auth_login_btn">
                       <button type="submit" className="auth_btn">

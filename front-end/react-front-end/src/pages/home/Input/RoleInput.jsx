@@ -7,7 +7,7 @@ import EditModal from "../../../components/shared/modal/EditModal";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 
 const RoleInput = () => {
-      const { divisionList } = useStoreState((state) => state.division);
+      const { roleList } = useStoreState((state) => state.role);
       const [roleName, setRolName] = useState("");
       const [currentPage, setcurrentPage] = useState(1);
       const [postPerPage, setpostPerPage] = useState(5);
@@ -18,7 +18,8 @@ const RoleInput = () => {
       const [selectedEditItem, setSelectedEditItem] = useState("");
       const lastPostIndex = currentPage * postPerPage;
       const firstPostIndex = lastPostIndex - postPerPage;
-      const currentDivision = divisionList.slice(firstPostIndex, lastPostIndex);
+      const currentDivision = roleList.slice(firstPostIndex, lastPostIndex);
+
 
       const handleChange = (e) => {
         setRolName(e.target.value);
@@ -73,7 +74,7 @@ const RoleInput = () => {
 
       const handleEditClick = (singleDiv) => {
         setSelectedItemId(singleDiv.id);
-        setSelectedItemName(singleDiv.name);
+        setSelectedItemName(singleDiv.role);
         setSelectedEditItem(singleDiv);
         setIsEditModalShow(true);
       };
@@ -133,7 +134,7 @@ const RoleInput = () => {
           <div>
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Roles  List</h3>
+                <h3 className="page-title">Roles List</h3>
               </div>
             </div>
           </div>
@@ -154,20 +155,18 @@ const RoleInput = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {currentDivision.map((singleDivision, index) => {
+                        {currentDivision.map((singleRole, index) => {
                           return (
                             <tr key={index}>
                               <td>
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
-                              <td>{singleDivision.name}</td>
+                              <td>{singleRole.role}</td>
                               <td>
                                 <div className="actions">
                                   <a
                                     className="btn btn-sm bg-success-light"
-                                    onClick={() =>
-                                      handleEditClick(singleDivision)
-                                    }
+                                    onClick={() => handleEditClick(singleRole)}
                                   >
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
                                     Edit
@@ -179,7 +178,7 @@ const RoleInput = () => {
                                   <a
                                     className="btn btn-sm bg-danger-light"
                                     onClick={() =>
-                                      handleDeleteClick(singleDivision.id)
+                                      handleDeleteClick(singleRole.id)
                                     }
                                   >
                                     <i className="fa fa-trash"></i> Delete
@@ -201,7 +200,7 @@ const RoleInput = () => {
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={divisionList.length}
+              totalPost={roleList.length}
               changePage={getCurrentPage}
             />
           </div>

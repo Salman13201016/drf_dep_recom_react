@@ -11,6 +11,8 @@ import DigiverseTerms from "../pages/digiverse/terms/DigiverseTerms";
 import DigiverseForgotPass from "../pages/digiverse/forgotPass/DigiverseForgotPass";
 import DigiverseWelcome from "../pages/welcome/DigiverseWelcome";
 import { GoogleLogIn } from "../pages/digiverse/googleLogIn/GoogleLogIn";
+import DefaultLogin from "../pages/home/Input/DefaultLogin";
+import DigiverseAbout from "../pages/digiverse/about/DigiverseAbout";
 
 
 
@@ -26,6 +28,7 @@ const App = () => {
     disease,
     hospitalMap,
     symptom,
+    role,
   } = useStoreActions((actions) => actions);
   division.getDivisionListFromServer(
     "http://127.0.0.1:8000/division/divisions/"
@@ -57,6 +60,8 @@ const App = () => {
 
   symptom.getSymptomListFromServer("http://127.0.0.1:8000/symptoms/symptom/");
 
+  role.getRoleListFromServer("http://127.0.0.1:8000/role/roles/");
+
   return (
     <BrowserRouter>
     <Routes>
@@ -69,6 +74,7 @@ const App = () => {
       <Route path="/digiverse/privacy" element={<DigiversePrivacy /> } />
       <Route path="/digiverse/terms" element={<DigiverseTerms /> } />
       <Route path="/digiverse/welcome" element={<DigiverseWelcome /> } />
+      <Route path="/digiverse/about" element={<DigiverseAbout /> } />
     </Routes>
     </BrowserRouter>
   );

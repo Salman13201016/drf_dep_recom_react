@@ -11,6 +11,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 
 export const DigiverseSignUp = () => {
+  const [user, setUser] = useState(null);
   const [message, setmessage] = useState("");
   const [visible, setVisible] = useState(false);
   const [isLoading, setisLoading] = useState(false);
@@ -31,9 +32,12 @@ export const DigiverseSignUp = () => {
       confirmPassword: "",
       phone: "",
       identity: "",
+      dob : ""
     },
     validate: validateForm,
+
     onSubmit: async (values) => {
+      console.log('Munna')
       setisLoading(true);
       const userInfo = {
         fname: values.name,
@@ -42,11 +46,14 @@ export const DigiverseSignUp = () => {
         identy_no: values.identity,
         password: values.password,
         conf_password: values.confirmPassword,
+        // dob : values.dob
       };
+      console.log(userInfo)
       const result = await apiService.signUpPostData(
         "http://127.0.0.1:8000/auth_user/signup/",
         userInfo
       );
+      console.log(result)
       if (result.status == 201) {
         setisLoading(false);
         navigate("/digiverse/welcome");
@@ -58,7 +65,7 @@ export const DigiverseSignUp = () => {
     },
   });
 
-  const [user, setUser] = useState(null);
+
 
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
@@ -124,14 +131,10 @@ export const DigiverseSignUp = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.name}
-                      // style={{
-                      //   borderColor:
-                      //     formik.touched.name && formik.errors.name
-                      //       ? "red"
-                      //       : "transparent",
-                      //   borderWidth: 1,
-                      // }}
                     />
+                    {!formik.values.name && (
+                      <span className="require_mark">*</span>
+                    )}
                   </div>
 
                   {/* -----email input--------- */}
@@ -154,6 +157,9 @@ export const DigiverseSignUp = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.email}
                     />
+                    {!formik.values.email && (
+                      <span className="require_mark">*</span>
+                    )}
                   </div>
 
                   {/* -----password input--------- */}
@@ -175,6 +181,15 @@ export const DigiverseSignUp = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                     />
+                    <button className="bg-transparent border-0" type="button">
+                      <i
+                        id="view_pass"
+                        className="fa-solid fa-eye"
+                      ></i>
+                    </button>
+                    {!formik.values.password && (
+                      <span className="require_mark">*</span>
+                    )}
                   </div>
 
                   {/* -----confirm password input--------- */}
@@ -197,6 +212,15 @@ export const DigiverseSignUp = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.confirmPassword}
                     />
+                    <button className="bg-transparent border-0" type="button">
+                      <i
+                        id="view_pass"
+                        className="fa-solid fa-eye"
+                      ></i>
+                    </button>
+                    {!formik.values.confirmPassword && (
+                      <span className="require_mark">*</span>
+                    )}
                   </div>
 
                   {/* -----phone number input--------- */}
@@ -218,6 +242,9 @@ export const DigiverseSignUp = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.phone}
                     />
+                    {!formik.values.phone && (
+                      <span className="require_mark">*</span>
+                    )}
                   </div>
 
                   {/* -----identity input--------- */}
@@ -239,7 +266,34 @@ export const DigiverseSignUp = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.identity}
                     />
+                    {!formik.values.identity && (
+                      <span className="require_mark">*</span>
+                    )}
                   </div>
+
+                  {/* -----Date of birth input--------- */}
+                  {/* {formik.touched.dob && formik.errors.dob ? (
+                    <small className="warningMessage">
+                      {formik.errors.dob}
+                    </small>
+                  ) : null}
+                  <div className="form_inner_div">
+                    <label htmlFor="dob">
+                      <i className="fa-solid fa-id-badge"></i>
+                    </label>
+                    <input
+                      type="date"
+                      name="dob"
+                      id="dob"
+                      placeholder=" Enter Date of Birth"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.dob}
+                    />
+                    {!formik.values.dob && (
+                      <span className="require_mark">*</span>
+                    )}
+                  </div> */}
 
                   {visible && <p style={{ color: "white" }}>{message}</p>}
 
@@ -257,7 +311,7 @@ export const DigiverseSignUp = () => {
                   </div>
                 </form>
                 <button
-                  type="submit"
+                  type="button"
                   className="google_btn"
                   onClick={() => login()}
                 >
