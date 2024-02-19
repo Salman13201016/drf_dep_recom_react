@@ -115,6 +115,7 @@ const SymtomsInput = () => {
       symptomInfo.department,
     ]);
 
+
     const getCurrentPage = (pageNumber) => {
       setcurrentPage(pageNumber);
     };

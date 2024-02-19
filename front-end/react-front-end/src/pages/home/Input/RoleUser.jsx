@@ -14,6 +14,7 @@ const RoleUser = () => {
       division: divisionFromServer,
       district: districtFromServer,
       station: stationFromServer,
+      role
     } = useStoreState((state) => state);
     const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
     const [stationInfo, setstationInfo] = useState(initalValue);
