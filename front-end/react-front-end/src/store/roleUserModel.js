@@ -1,12 +1,12 @@
 import { action, thunk } from "easy-peasy";
 import apiService from "../api";
 
-const roleUserModel = {
-  roleUserList: [],
-  updateRoleUserList: action((state, payload) => {
-    state.roleUserList.push(payload);
+const userModel = {
+  userList: [],
+  updateUserList: action((state, payload) => {
+    state.userList.push(payload);
   }),
-  getRoleUserListFromServer: thunk(async (actions, payload) => {
+  getUserListFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
     data.forEach((element) => {
       actions.updateRoleUserList(element);
@@ -14,4 +14,4 @@ const roleUserModel = {
   }),
 };
 
-export default roleUserModel;
+export default userModel;

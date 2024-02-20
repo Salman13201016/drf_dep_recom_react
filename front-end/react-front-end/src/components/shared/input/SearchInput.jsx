@@ -1,12 +1,12 @@
 
 
-const SearchInput = ({ searchInput, setSearchInput }) => {
+const SearchInput = ({ searchInput, setSearchInput, placeholder }) => {
   return (
     <div className="showSearch d-flex">
       <input
         className="form-control"
         type="search"
-        placeholder="Search"
+        placeholder={placeholder}
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
       />

@@ -140,7 +140,7 @@ const DiseaseInput = () => {
     <div className="card">
       <ToastContainer />
       <div className="card-header">
-        <h4 className="card-title">Disease Details Data Input</h4>
+        <h4 className="card-title">Disease Data Input</h4>
       </div>
       <div className="card-body">
         <form action="#" onSubmit={handleSubmit}>
@@ -205,7 +205,7 @@ const DiseaseInput = () => {
           <div>
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Divisions List</h3>
+                <h3 className="page-title">Disease List</h3>
               </div>
             </div>
           </div>
@@ -217,6 +217,7 @@ const DiseaseInput = () => {
             <SearchInput
               searchInput={searchInput}
               setSearchInput={setSearchInput}
+              placeholder={'Search Disease'}
             />
           </div>
           {/* <!--/select post per page and search input --> */}
@@ -229,10 +230,10 @@ const DiseaseInput = () => {
                     <table className="datatable table table-hover table-center mb-0">
                       <thead>
                         <tr>
-                          <th>Serial Number</th>
+                          <th>Serial</th>
                           <th>Name</th>
-                          <th>Update</th>
-                          <th>Delete</th>
+                          <th>Department</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -243,28 +244,25 @@ const DiseaseInput = () => {
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
                               <td>{singleDisease.name}</td>
+                              <td>{singleDisease.department.name}</td>
                               <td>
                                 <div className="actions">
                                   <a
-                                    className="btn btn-sm bg-success-light"
+                                    className="btn btn-sm bg-success-light mr-2"
                                     onClick={() =>
                                       handleEditClick(singleDisease)
                                     }
                                   >
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Edit
+                                    
                                   </a>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="actions">
                                   <a
                                     className="btn btn-sm bg-danger-light"
                                     onClick={() =>
                                       handleDeleteClick(singleDisease.id)
                                     }
                                   >
-                                    <i className="fa fa-trash"></i> Delete
+                                    <i className="fa fa-trash"></i> 
                                   </a>
                                 </div>
                               </td>

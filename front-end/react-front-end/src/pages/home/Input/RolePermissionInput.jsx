@@ -51,6 +51,7 @@ const RolePermissionInput = () => {
                             <th>Edit</th>
                             <th>Delete</th>
                             <th>View</th>
+                            <th>All</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -68,6 +69,9 @@ const RolePermissionInput = () => {
                                 </td>
                                 <td>
                                   <input name="view" value={'view'} onChange={handleChange} type="checkbox" />
+                                </td>
+                                <td>
+                                  <input name="all" value={'all'} onChange={handleChange} type="checkbox" />
                                 </td>
                               </tr>
                             );

@@ -187,6 +187,7 @@ const DivisionInput = () => {
             <SearchInput
               searchInput={searchInput}
               setSearchInput={setSearchInput}
+              placeholder={'Search Division'}
             />
           </div>
           {/* <!--/select post per page and search input --> */}
@@ -199,7 +200,7 @@ const DivisionInput = () => {
                     <table className="datatable table table-hover table-center mb-0">
                       <thead>
                         <tr>
-                          <th>Serial</th>
+                          <th >Serial</th>
                           <th>Name</th>
                           <th>Actions</th>
                         </tr>

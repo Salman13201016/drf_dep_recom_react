@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
 import SearchInput from "../../../components/shared/input/SearchInput";
 import DepartmentEditModal from "../../../components/shared/modal/DepartmentEditModal";
+import { truncatedText } from "../../../utils/utils";
 
 const initialState = {
   hospital: "",
@@ -243,6 +244,7 @@ const DepartmentInput = () => {
             <SearchInput
               searchInput={searchInput}
               setSearchInput={setSearchInput}
+              placeholder={'Search Department'}
             />
           </div>
           {/* <!--/select post per page and search input --> */}
@@ -258,8 +260,8 @@ const DepartmentInput = () => {
                           <th>Serial </th>
                           <th>Name</th>
                           <th>Deatils</th>
-                          <th>Update</th>
-                          <th>Delete</th>
+                          <th>Hospital</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -272,27 +274,25 @@ const DepartmentInput = () => {
                               <td>{singleDepartment.name}</td>
                               <td>{singleDepartment.details}</td>
                               <td>
+                                {truncatedText(singleDepartment.hospital.name, 30)}
+                              </td>
+                              <td>
                                 <div className="actions">
                                   <a
-                                    className="btn btn-sm bg-success-light"
+                                    className="btn btn-sm bg-success-light mr-2"
                                     onClick={() =>
                                       handleEditClick(singleDepartment)
                                     }
                                   >
-                                    <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Edit
+                                    <i className="fa-solid fa-pen-to-square"></i>
                                   </a>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="actions">
                                   <a
                                     className="btn btn-sm bg-danger-light"
                                     onClick={() =>
                                       handleDeleteClick(singleDepartment.id)
                                     }
                                   >
-                                    <i className="fa fa-trash"></i> Delete
+                                    <i className="fa fa-trash"></i>
                                   </a>
                                 </div>
                               </td>

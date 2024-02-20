@@ -8,8 +8,8 @@ import diseaseModel from './diseaseModel';
 import hospitalInfoModel from './hospitalInfoModel';
 import hospitalMapModel from './hospitalMapModel';
 import roleModel from './roleModel';
-import roleUserModel from './roleUserModel';
 import symptomModel from './symptomModel';
+import userModel from './roleUserModel';
 
 
 
@@ -24,7 +24,7 @@ const store = createStore({
     disease : diseaseModel,
     hospitalMap : hospitalMapModel,
     role : roleModel,
-    roleUser : roleUserModel,
+    roleUser : userModel,
     symptom : symptomModel,
 })
 

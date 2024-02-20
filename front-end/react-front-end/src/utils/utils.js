@@ -73,3 +73,20 @@ export const validateEmail = (values) => {
   }
   return errors;
 };
+
+
+export const truncatedWord = ( text, maxWords ) => {
+  const words = text.split(" ");
+  const truncatedText = words.slice(0, maxWords).join(" ");
+
+  return truncatedText
+};
+
+export const truncatedText = (text, maxCharacters ) => {
+  const truncatedText =
+    text.length > maxCharacters
+      ? text.substring(0, maxCharacters) + "..."
+      : text;
+
+  return truncatedText;
+};

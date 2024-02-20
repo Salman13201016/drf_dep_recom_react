@@ -466,6 +466,7 @@ const HospitalAppInput = () => {
               <SearchInput
                 searchInput={searchInput}
                 setSearchInput={setSearchInput}
+                placeholder={'Seach Hospital'}
               />
             </div>
             {/* <!--/select post per page and search input --> */}
@@ -482,8 +483,7 @@ const HospitalAppInput = () => {
                             <th>Name</th>
                             <th>Address</th>
                             <th>Zip</th>
-                            <th>Update</th>
-                            <th>Delete</th>
+                            <th>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -499,25 +499,21 @@ const HospitalAppInput = () => {
                                 <td>
                                   <div className="actions">
                                     <a
-                                      className="btn btn-sm bg-success-light"
+                                      className="btn btn-sm bg-success-light mr-2"
                                       onClick={() =>
                                         handleEditClick(singleHospital)
                                       }
                                     >
                                       <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                      Edit
+                                      
                                     </a>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div className="actions">
                                     <a
                                       className="btn btn-sm bg-danger-light"
                                       onClick={() =>
                                         handleDeleteClick(singleHospital.id)
                                       }
                                     >
-                                      <i className="fa fa-trash"></i> Delete
+                                      <i className="fa fa-trash"></i>
                                     </a>
                                   </div>
                                 </td>

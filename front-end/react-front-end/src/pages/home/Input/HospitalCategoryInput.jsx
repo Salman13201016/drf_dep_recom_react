@@ -166,6 +166,7 @@ const HospitalCategoryInput = () => {
             <SearchInput
               searchInput={searchInput}
               setSearchInput={setSearchInput}
+              placeholder={'Search Category'}
             />
           </div>
           {/* <!--/select post per page and search input --> */}
@@ -178,10 +179,9 @@ const HospitalCategoryInput = () => {
                     <table className="datatable table table-hover table-center mb-0">
                       <thead>
                         <tr>
-                          <th>Serial Number</th>
+                          <th>Serial</th>
                           <th>Name</th>
-                          <th>Update</th>
-                          <th>Delete</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -195,25 +195,21 @@ const HospitalCategoryInput = () => {
                               <td>
                                 <div className="actions">
                                   <a
-                                    className="btn btn-sm bg-success-light"
+                                    className="btn btn-sm bg-success-light mr-2"
                                     onClick={() =>
                                       handleEditClick(singleCategory)
                                     }
                                   >
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Edit
+                                    
                                   </a>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="actions">
                                   <a
                                     className="btn btn-sm bg-danger-light"
                                     onClick={() =>
                                       handleDeleteClick(singleCategory.id)
                                     }
                                   >
-                                    <i className="fa fa-trash"></i> Delete
+                                    <i className="fa fa-trash"></i> 
                                   </a>
                                 </div>
                               </td>

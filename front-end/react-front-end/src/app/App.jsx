@@ -11,7 +11,6 @@ import DigiverseTerms from "../pages/digiverse/terms/DigiverseTerms";
 import DigiverseForgotPass from "../pages/digiverse/forgotPass/DigiverseForgotPass";
 import DigiverseWelcome from "../pages/welcome/DigiverseWelcome";
 import { GoogleLogIn } from "../pages/digiverse/googleLogIn/GoogleLogIn";
-import DefaultLogin from "../pages/home/Input/DefaultLogin";
 import DigiverseAbout from "../pages/digiverse/about/DigiverseAbout";
 
 
