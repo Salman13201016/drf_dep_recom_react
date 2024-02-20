@@ -30,3 +30,19 @@ class SymptomSerializer(serializers.ModelSerializer):
             'symptom16',
             'symptom17',
         )
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        department = instance.department
+
+        representation['department'] = {
+            'id': department.id,
+            'name' : department.name,
+        }
+
+        disease = instance.disease
+        representation['disease']={
+            'id' : disease.id,
+            'name' : disease.name
+        }
+        return representation
+

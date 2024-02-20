@@ -4,6 +4,7 @@ from department.models import Department
 from disease.models import Diseases
 
 class Symptom(models.Model):
+    id = models.AutoField(primary_key=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     disease = models.ForeignKey(Diseases, on_delete=models.CASCADE)
     symptom1 = models.CharField(max_length=255, blank=True, null=True)

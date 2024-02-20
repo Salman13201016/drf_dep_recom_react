@@ -37,6 +37,7 @@ from .serializers import UserIndexPanelSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.hashers import check_password
+from user_role.models import user_role_management
 
 class UserIndexPanelView(viewsets.GenericViewSet):
     serializer_class = UserIndexPanelSerializer
@@ -174,7 +175,10 @@ class LoginAuthView(viewsets.GenericViewSet):
                     request.session['user_id'] = user.id
                     request.session['user_email'] = user.email
                     request.session['user_fname'] = user.fname
-                    return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
+                    # Fetch the user's role from the user_role_management model
+                    user_role = user_role_management.objects.get(select_user=user)  # Adjust the field name here
+                    role_name = user_role.select_role.role if user_role else "No Role Assigned"
+                    return Response({"message": "Login successful", "role": role_name}, status=status.HTTP_200_OK)
                 else:
                     messages.success(request, 'Wrong Password')
                     return Response({"error": "Wrong Password"}, status=status.HTTP_400_BAD_REQUEST)
