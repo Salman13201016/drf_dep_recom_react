@@ -26,3 +26,8 @@ class UserRoleDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_role_management
         fields = '__all__'
+
+class UserRolesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = user_role_management
+        fields = '__all__'

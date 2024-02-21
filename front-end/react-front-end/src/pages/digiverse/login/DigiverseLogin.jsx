@@ -36,17 +36,6 @@ const DigiverseLogin = () => {
         <section className="login login_pase">
           <div className="container">
             <div className="login_main">
-              {/* <div className="backToSignup">
-                <div className="auth_banner">
-                  <img
-                    src="../../../../src/assets/digiverseAssets/img/authBanner/loginbanner.jpg"
-                    alt=""
-                  />
-                  <div className="auth_btn_back">
-                    <Link to={"/digiverse/signup"}>Create an account</Link>
-                  </div>
-                </div>
-              </div> */}
 
               <div className="login_inner">
                 <h2 className="auth_title">Log in</h2>

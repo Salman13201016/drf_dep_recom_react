@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path,include
-from auth_user.views import EmailVerificationView
+# from auth_user.views import EmailVerificationView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
@@ -21,6 +21,7 @@ urlpatterns = [
     # path('prediction/', include('prediction.urls')),
     path('user_role/', include('user_role.urls')),
     path('privacy/', include('privacy_policy.urls')),
+    path('role_permission/', include('permissions.urls')),
    
     
 
