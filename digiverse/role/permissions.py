@@ -1,34 +1,27 @@
-from rest_framework import permissions
-from rest_framework import viewsets
-from .models import UserRole, CRUDPermission, MenuPermission
-from .serializers import PatientOrAdminSerializer, CRUDPermissionSerializer, MenuPermissionSerializer
-class CustomPermission(permissions.BasePermission):
-    """
-    Custom permission to check if the user has the necessary permissions.
-    """
+from rest_framework import BasePermission
 
+from .models import CRUDPermission
+class CustomPermission(BasePermission):
+    
     def has_permission(self, request, view):
-        # Check if the user has the necessary permissions to perform the action
-        # You can implement your custom logic here based on the request and user roles
-        # For example, check if the user is an admin or has specific permissions
-        # Return True if the user has permission, False otherwise
-        return request.user.is_authenticated and request.user.has_perm('your_app.can_perform_action')
-
-
-class RoleViewSet(viewsets.ModelViewSet):
-    queryset = UserRole.objects.all()
-    serializer_class = PatientOrAdminSerializer
-    permission_classes = [CustomPermission]
-
-
-class CRUDPermissionViewSet(viewsets.ModelViewSet):
-    queryset = CRUDPermission.objects.all()
-    serializer_class = CRUDPermissionSerializer
-    lookup_field = 'id'
-    permission_classes = [CustomPermission]
-
-
-class MenuPermissionViewSet(viewsets.ModelViewSet):
-    queryset = MenuPermission.objects.all()
-    serializer_class = MenuPermissionSerializer
-    permission_classes = [CustomPermission]
+        if not request.user.is_authenticated:  # Check if user is authenticated
+            return False
+        
+        try: 
+            # Retrieve CRUDPermission object for the user's role
+            crud_permission = CRUDPermission.objects.get(role=request.user.role)
+        except CRUDPermission.DoesNotExist:
+            return False  # No permission found for the user's role
+        
+        # Custom permission logic based on the action
+        if view.action == 'create':
+            return crud_permission.insert
+        elif view.action == 'retrieve':
+            return crud_permission.view
+        elif view.action == 'update':
+            return crud_permission.edit
+        elif view.action == 'destroy':
+            return crud_permission.delete
+        
+        return True  # Allow other actions by default
+        

@@ -156,6 +156,13 @@ class EmailVerificationView(APIView):
 #                 return Response({"error": "Wrong Password"}, status=status.HTTP_400_BAD_REQUEST)
 
         # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework import status
+from rest_framework.response import Response
+from django.contrib import messages
+# from .models import user_register, user_role_management
+from .serializers import LoginAuthSerializer
+from role.models import CRUDPermission
+
 class LoginAuthView(viewsets.GenericViewSet):
     serializer_class = LoginAuthSerializer
 
@@ -175,18 +182,57 @@ class LoginAuthView(viewsets.GenericViewSet):
                     request.session['user_id'] = user.id
                     request.session['user_email'] = user.email
                     request.session['user_fname'] = user.fname
+                    
                     # Fetch the user's role from the user_role_management model
-                    user_role = user_role_management.objects.get(select_user=user)  # Adjust the field name here
-                    role_name = user_role.select_role.role if user_role else "No Role Assigned"
-                    return Response({"message": "Login successful", "role": role_name}, status=status.HTTP_200_OK)
+                    try:
+                        user_role = user_role_management.objects.get(select_user=user)
+                        role_name = user_role.select_role.role if user_role else "No Role Assigned"
+                        print(user_role)
+                        print(role_name)
+                        crud_permission = CRUDPermission.objects.get(role=user_role.select_role)
+                        
+                        # Fetch permissions associated with the user's role
+                        try:
+                            crud_permission = CRUDPermission.objects.get(role=user_role.select_role)
+                            
+                            permissions = {
+                                "view": crud_permission.view,
+                                "insert": crud_permission.insert,
+                                "edit": crud_permission.edit,
+                                "delete": crud_permission.delete
+                            }
+                        except CRUDPermission.DoesNotExist:
+                            permissions = {
+                                "view": False,
+                                "insert": False,
+                                "edit": False,
+                                "delete": False
+                            }
+                        print(user_role.select_role)
+                        return Response({
+                            "message": "Login successful",
+                            "role": role_name,
+                            "permissions": permissions
+                        }, status=status.HTTP_200_OK)
+                    except user_role_management.DoesNotExist:
+                        role_name = "No Role Assigned"
+                        return Response({
+                            "message": "Login successful",
+                            "role": role_name,
+                            "permissions": {
+                                "view": False,
+                                "insert": False,
+                                "edit": False,
+                                "delete": False
+                            }
+                        }, status=status.HTTP_200_OK)
                 else:
-                    messages.success(request, 'Wrong Password')
                     return Response({"error": "Wrong Password"}, status=status.HTTP_400_BAD_REQUEST)
             except user_register.DoesNotExist:
-                messages.success(request, 'This user is not available')
                 return Response({"error": "This user is not available"}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
 
 # class LoginAuthView(viewsets.GenericViewSet):
