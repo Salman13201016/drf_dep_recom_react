@@ -127,7 +127,7 @@ const DigiverseLogin = () => {
                     <div className="ordiv"></div>
                   </div>
                 </form>
-                <button type="submit" className="google_btn">
+                <button type="button" className="google_btn">
                   <a href="#">
                     <i className="fa-brands fa-google fa-fw"></i>
                   </a>

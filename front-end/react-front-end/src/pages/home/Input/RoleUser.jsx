@@ -174,8 +174,7 @@ const RoleUser = () => {
                         <tr>
                           <th>Serial Number</th>
                           <th>Name</th>
-                          <th>Update</th>
-                          <th>Delete</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -189,7 +188,7 @@ const RoleUser = () => {
                               <td>
                                 <div className="actions">
                                   <a
-                                    className="btn btn-sm bg-success-light"
+                                    className="btn btn-sm bg-success-light mr-2"
                                     onClick={() =>
                                       handleEditClick(singleStation)
                                     }
@@ -197,10 +196,6 @@ const RoleUser = () => {
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
                                     Edit
                                   </a>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="actions">
                                   <a
                                     className="btn btn-sm bg-danger-light"
                                     onClick={() =>

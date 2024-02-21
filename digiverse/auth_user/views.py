@@ -118,10 +118,6 @@ class EmailVerificationView(APIView):
 #         return render(request, 'update_design/welcome.html', user_data)
 
 # views.py
-<<<<<<< HEAD
-=======
-
->>>>>>> 676111dfb09e508fecf94e054024d6174530aec1
 # class LoginAuthView(viewsets.GenericViewSet):
 #     serializer_class = LoginAuthSerializer
 
@@ -158,11 +154,7 @@ class EmailVerificationView(APIView):
 #             else:
 #                 return Response({"error": "Wrong Password"}, status=status.HTTP_400_BAD_REQUEST)
 
-<<<<<<< HEAD
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-=======
         # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
->>>>>>> 676111dfb09e508fecf94e054024d6174530aec1
 class LoginAuthView(viewsets.GenericViewSet):
     serializer_class = LoginAuthSerializer
 
