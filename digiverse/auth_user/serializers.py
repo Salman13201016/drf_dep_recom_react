@@ -132,7 +132,7 @@ class EmailGeneratorSerializer(serializers.Serializer):
 class UserEmailSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_register
-        fields = ['email']
+        fields = ['id','email']
 
 class EmailVerificationSerializer(serializers.Serializer):
     fname = serializers.CharField(required=False)
