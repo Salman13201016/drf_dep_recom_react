@@ -28,21 +28,21 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = user_register
-        fields = ['fname', 'email', 'mobile', 'identy_no', 'password', 'conf_password']
+        fields = ['fname', 'email', 'mobile', 'password', 'date_of_birth', 'conf_password']
 
     def validate(self, data):
         # Your validation logic here
         fname = data.get('fname')
         email = data.get('email').strip()
         mobile = data.get('mobile')
-        identy_no = data.get('identy_no')
         password = data.get('password')
+        date_of_birth = data.get('date_of_birth')
         conpw = data.get('conf_password')
         e_pattern = r"^[a-zA-Z0-9_.]+@gmail\.com$"
         o_pattern = r"^[a-zA-Z0-9_.]+@(outlook\.com|hotmail\.com|live\.com)$"
         y_pattern = r"^[a-zA-Z0-9_.]+@yahoo\.com$"
 
-        if any(len(value) == 0 for value in [fname, email, mobile, identy_no, password, conpw]):
+        if any(len(value) == 0 for value in [fname, email, mobile, password, conpw]):
             raise serializers.ValidationError('Empty field not accepted')
 
         if len(fname) < 3:
@@ -50,6 +50,9 @@ class SignUpSerializer(serializers.ModelSerializer):
 
         if len(password) < 8:
             raise serializers.ValidationError('Password length must be a minimum of 8')
+        
+        if date_of_birth is None:
+            raise serializers.ValidationError('Date of birth is required.')
 
         if not re.search(r'[A-Z]', password):
             raise serializers.ValidationError('Password must contain at least one uppercase letter')
@@ -69,8 +72,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         if len(mobile) != 11:
             raise serializers.ValidationError('Phone number must be 11 digits.')
 
-        if user_register.objects.filter(identy_no=identy_no).exists():
-            raise serializers.ValidationError('ID number already exists.')
+    
 
         if not re.match(e_pattern, email) and not re.match(o_pattern, email) and not re.match(y_pattern, email):
             raise serializers.ValidationError('Email is not valid.')
@@ -87,8 +89,8 @@ class SignUpSerializer(serializers.ModelSerializer):
             fname=validated_data['fname'],
             email=validated_data['email'],
             mobile=validated_data['mobile'],
-            identy_no=validated_data['identy_no'],
             password=validated_data['password'],
+            date_of_birth=validated_data['date_of_birth'],
             v_key=v_key,
             v_status=0
         )
@@ -124,6 +126,11 @@ class EmailGeneratorSerializer(serializers.Serializer):
 
         formatted_link = format_html(link)
         return encrypted_value1, formatted_link
+
+class UserEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = user_register
+        fields = ['email']
 
 class EmailVerificationSerializer(serializers.Serializer):
     fname = serializers.CharField(required=False)

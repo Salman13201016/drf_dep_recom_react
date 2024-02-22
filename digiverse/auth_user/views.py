@@ -23,7 +23,7 @@ from rest_framework import generics
 from .serializers import EmailGeneratorSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import SignUpSerializer, LoginAuthSerializer, LogoutAuthSerializer, CsrfFailureSerializer
+from .serializers import SignUpSerializer, LoginAuthSerializer, LogoutAuthSerializer, CsrfFailureSerializer, UserEmailSerializer
 from .models import user_register
 # from prediction.views import PredictionPanelAPIView
 
@@ -62,6 +62,9 @@ class SignUpView(viewsets.ModelViewSet):
     serializer_class = SignUpSerializer
     queryset = user_register.objects.all()
 
+class UserEmailListView(generics.ListAPIView):
+    queryset = user_register.objects.all()
+    serializer_class = UserEmailSerializer 
 
 class EmailGeneratorView(generics.CreateAPIView):
     serializer_class = EmailGeneratorSerializer

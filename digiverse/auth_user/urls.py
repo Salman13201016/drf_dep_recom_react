@@ -10,6 +10,7 @@ from .views import (
     AuthUserIndexView,
     TermsOfUseView,
     PrivacyPolicyView,
+    UserEmailListView,
 )
 
 # Using DRF router for SignUpView
@@ -25,5 +26,7 @@ urlpatterns = [
     path('auth_user_index/', AuthUserIndexView.as_view({'get': 'auth_user_index'}), name='auth_user_index'),
     path('terms_of_use/', TermsOfUseView.as_view({'get': 'terms_of_use'}), name='terms_of_use'),
     path('privacy_policy/', PrivacyPolicyView.as_view({'get': 'privacy_policy'}), name='privacy_policy'),
+    path('user_emails/', UserEmailListView.as_view(), name='user_emails'),  # URL for user emails
+
     path('', include(router.urls)),  # Include SignUpView DRF router URLs
 ]
