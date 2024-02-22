@@ -9,8 +9,8 @@ const initalValue = {
   role: "",
 };
 const RoleUser = () => {
-    const { role, users } = useStoreState((state) => state);
-    const [userRole, setUserRole] = useState(initalValue);
+    const { role, users, userRole } = useStoreState((state) => state);
+    const [userRoleInfo, setUserRoleInfo] = useState(initalValue);
     const [currentPage, setcurrentPage] = useState(1);
     const [postPerPage, setpostPerPage] = useState(5);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -19,12 +19,14 @@ const RoleUser = () => {
     const [selectedItem, setSelectedItem] = useState("");
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
+
+    // console.log(userRole.userRoleList);
   
 
 
 
     const handleChange = (e) => {
-      setUserRole((prev) => {
+      setUserRoleInfo((prev) => {
         return {
           ...prev,
           [e.target.name]: e.target.value,
@@ -34,8 +36,8 @@ const RoleUser = () => {
 
     const handleSubmit = async () => {
       const roleInfo = {
-        select_role: userRole.role,
-        select_user: userRole.user,
+        select_role: setUserRoleInfo.role,
+        select_user: setUserRoleInfo.user,
       };
       const response = await apiService.postData(
         "http://127.0.0.1:8000/user_role/user-role-panel/",

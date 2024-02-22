@@ -13,6 +13,7 @@ const DivisionInput = () => {
     (actions) => actions.division
   );
   const { divisionList } = useStoreState((state) => state.division);
+  const { profile:userProfile } = useStoreState((state) => state);
   const [searchInput, setSearchInput] = useState("");
   const [filteredDivision, setFilteredDivision] = useState(divisionList);
   const [division, setdivision] = useState("");
@@ -26,6 +27,8 @@ const DivisionInput = () => {
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
   const currentDivision = filteredDivision.slice(firstPostIndex, lastPostIndex);
+
+  
 
   useEffect(() => {
     const result = divisionList.filter((item) => {
@@ -134,6 +137,8 @@ const DivisionInput = () => {
     }
   };
 
+  console.log(userProfile.userProfile.permissions);
+
   return (
     <div className="card">
       <ToastContainer />
@@ -212,24 +217,30 @@ const DivisionInput = () => {
                               <td>
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
-                              <td>{singleDivision.name}</td>
+                              <td>{userProfile.userProfile.permissions.view? singleDivision.name : <p>No Data</p>}</td>
                               <td>
-                                <a
+                                <button
+                                  disabled={
+                                    !userProfile.userProfile.permissions.edit
+                                  }
                                   className="btn btn-sm bg-success-light mr-2 px-3"
                                   onClick={() =>
                                     handleEditClick(singleDivision)
                                   }
                                 >
                                   <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                </a>
-                                <a
+                                </button>
+                                <button
+                                  disabled={
+                                    !userProfile.userProfile.permissions.delete
+                                  }
                                   className="btn btn-sm bg-danger-light px-3"
                                   onClick={() =>
                                     handleDeleteClick(singleDivision.id)
                                   }
                                 >
                                   <i className="fa fa-trash"></i>
-                                </a>
+                                </button>
                               </td>
                             </tr>
                           );

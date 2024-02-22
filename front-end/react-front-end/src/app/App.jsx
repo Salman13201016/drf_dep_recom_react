@@ -29,6 +29,7 @@ const App = () => {
     symptom,
     role,
     users,
+    userRole,
   } = useStoreActions((actions) => actions);
   division.getDivisionListFromServer(
     "http://127.0.0.1:8000/division/divisions/"
@@ -62,6 +63,11 @@ const App = () => {
 
   role.getRoleListFromServer("http://127.0.0.1:8000/role/roles/");
   users.getUserListFromServer("http://127.0.0.1:8000/auth_user/user_emails/");
+  
+  userRole.getUserRoleListFromServer(
+    "http://127.0.0.1:8000/user_role/user-role-panel/"
+  );
+  
 
   return (
     <BrowserRouter>

@@ -3,9 +3,14 @@ import {Link} from 'react-router-dom'
 import {  validateEmail } from '../../../utils/utils';
 import { useFormik } from "formik";
 import { useState } from 'react';
+import apiService from '../../../api';
+import { useStoreActions } from "easy-peasy";
+import { useNavigate } from "react-router-dom";
 
 const DigiverseLogin = () => {
+  const navigate = useNavigate();
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const {profile} = useStoreActions((actions) => actions);
   const iconClass = passwordVisibility
     ? "fa-solid fa-eye"
     : "fa-solid fa-eye-slash";
@@ -16,11 +21,22 @@ const DigiverseLogin = () => {
       password: "",
     },
     validate: validateEmail,
-  
-    onSubmit : (formVal)=>{
-      console.log(formVal);
-    }
 
+    onSubmit: async (formValue) => {
+     const response = await apiService.postData(
+       "http://127.0.0.1:8000/auth_user/login_auth_panel/",
+       JSON.stringify(formValue)
+     );
+
+     profile.updateProfile(response.data);
+     navigate("/admin");
+
+    //  if (response.data.role == "Admin") {
+    //    navigate("/admin");
+    //  }else{
+    //   navigate('/digiverse/privacy')
+    //  }
+    },
   });
 
   const passVisibilityToggle = () =>{

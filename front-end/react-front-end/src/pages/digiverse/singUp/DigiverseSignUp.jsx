@@ -42,30 +42,27 @@ export const DigiverseSignUp = () => {
     validate: validateForm,
 
     onSubmit: async (values) => {
-      // setisLoading(true);
+      setisLoading(true);
       const userInfo = {
         fname: values.name,
         email: values.email,
         mobile: values.phone,
-        // identy_no: values.identity,
         password: values.password,
         conf_password: values.confirmPassword,
-        dob : values.dob
+        date_of_birth: values.dob,
       };
-      console.log(userInfo)
-      // const result = await apiService.signUpPostData(
-      //   "http://127.0.0.1:8000/auth_user/signup/",
-      //   userInfo
-      // );
-      // console.log(result)
-      // if (result.status == 201) {
-      //   setisLoading(false);
-      //   navigate("/digiverse/welcome");
-      // } else {
-      //   setisLoading(false);
-      //   setmessage(result);
-      //   showBackendMessage();
-      // }
+      const result = await apiService.signUpPostData(
+        "http://127.0.0.1:8000/auth_user/signup/",
+        userInfo
+      );
+      if (result.status == 201) {
+        setisLoading(false);
+        navigate("/digiverse/welcome");
+      } else {
+        setisLoading(false);
+        setmessage(result);
+        showBackendMessage();
+      }
     },
   });
 
