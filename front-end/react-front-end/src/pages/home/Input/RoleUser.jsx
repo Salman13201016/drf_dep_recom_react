@@ -5,12 +5,12 @@ import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
 const initalValue = {
-  role: "",
   user: "",
+  role: "",
 };
 const RoleUser = () => {
     const { role, users } = useStoreState((state) => state);
-    const [stationInfo, setstationInfo] = useState(initalValue);
+    const [userRole, setUserRole] = useState(initalValue);
     const [currentPage, setcurrentPage] = useState(1);
     const [postPerPage, setpostPerPage] = useState(5);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -21,11 +21,10 @@ const RoleUser = () => {
     const firstPostIndex = lastPostIndex - postPerPage;
   
 
-    console.log(users.userList);
 
 
     const handleChange = (e) => {
-      setstationInfo((prev) => {
+      setUserRole((prev) => {
         return {
           ...prev,
           [e.target.name]: e.target.value,
@@ -33,16 +32,21 @@ const RoleUser = () => {
       });
     };
 
-    const handleSubmit = () => {
-      if (stationInfo.name.length > 0) {
-        apiService.postData(
-          "http://127.0.0.1:8000/station/stations/",
-          JSON.stringify(stationInfo)
-        );
-        setstationInfo(initalValue);
-      } else {
-        alert("Please Enter Valid Station Name");
+    const handleSubmit = async () => {
+      const roleInfo = {
+        select_role: userRole.role,
+        select_user: userRole.user,
+      };
+      const response = await apiService.postData(
+        "http://127.0.0.1:8000/user_role/user-role-panel/",
+        JSON.stringify(roleInfo)
+      );
+      if(response.statusText == 'Created'){
+        console.log('created successfully')
+      }else{
+        console.log('something went wrong')
       }
+
     };
 
     const getCurrentPage = (pageNumber) => {
@@ -112,7 +116,7 @@ const RoleUser = () => {
               <option value="">Select</option>
               {users.userList.map((singleUser, index) => {
                 return (
-                  <option key={index} value={singleUser.email}>
+                  <option key={index} value={singleUser.id}>
                     {singleUser.email}
                   </option>
                 );
@@ -127,7 +131,7 @@ const RoleUser = () => {
             <select
               className="form-control"
               onChange={handleChange}
-              name="name"
+              name="role"
             >
               <option value="">Select</option>
               {role.roleList.map((singleRole) => {

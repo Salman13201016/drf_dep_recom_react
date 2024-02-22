@@ -9,7 +9,7 @@ import hospitalInfoModel from './hospitalInfoModel';
 import hospitalMapModel from './hospitalMapModel';
 import roleModel from './roleModel';
 import symptomModel from './symptomModel';
-import userModel from './roleUserModel';
+import userModel from './userModel';
 
 
 
