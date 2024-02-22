@@ -28,6 +28,7 @@ const App = () => {
     hospitalMap,
     symptom,
     role,
+    users,
   } = useStoreActions((actions) => actions);
   division.getDivisionListFromServer(
     "http://127.0.0.1:8000/division/divisions/"
@@ -60,6 +61,7 @@ const App = () => {
   symptom.getSymptomListFromServer("http://127.0.0.1:8000/symptoms/symptom/");
 
   role.getRoleListFromServer("http://127.0.0.1:8000/role/roles/");
+  users.getUserListFromServer("http://127.0.0.1:8000/auth_user/user_emails/");
 
   return (
     <BrowserRouter>

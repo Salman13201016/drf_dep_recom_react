@@ -9,7 +9,7 @@ const userModel = {
   getUserListFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
     data.forEach((element) => {
-      actions.updateRoleUserList(element);
+      actions.updateUserList(element);
     });
   }),
 };

@@ -9,7 +9,7 @@ const initalValue = {
   user: "",
 };
 const RoleUser = () => {
-    const {role} = useStoreState((state) => state);
+    const { role, users } = useStoreState((state) => state);
     const [stationInfo, setstationInfo] = useState(initalValue);
     const [currentPage, setcurrentPage] = useState(1);
     const [postPerPage, setpostPerPage] = useState(5);
@@ -21,7 +21,7 @@ const RoleUser = () => {
     const firstPostIndex = lastPostIndex - postPerPage;
   
 
-    console.log(role.roleList)
+    console.log(users.userList);
 
 
     const handleChange = (e) => {
@@ -100,30 +100,29 @@ const RoleUser = () => {
         <h4 className="card-title">Role User Data Input</h4>
       </div>
       <div className="card-body">
-        {/* Role input start from here */}
+        {/* User input start from here */}
         <div className="form-group row">
-          <label className="col-form-label col-md-2">Select Role</label>
+          <label className="col-form-label col-md-2">Select User</label>
           <div className="col-md-10">
             <select
               className="form-control"
               onChange={handleChange}
-              name="name"
+              name="user"
             >
               <option value="">Select</option>
-              {role.roleList.map((singleRole) => {
+              {users.userList.map((singleUser, index) => {
                 return (
-                  <option key={singleRole.id} value={singleRole.id}>
-                    {singleRole.role}
+                  <option key={index} value={singleUser.email}>
+                    {singleUser.email}
                   </option>
                 );
               })}
             </select>
           </div>
         </div>
-
-        {/* User input start from here */}
+        {/* Role input start from here */}
         <div className="form-group row">
-          <label className="col-form-label col-md-2">Select User</label>
+          <label className="col-form-label col-md-2">Select Role</label>
           <div className="col-md-10">
             <select
               className="form-control"
@@ -151,6 +150,7 @@ const RoleUser = () => {
           </div>
         </div>
       </div>
+      <hr style={{ background: "black" }} />
       {/* <!-- Table Section --> */}
       <div>
         <div className="content container-fluid">
@@ -172,7 +172,7 @@ const RoleUser = () => {
                     <table className="datatable table table-hover table-center mb-0">
                       <thead>
                         <tr>
-                          <th>Serial Number</th>
+                          <th>Serial</th>
                           <th>Name</th>
                           <th>Actions</th>
                         </tr>
@@ -194,7 +194,7 @@ const RoleUser = () => {
                                     }
                                   >
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Edit
+                          
                                   </a>
                                   <a
                                     className="btn btn-sm bg-danger-light"
@@ -202,7 +202,7 @@ const RoleUser = () => {
                                       handleDeleteClick(singleStation.id)
                                     }
                                   >
-                                    <i className="fa fa-trash"></i> Delete
+                                    <i className="fa fa-trash"></i> 
                                   </a>
                                 </div>
                               </td>

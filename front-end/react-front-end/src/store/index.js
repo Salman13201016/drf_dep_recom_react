@@ -24,7 +24,7 @@ const store = createStore({
     disease : diseaseModel,
     hospitalMap : hospitalMapModel,
     role : roleModel,
-    roleUser : userModel,
+    users : userModel,
     symptom : symptomModel,
 })
 
