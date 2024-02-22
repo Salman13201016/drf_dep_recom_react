@@ -1,21 +1,15 @@
 import { useStoreState } from "easy-peasy";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import apiService from "../../../api";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
 const initalValue = {
-  name: "",
-  division: "",
-  district: "",
+  role: "",
+  user: "",
 };
 const RoleUser = () => {
-    const {
-      division: divisionFromServer,
-      district: districtFromServer,
-      station: stationFromServer,
-    } = useStoreState((state) => state);
-    const [showDistrictInJSX, setshowDistrictInJSX] = useState("");
+    const {role} = useStoreState((state) => state);
     const [stationInfo, setstationInfo] = useState(initalValue);
     const [currentPage, setcurrentPage] = useState(1);
     const [postPerPage, setpostPerPage] = useState(5);
@@ -25,34 +19,10 @@ const RoleUser = () => {
     const [selectedItem, setSelectedItem] = useState("");
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
-    const currentStation = stationFromServer.stationList.slice(
-      firstPostIndex,
-      lastPostIndex
-    );
+  
 
-    useEffect(() => {
-      let selectedDistrict = [];
-      districtFromServer.districtList.forEach((element) => {
-        if (element.division.id == stationInfo.division) {
-          selectedDistrict.push(element);
-        }
-      });
-      setshowDistrictInJSX(selectedDistrict);
-      selectedDistrict = [];
+    console.log(role.roleList)
 
-      if (!showDistrictInJSX.length > 0) {
-        setstationInfo((prev) => {
-          return {
-            ...prev,
-            district: "",
-          };
-        });
-      }
-    }, [
-      districtFromServer.districtList,
-      showDistrictInJSX.length,
-      stationInfo.division,
-    ]);
 
     const handleChange = (e) => {
       setstationInfo((prev) => {
@@ -130,20 +100,20 @@ const RoleUser = () => {
         <h4 className="card-title">Role User Data Input</h4>
       </div>
       <div className="card-body">
-        {/* Division input start from here */}
+        {/* Role input start from here */}
         <div className="form-group row">
           <label className="col-form-label col-md-2">Select Role</label>
           <div className="col-md-10">
             <select
               className="form-control"
               onChange={handleChange}
-              name="division"
+              name="name"
             >
               <option value="">Select</option>
-              {divisionFromServer.divisionList.map((singleDivision) => {
+              {role.roleList.map((singleRole) => {
                 return (
-                  <option key={singleDivision.id} value={singleDivision.id}>
-                    {singleDivision.name}
+                  <option key={singleRole.id} value={singleRole.id}>
+                    {singleRole.role}
                   </option>
                 );
               })}
@@ -151,66 +121,32 @@ const RoleUser = () => {
           </div>
         </div>
 
-        {/* District input start from here */}
-        <div
-          style={{
-            display: stationInfo.division.length > 0 ? "block" : "none",
-            marginBottom: "20px",
-          }}
-        >
-          {showDistrictInJSX.length > 0 ? (
-            <div className="form-group row">
-              <label className="col-form-label col-md-2">Select Username</label>
-              <div className="col-md-10">
-                <select
-                  className="form-control"
-                  onChange={handleChange}
-                  name="district"
-                >
-                  <option value="">Select</option>
-                  {showDistrictInJSX.map((singleDistrict) => {
-                    return (
-                      <option key={singleDistrict.id} value={singleDistrict.id}>
-                        {singleDistrict.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
-          ) : (
-            <p> District May Not Be Available or Please Select Division</p>
-          )}
-        </div>
-
-        {/* station input start from here */}
-
-        <div
-          style={{
-            display: stationInfo.district.length ? "block" : "none",
-          }}
-        >
-          <div className="form-group mb-0 row">
-            <label className="col-form-label col-md-2">Station Name</label>
-            <div className="col-md-10">
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={stationInfo.name}
-                  onChange={handleChange}
-                  name="name"
-                />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
+        {/* User input start from here */}
+        <div className="form-group row">
+          <label className="col-form-label col-md-2">Select User</label>
+          <div className="col-md-10">
+            <select
+              className="form-control"
+              onChange={handleChange}
+              name="name"
+            >
+              <option value="">Select</option>
+              {role.roleList.map((singleRole) => {
+                return (
+                  <option key={singleRole.id} value={singleRole.id}>
+                    {singleRole.role}
+                  </option>
+                );
+              })}
+            </select>
+            <div className="input-group-append mt-2">
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
             </div>
           </div>
         </div>
@@ -238,22 +174,21 @@ const RoleUser = () => {
                         <tr>
                           <th>Serial Number</th>
                           <th>Name</th>
-                          <th>Update</th>
-                          <th>Delete</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {currentStation.map((singleStation, index) => {
+                        {role.roleList.map((singleStation, index) => {
                           return (
                             <tr key={index}>
                               <td>
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
-                              <td>{singleStation.name}</td>
+                              <td>{singleStation.role}</td>
                               <td>
                                 <div className="actions">
                                   <a
-                                    className="btn btn-sm bg-success-light"
+                                    className="btn btn-sm bg-success-light mr-2"
                                     onClick={() =>
                                       handleEditClick(singleStation)
                                     }
@@ -261,10 +196,6 @@ const RoleUser = () => {
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
                                     Edit
                                   </a>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="actions">
                                   <a
                                     className="btn btn-sm bg-danger-light"
                                     onClick={() =>
@@ -290,7 +221,7 @@ const RoleUser = () => {
             <PaginationComponent
               currentPage={currentPage}
               postPerPage={postPerPage}
-              totalPost={stationFromServer.stationList.length}
+              totalPost={role.roleList.length}
               changePage={getCurrentPage}
             />
           </div>

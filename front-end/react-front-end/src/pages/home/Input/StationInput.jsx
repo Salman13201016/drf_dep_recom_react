@@ -45,6 +45,8 @@ const StationInput = () => {
        }
      }
 
+     console.log(currentStation)
+
   useEffect(() => {
     let selectedDistrict = [];
     districtFromServer.districtList.forEach((element) => {
@@ -278,6 +280,7 @@ const StationInput = () => {
             <SearchInput
               searchInput={searchInput}
               setSearchInput={setSearchInput}
+              placeholder={'Search Station'}
             />
           </div>
           {/* <!--/select post per page and search input --> */}
@@ -290,10 +293,11 @@ const StationInput = () => {
                     <table className="datatable table table-hover table-center mb-0">
                       <thead>
                         <tr>
-                          <th>Serial Number</th>
+                          <th>Serial</th>
                           <th>Name</th>
-                          <th>Update</th>
-                          <th>Delete</th>
+                          <th>District</th>
+                          <th>Division</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -304,28 +308,25 @@ const StationInput = () => {
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
                               <td>{singleStation.name}</td>
+                              <td>{singleStation.district_name}</td>
+                              <td>{singleStation.division_name}</td>
                               <td>
                                 <div className="actions">
                                   <a
-                                    className="btn btn-sm bg-success-light"
+                                    className="btn btn-sm bg-success-light mr-2"
                                     onClick={() =>
                                       handleEditClick(singleStation)
                                     }
                                   >
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Edit
                                   </a>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="actions">
                                   <a
                                     className="btn btn-sm bg-danger-light"
                                     onClick={() =>
                                       handleDeleteClick(singleStation.id)
                                     }
                                   >
-                                    <i className="fa fa-trash"></i> Delete
+                                    <i className="fa fa-trash"></i>
                                   </a>
                                 </div>
                               </td>

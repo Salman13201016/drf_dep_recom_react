@@ -17,45 +17,40 @@ const DiseaseInput = () => {
     (actions) => actions.disease
   );
   const [diseaseInfo, setdiseaseInfo] = useState(initalState);
-    const [searchInput, setSearchInput] = useState("");
-    const [filteredDisease, setFilteredDisease] = useState(
-      disease.diseaseList
-    );
-    const [currentPage, setcurrentPage] = useState(1);
-    const [postPerPage, setpostPerPage] = useState(5);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isEditModalshow, setIsEditModalShow] = useState(false);
-    const [selectedItemId, setSelectedItemId] = useState(null);
-    const [selectedItem, setSelectedItem] = useState("");
-    const lastPostIndex = currentPage * postPerPage;
-    const firstPostIndex = lastPostIndex - postPerPage;
-    const currentDisease = filteredDisease.slice(firstPostIndex, lastPostIndex);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredDisease, setFilteredDisease] = useState(disease.diseaseList);
+  const [currentPage, setcurrentPage] = useState(1);
+  const [postPerPage, setpostPerPage] = useState(5);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalshow, setIsEditModalShow] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedItem, setSelectedItem] = useState("");
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentDisease = filteredDisease.slice(firstPostIndex, lastPostIndex);
 
-    
   if (filteredDisease.length) {
     if (Math.ceil(filteredDisease.length / postPerPage) < currentPage) {
       setcurrentPage(1);
     }
   }
 
+  useEffect(() => {
+    const result = disease.diseaseList.filter((item) => {
+      return searchInput.toLowerCase() === ""
+        ? item
+        : item.name.toLowerCase().includes(searchInput);
+    });
 
-      useEffect(() => {
-        const result = disease.diseaseList.filter((item) => {
-          return searchInput.toLowerCase() === ""
-            ? item
-            : item.name.toLowerCase().includes(searchInput);
-        });
+    if (result.length) {
+      setFilteredDisease(result);
+    } else if (!searchInput.length) {
+      setFilteredDisease(disease.diseaseList);
+    } else {
+      setFilteredDisease([]);
+    }
+  }, [searchInput, disease.diseaseList]);
 
-        if (result.length) {
-          setFilteredDisease(result);
-        } else if (!searchInput.length) {
-          setFilteredDisease(disease.diseaseList);
-        } else {
-          setFilteredDisease([]);
-        }
-      }, [searchInput, disease.diseaseList]);
-
-  
   const handleChange = (e) => {
     setdiseaseInfo((prev) => {
       return {
@@ -67,7 +62,7 @@ const DiseaseInput = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(diseaseInfo.department && diseaseInfo.name){
+    if (diseaseInfo.department && diseaseInfo.name) {
       const response = await apiService.postData(
         "http://127.0.0.1:8000/diseases/disease/",
         JSON.stringify(diseaseInfo)
@@ -79,8 +74,8 @@ const DiseaseInput = () => {
           "http://127.0.0.1:8000/diseases/disease/"
         );
       }
-    }else{
-      alert('Please insert all the field')
+    } else {
+      alert("Please insert all the field");
     }
   };
 
@@ -97,9 +92,15 @@ const DiseaseInput = () => {
     const response = await apiService.deleteData(
       `http://127.0.0.1:8000/diseases/disease/${itemId}/`
     );
-    // Reset selectedItemId and close the modal
-    setSelectedItemId(null);
-    setIsDeleteModalOpen(false);
+    if (response.status == 204) {
+      toast.warn("Disease has been deleted");
+      // Reset selectedItemId and close the modal
+      setSelectedItemId(null);
+      setIsDeleteModalOpen(false);
+      getDiseaseListFromServer("http://127.0.0.1:8000/diseases/disease/");
+    } else {
+      toast.warn("Something went wrong");
+    }
   };
 
   const handleDeleteModalClose = () => {
@@ -118,27 +119,28 @@ const DiseaseInput = () => {
     setIsEditModalShow(true);
   };
   const handleEditValueChange = (e) => {
-    setSelectedItem((prev)=>{
-      return{
+    setSelectedItem((prev) => {
+      return {
         ...prev,
-        [e.target.name]:e.target.value,
-      }
-    })
+        [e.target.name]: e.target.value,
+      };
+    });
   };
 
-    const handleConfirmEdit = async () => {
-      const response = await apiService.updateData(
-        `http://127.0.0.1:8000/diseases/disease/${selectedItem.id}/`, JSON.stringify(selectedItem)
-      );
-      setSelectedItemId(null);
-      setIsEditModalShow(false);
-    };
+  const handleConfirmEdit = async () => {
+    const response = await apiService.updateData(
+      `http://127.0.0.1:8000/diseases/disease/${selectedItem.id}/`,
+      JSON.stringify(selectedItem)
+    );
+    setSelectedItemId(null);
+    setIsEditModalShow(false);
+  };
 
   return (
     <div className="card">
       <ToastContainer />
       <div className="card-header">
-        <h4 className="card-title">Disease Details Data Input</h4>
+        <h4 className="card-title">Disease Data Input</h4>
       </div>
       <div className="card-body">
         <form action="#" onSubmit={handleSubmit}>
@@ -183,10 +185,7 @@ const DiseaseInput = () => {
                     required
                   />
                   <div className="input-group-append">
-                    <button
-                      className="btn btn-primary"
-                      type="submit"
-                    >
+                    <button className="btn btn-primary" type="submit">
                       Submit
                     </button>
                   </div>
@@ -206,7 +205,7 @@ const DiseaseInput = () => {
           <div>
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">Divisions List</h3>
+                <h3 className="page-title">Disease List</h3>
               </div>
             </div>
           </div>
@@ -218,6 +217,7 @@ const DiseaseInput = () => {
             <SearchInput
               searchInput={searchInput}
               setSearchInput={setSearchInput}
+              placeholder={'Search Disease'}
             />
           </div>
           {/* <!--/select post per page and search input --> */}
@@ -230,10 +230,10 @@ const DiseaseInput = () => {
                     <table className="datatable table table-hover table-center mb-0">
                       <thead>
                         <tr>
-                          <th>Serial Number</th>
+                          <th>Serial</th>
                           <th>Name</th>
-                          <th>Update</th>
-                          <th>Delete</th>
+                          <th>Department</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -244,28 +244,25 @@ const DiseaseInput = () => {
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
                               <td>{singleDisease.name}</td>
+                              <td>{singleDisease.department.name}</td>
                               <td>
                                 <div className="actions">
                                   <a
-                                    className="btn btn-sm bg-success-light"
+                                    className="btn btn-sm bg-success-light mr-2"
                                     onClick={() =>
                                       handleEditClick(singleDisease)
                                     }
                                   >
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Edit
+                                    
                                   </a>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="actions">
                                   <a
                                     className="btn btn-sm bg-danger-light"
                                     onClick={() =>
                                       handleDeleteClick(singleDisease.id)
                                     }
                                   >
-                                    <i className="fa fa-trash"></i> Delete
+                                    <i className="fa fa-trash"></i> 
                                   </a>
                                 </div>
                               </td>

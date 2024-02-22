@@ -11,7 +11,6 @@ import DigiverseTerms from "../pages/digiverse/terms/DigiverseTerms";
 import DigiverseForgotPass from "../pages/digiverse/forgotPass/DigiverseForgotPass";
 import DigiverseWelcome from "../pages/welcome/DigiverseWelcome";
 import { GoogleLogIn } from "../pages/digiverse/googleLogIn/GoogleLogIn";
-import DefaultLogin from "../pages/home/Input/DefaultLogin";
 import DigiverseAbout from "../pages/digiverse/about/DigiverseAbout";
 
 
@@ -64,18 +63,22 @@ const App = () => {
 
   return (
     <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/digiverse" element={<DigiverseMain />} />
-      <Route path="/digiverse/login" element={<DigiverseLogin />} />
-      <Route path="/digiverse/login/google" element={<GoogleLogIn/>} />
-      <Route path="/digiverse/login/forgotpass" element={<DigiverseForgotPass />} />
-      <Route path="/digiverse/signup" element={<DigiverseSignUp /> } />
-      <Route path="/digiverse/privacy" element={<DigiversePrivacy /> } />
-      <Route path="/digiverse/terms" element={<DigiverseTerms /> } />
-      <Route path="/digiverse/welcome" element={<DigiverseWelcome /> } />
-      <Route path="/digiverse/about" element={<DigiverseAbout /> } />
-    </Routes>
+      <Routes>
+        <Route path="/" element={<DigiverseLogin />} />
+        <Route path="/admin" element={<HomePage />} />
+        <Route path="/digiverse" element={<DigiverseMain />} />
+        <Route path="/digiverse/login" element={<DigiverseLogin />} />
+        <Route path="/digiverse/login/google" element={<GoogleLogIn />} />
+        <Route
+          path="/digiverse/login/forgotpass"
+          element={<DigiverseForgotPass />}
+        />
+        <Route path="/digiverse/signup" element={<DigiverseSignUp />} />
+        <Route path="/digiverse/privacy" element={<DigiversePrivacy />} />
+        <Route path="/digiverse/terms" element={<DigiverseTerms />} />
+        <Route path="/digiverse/welcome" element={<DigiverseWelcome />} />
+        <Route path="/digiverse/about" element={<DigiverseAbout />} />
+      </Routes>
     </BrowserRouter>
   );
 }

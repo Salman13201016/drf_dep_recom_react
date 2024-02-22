@@ -6,7 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import SelectPostPerPage from '../../../components/shared/input/SelectPostPerPage';
 import SearchInput from '../../../components/shared/input/SearchInput';
 import DeleteModal from '../../../components/shared/modal/DeleteModal';
-import EditModal from '../../../components/shared/modal/EditModal';
+import { truncatedText } from '../../../utils/utils';
+import SymptomEditModal from '../../../components/shared/modal/SymptomEditModal';
 
 const initalValue = {
   department: "",
@@ -55,7 +56,6 @@ const SymtomsInput = () => {
     initalInput.push(`symptom${i+1}`);
   }
 
-  console.log(symptomFromServer.symptomList);
 
   const handleChange = (e) =>{
     setSymptomInfo((prev)=>{
@@ -84,17 +84,19 @@ const SymtomsInput = () => {
     }
   }
   const handleReduce = () =>{
-    if (initialInputNumber <= 1) {
+    if (initialInputNumber <= 5) {
       return;
     } else {
       setinitialInputNumber(initialInputNumber-1)
     }
   }
 
+
     useEffect(() => {
       let selectedDisease = [];
       disease.diseaseList.forEach((element) => {
-        if (element.department == symptomInfo.department) {
+
+        if (element.department.id == symptomInfo.department) {
           selectedDisease.push(element);
         }
       });
@@ -114,6 +116,7 @@ const SymtomsInput = () => {
       showDiseaseInJSX.length,
       symptomInfo.department,
     ]);
+
 
     const getCurrentPage = (pageNumber) => {
       setcurrentPage(pageNumber);
@@ -164,23 +167,25 @@ const SymtomsInput = () => {
     };
 
     const handleConfirmEdit = async () => {
-      const editedData = {
-        id: selectedItem.id,
-        name: selectedItem.name,
-        division: selectedItem.division.id,
-      };
-      setSelectedItemId(null);
-      const response = await apiService.updateData(
-        `http://127.0.0.1:8000/district/districts/${selectedItem.id}/`,
-        JSON.stringify(editedData)
-      );
-      if (response.statusText == "OK") {
-        toast.success("Successfully Updated");
-        await getDistrictListFromServer(
-          "http://127.0.0.1:8000/district/districts/"
-        );
-      }
-      setIsEditModalShow(false);
+      // const editedData = {
+      //   id: selectedItem.id,
+      //   name: selectedItem.name,
+      //   division: selectedItem.division.id,
+      // };
+      // setSelectedItemId(null);
+      // const response = await apiService.updateData(
+      //   `http://127.0.0.1:8000/district/districts/${selectedItem.id}/`,
+      //   JSON.stringify(editedData)
+      // );
+      // if (response.statusText == "OK") {
+      //   toast.success("Successfully Updated");
+      //   await getDistrictListFromServer(
+      //     "http://127.0.0.1:8000/district/districts/"
+      //   );
+      // }
+      // setIsEditModalShow(false);
+
+      console.log(selectedItem)
     };
 
   return (
@@ -322,7 +327,6 @@ const SymtomsInput = () => {
             />
           </div>
           {/* <!--/select post per page and search input --> */}
-
           <div className="row">
             <div className="col-sm-12">
               <div className="card">
@@ -337,27 +341,28 @@ const SymtomsInput = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {currentSymptom.map((singleDistrict, index) => {
+                        {currentSymptom.map((item, index) => {
                           return (
                             <tr key={index}>
                               <td>
                                 {(currentPage - 1) * postPerPage + 1 + index}
                               </td>
-                              <td>{singleDistrict.symptom1}</td>
+                              <td>
+                                {truncatedText(
+                                  `${item.symptom1},${item.symptom2},${item.symptom3},${item.symptom4},${item.symptom5},${item.symptom6},${item.symptom7},${item.symptom8},${item.symptom9},${item.symptom10},${item.symptom11},${item.symptom12},${item.symptom13},${item.symptom14},${item.symptom15}, ${item.symptom16}, ${item.symptom17}`,
+                                  60
+                                )}
+                              </td>
                               <td>
                                 <a
                                   className="btn btn-sm bg-success-light px-3 mr-2"
-                                  onClick={() =>
-                                    handleEditClick(singleDistrict)
-                                  }
+                                  onClick={() => handleEditClick(item)}
                                 >
                                   <i className="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <a
                                   className="btn btn-sm bg-danger-light px-3"
-                                  onClick={() =>
-                                    handleDeleteClick(singleDistrict.id)
-                                  }
+                                  onClick={() => handleDeleteClick(item.id)}
                                 >
                                   <i className="fa fa-trash"></i>
                                 </a>
@@ -397,16 +402,16 @@ const SymtomsInput = () => {
       />
       {/* <!-- /Delete Modal --> */}
 
-      <EditModal
+      <SymptomEditModal
         isShow={isEditModalshow}
         handleClose={handleEditModalClose}
         modalTitle={"Symptom Field"}
-        editValue={selectedItem.symptom1}
+        editValue={selectedItem}
         handleChange={handleEditValueChange}
         id={selectedItemId}
-        fieldName="name"
         confirmEdit={handleConfirmEdit}
       />
+
       {/* <!-- /Edit Modal --> */}
     </div>
   );

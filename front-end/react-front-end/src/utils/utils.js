@@ -51,11 +51,11 @@ export const validateForm = (values) => {
     errors.phone = "Please enter a valid phone number";
   }
 
-  if (!values.identity) {
-    errors.identity = "This field is required";
-  } else if (values.identity.length < 5) {
-    errors.identity = "Please enter valid number with at least 5 numbers";
-  }
+  // if (!values.identity) {
+  //   errors.identity = "This field is required";
+  // } else if (values.identity.length < 5) {
+  //   errors.identity = "Please enter valid number with at least 5 numbers";
+  // }
 
    if(!values.dob){
     errors.dob = "This field is required";
@@ -72,4 +72,21 @@ export const validateEmail = (values) => {
     errors.email = "Please enter a valid email";
   }
   return errors;
+};
+
+
+export const truncatedWord = ( text, maxWords ) => {
+  const words = text.split(" ");
+  const truncatedText = words.slice(0, maxWords).join(" ");
+
+  return truncatedText
+};
+
+export const truncatedText = (text, maxCharacters ) => {
+  const truncatedText =
+    text.length > maxCharacters
+      ? text.substring(0, maxCharacters) + "..."
+      : text;
+
+  return truncatedText;
 };

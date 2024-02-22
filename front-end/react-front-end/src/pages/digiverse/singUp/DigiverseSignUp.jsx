@@ -15,6 +15,11 @@ export const DigiverseSignUp = () => {
   const [message, setmessage] = useState("");
   const [visible, setVisible] = useState(false);
   const [isLoading, setisLoading] = useState(false);
+    const [passwordVisibility, setPasswordVisibility] = useState(false);
+    const iconClass = passwordVisibility
+      ? "fa-solid fa-eye"
+      : "fa-solid fa-eye-slash";
+    const inputType = passwordVisibility ? "text" : "password";
   const navigate = useNavigate();
   const showBackendMessage = () =>{
     setVisible(true);
@@ -31,37 +36,36 @@ export const DigiverseSignUp = () => {
       password: "",
       confirmPassword: "",
       phone: "",
-      identity: "",
+      // identity: "",
       dob : ""
     },
     validate: validateForm,
 
     onSubmit: async (values) => {
-      console.log('Munna')
-      setisLoading(true);
+      // setisLoading(true);
       const userInfo = {
         fname: values.name,
         email: values.email,
         mobile: values.phone,
-        identy_no: values.identity,
+        // identy_no: values.identity,
         password: values.password,
         conf_password: values.confirmPassword,
-        // dob : values.dob
+        dob : values.dob
       };
       console.log(userInfo)
-      const result = await apiService.signUpPostData(
-        "http://127.0.0.1:8000/auth_user/signup/",
-        userInfo
-      );
-      console.log(result)
-      if (result.status == 201) {
-        setisLoading(false);
-        navigate("/digiverse/welcome");
-      } else {
-        setisLoading(false);
-        setmessage(result);
-        showBackendMessage();
-      }
+      // const result = await apiService.signUpPostData(
+      //   "http://127.0.0.1:8000/auth_user/signup/",
+      //   userInfo
+      // );
+      // console.log(result)
+      // if (result.status == 201) {
+      //   setisLoading(false);
+      //   navigate("/digiverse/welcome");
+      // } else {
+      //   setisLoading(false);
+      //   setmessage(result);
+      //   showBackendMessage();
+      // }
     },
   });
 
@@ -87,6 +91,10 @@ export const DigiverseSignUp = () => {
       });
     }
   }, [user]);
+
+    const passVisibilityToggle = () => {
+      setPasswordVisibility(!passwordVisibility);
+    };
 
   return (
     <div className="digiverseBody">
@@ -173,7 +181,7 @@ export const DigiverseSignUp = () => {
                       <i className="fa-solid fa-lock"></i>
                     </label>
                     <input
-                      type="password"
+                      type={inputType}
                       name="password"
                       id="password"
                       placeholder="Enter Password"
@@ -181,10 +189,10 @@ export const DigiverseSignUp = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                     />
-                    <button className="bg-transparent border-0" type="button">
+                    <button className="bg-transparent border-0" type="button" onClick={passVisibilityToggle} >
                       <i
                         id="view_pass"
-                        className="fa-solid fa-eye"
+                        className={iconClass}
                       ></i>
                     </button>
                     {!formik.values.password && (
@@ -204,7 +212,7 @@ export const DigiverseSignUp = () => {
                       <i className="fa-solid fa-lock"></i>
                     </label>
                     <input
-                      type="password"
+                      type={inputType}
                       name="confirmPassword"
                       id="confirmPassword"
                       placeholder="Enter Confirm Password"
@@ -212,10 +220,10 @@ export const DigiverseSignUp = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.confirmPassword}
                     />
-                    <button className="bg-transparent border-0" type="button">
+                    <button className="bg-transparent border-0" type="button" onClick={passVisibilityToggle} >
                       <i
                         id="view_pass"
-                        className="fa-solid fa-eye"
+                        className={iconClass}
                       ></i>
                     </button>
                     {!formik.values.confirmPassword && (
@@ -248,7 +256,7 @@ export const DigiverseSignUp = () => {
                   </div>
 
                   {/* -----identity input--------- */}
-                  {formik.touched.identity && formik.errors.identity ? (
+                  {/* {formik.touched.identity && formik.errors.identity ? (
                     <small className="warningMessage">
                       {formik.errors.identity}
                     </small>
@@ -269,10 +277,10 @@ export const DigiverseSignUp = () => {
                     {!formik.values.identity && (
                       <span className="require_mark">*</span>
                     )}
-                  </div>
+                  </div> */}
 
                   {/* -----Date of birth input--------- */}
-                  {/* {formik.touched.dob && formik.errors.dob ? (
+                  {formik.touched.dob && formik.errors.dob ? (
                     <small className="warningMessage">
                       {formik.errors.dob}
                     </small>
@@ -293,7 +301,7 @@ export const DigiverseSignUp = () => {
                     {!formik.values.dob && (
                       <span className="require_mark">*</span>
                     )}
-                  </div> */}
+                  </div>
 
                   {visible && <p style={{ color: "white" }}>{message}</p>}
 
@@ -371,3 +379,5 @@ export const DigiverseSignUp = () => {
     </div>
   );
 };
+
+

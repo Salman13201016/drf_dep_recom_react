@@ -3,10 +3,10 @@ import { useStoreState, useStoreActions } from "easy-peasy";
 import apiService from "../../../api";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
-import EditModal from "../../../components/shared/modal/EditModal";
 import { ToastContainer, toast } from "react-toastify";
 import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
 import SearchInput from "../../../components/shared/input/SearchInput";
+import DistrictEditModal from "../../../components/shared/modal/DistrictEditModal";
 
 const DistrictInput = () => {
   const { divisionList } = useStoreState((state) => state.division);
@@ -111,6 +111,8 @@ const DistrictInput = () => {
     setIsEditModalShow(true);
   };
   const handleEditValueChange = (e) => {
+    console.log(e.target.name, e.target.value)
+    console.log(selectedItem)
     setSelectedItem((prev) => {
       return {
         ...prev,
@@ -214,6 +216,7 @@ const DistrictInput = () => {
             <SearchInput
               searchInput={searchInput}
               setSearchInput={setSearchInput}
+              placeholder={'Search District'}
             />
           </div>
           {/* <!--/select post per page and search input --> */}
@@ -294,15 +297,16 @@ const DistrictInput = () => {
       />
       {/* <!-- /Delete Modal --> */}
 
-      <EditModal
+      <DistrictEditModal
         isShow={isEditModalshow}
         handleClose={handleEditModalClose}
         modalTitle={"District Name"}
-        editValue={selectedItem.name}
+        editValue={selectedItem}
         handleChange={handleEditValueChange}
         id={selectedItemId}
         fieldName="name"
         confirmEdit={handleConfirmEdit}
+        allDivision={divisionList}
       />
       {/* <!-- /Edit Modal --> */}
     </div>
