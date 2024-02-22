@@ -51,11 +51,11 @@ export const validateForm = (values) => {
     errors.phone = "Please enter a valid phone number";
   }
 
-  if (!values.identity) {
-    errors.identity = "This field is required";
-  } else if (values.identity.length < 5) {
-    errors.identity = "Please enter valid number with at least 5 numbers";
-  }
+  // if (!values.identity) {
+  //   errors.identity = "This field is required";
+  // } else if (values.identity.length < 5) {
+  //   errors.identity = "Please enter valid number with at least 5 numbers";
+  // }
 
    if(!values.dob){
     errors.dob = "This field is required";

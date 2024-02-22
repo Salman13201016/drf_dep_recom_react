@@ -1,19 +1,31 @@
 
 import {Link} from 'react-router-dom'
-import {  validateForm } from '../../../utils/utils';
+import {  validateEmail } from '../../../utils/utils';
 import { useFormik } from "formik";
+import { useState } from 'react';
 
 const DigiverseLogin = () => {
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const iconClass = passwordVisibility
+    ? "fa-solid fa-eye"
+    : "fa-solid fa-eye-slash";
+  const inputType = passwordVisibility ? 'text' : 'password';
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    validate : validateForm,
-    onSubmit : (values)=>{
-      console.log(values)
+    validate: validateEmail,
+  
+    onSubmit : (formVal)=>{
+      console.log(formVal);
     }
+
   });
+
+  const passVisibilityToggle = () =>{
+    setPasswordVisibility(!passwordVisibility)
+  }
 
   return (
     <div className="digiverseBody">
@@ -36,10 +48,9 @@ const DigiverseLogin = () => {
         <section className="login login_pase">
           <div className="container">
             <div className="login_main">
-
               <div className="login_inner">
                 <h2 className="auth_title">Log in</h2>
-                <form action="#" onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit}>
                   {/* --------email input------------ */}
                   {formik.touched.email && formik.errors.email ? (
                     <small className="warningMessage">
@@ -75,7 +86,7 @@ const DigiverseLogin = () => {
                       <i className="fa-solid fa-lock"></i>
                     </label>
                     <input
-                      type="password"
+                      type={inputType}
                       name="password"
                       id="password"
                       placeholder="Enter Password"
@@ -83,11 +94,12 @@ const DigiverseLogin = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                     />
-                    <button className="bg-transparent border-0" type='button'>
-                      <i
-                        id="view_pass"
-                        className="fa-solid fa-eye"
-                      ></i>
+                    <button
+                      className="bg-transparent border-0"
+                      type="button"
+                      onClick={passVisibilityToggle}
+                    >
+                      <i id="view_pass" className={iconClass}></i>
                     </button>
                     {!formik.values.password && (
                       <span className="require_mark">*</span>
@@ -174,3 +186,6 @@ const DigiverseLogin = () => {
 };
 
 export default DigiverseLogin;
+
+
+
