@@ -29,6 +29,10 @@ const UserLocation = () => {
       alert("Geolocation is not available in your browser.");
     }
   };
+
+  const handleChange = (e) =>{
+    console.log(e.target.value)
+  }
   return (
     <div>
       <button onClick={handleUserLocation}>Nearest Hospital</button>
@@ -54,6 +58,11 @@ const UserLocation = () => {
         ) : (
           <p>Click above to show nearest hospitals</p>
         )}
+      </div>
+
+      <div>
+        <input type="checkbox" id="test" value={'first test'} onChange={handleChange} />
+        <label htmlFor="test">click here</label>
       </div>
     </div>
   );

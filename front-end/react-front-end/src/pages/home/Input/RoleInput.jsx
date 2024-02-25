@@ -8,6 +8,7 @@ import PaginationComponent from "../../../components/UI/pagination/Pagination";
 
 const RoleInput = () => {
       const { roleList } = useStoreState((state) => state.role);
+      const { profile } = useStoreState((state) => state);
       const [roleName, setRolName] = useState("");
       const [currentPage, setcurrentPage] = useState(1);
       const [postPerPage, setpostPerPage] = useState(5);
@@ -94,6 +95,7 @@ const RoleInput = () => {
         console.log(JSON.stringify(finalData));
         setIsEditModalShow(false);
       };
+
   return (
     <div className="card">
       <ToastContainer />
@@ -114,6 +116,7 @@ const RoleInput = () => {
                 />
                 <div className="input-group-append">
                   <button
+                    disabled={!profile.userProfile.permissions.insert}
                     className="btn btn-primary"
                     type="button"
                     onClick={handleSubmit}
@@ -128,79 +131,94 @@ const RoleInput = () => {
       </div>
 
       {/* <!-- Table Section --> */}
-      <div>
-        <div className="content container-fluid">
-          {/* <!-- Page Header --> */}
-          <div>
-            <div className="row">
-              <div className="col-sm-12">
-                <h3 className="page-title">Roles List</h3>
+      {profile.userProfile.permissions.view ? (
+        <div>
+          <div className="content container-fluid">
+            {/* <!-- Page Header --> */}
+            <div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <h3 className="page-title">Roles List</h3>
+                </div>
               </div>
             </div>
-          </div>
-          {/* <!-- /Page Header --> */}
+            {/* <!-- /Page Header --> */}
 
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="card">
-                <div className="card-body">
-                  <div className="table-responsive">
-                    <table className="datatable table table-hover table-center mb-0">
-                      <thead>
-                        <tr>
-                          <th>Serial</th>
-                          <th>Name</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentDivision.map((singleRole, index) => {
-                          return (
-                            <tr key={index}>
-                              <td>
-                                {(currentPage - 1) * postPerPage + 1 + index}
-                              </td>
-                              <td>{singleRole.role}</td>
-                              <td>
-                                <div className="actions">
-                                  <a
-                                    className="btn btn-sm bg-success-light mr-2"
-                                    onClick={() => handleEditClick(singleRole)}
-                                  >
-                                    <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    
-                                  </a>
-                                  <a
-                                    className="btn btn-sm bg-danger-light"
-                                    onClick={() =>
-                                      handleDeleteClick(singleRole.id)
-                                    }
-                                  >
-                                    <i className="fa fa-trash"></i> 
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="table-responsive">
+                      <table className="datatable table table-hover table-center mb-0">
+                        <thead>
+                          <tr>
+                            <th>Serial</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {currentDivision.map((singleRole, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>
+                                  {(currentPage - 1) * postPerPage + 1 + index}
+                                </td>
+                                <td>{singleRole.role}</td>
+                                <td>
+                                  <div className="actions">
+                                    <button
+                                      disabled={
+                                        !profile.userProfile.permissions.edit
+                                      }
+                                      className="btn btn-sm bg-success-light mr-2"
+                                      onClick={() =>
+                                        handleEditClick(singleRole)
+                                      }
+                                    >
+                                      <i className="fa-solid fa-pen-to-square"></i>{" "}
+                                    </button>
+                                    <button
+                                      disabled={
+                                        !profile.userProfile.permissions.delete
+                                      }
+                                      className="btn btn-sm bg-danger-light"
+                                      onClick={() =>
+                                        handleDeleteClick(singleRole.id)
+                                      }
+                                    >
+                                      <i className="fa fa-trash"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          {/* <!-- Pagination --> */}
-          <div className="d-flex justify-content-center">
-            <PaginationComponent
-              currentPage={currentPage}
-              postPerPage={postPerPage}
-              totalPost={roleList.length}
-              changePage={getCurrentPage}
-            />
+            {/* <!-- Pagination --> */}
+            <div className="d-flex justify-content-center">
+              <PaginationComponent
+                currentPage={currentPage}
+                postPerPage={postPerPage}
+                totalPost={roleList.length}
+                changePage={getCurrentPage}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="text-center">
+          <h3>You Do Not Have Access to The Table</h3>
+          <h4>Make sure you are admin</h4>
+        </div>
+      )}
+
       {/* <!-- /Table Section --> */}
 
       {/* <!-- Delete Modal --> */}

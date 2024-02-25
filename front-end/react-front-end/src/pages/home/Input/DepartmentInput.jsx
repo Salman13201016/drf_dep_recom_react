@@ -15,7 +15,7 @@ const initialState = {
   details: "",
 };
 const DepartmentInput = () => {
-  const { hospitalInfo, department } = useStoreState((state) => state);
+  const { hospitalInfo, department, profile } = useStoreState((state) => state);
   const { getDepartmentListFromServer } = useStoreActions(
     (actions) => actions.department
   );
@@ -144,6 +144,7 @@ const DepartmentInput = () => {
       );
     }
   };
+
   return (
     <div className="card">
       <ToastContainer />
@@ -214,7 +215,11 @@ const DepartmentInput = () => {
                 required
               ></textarea>
               <div className="input-group-append" style={{ marginTop: "20px" }}>
-                <button className="btn btn-primary" type="submit">
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  disabled={!profile.userProfile.permissions.insert}
+                >
                   Submit
                 </button>
               </div>
@@ -226,97 +231,114 @@ const DepartmentInput = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      <div>
-        <div className="content container-fluid">
-          {/* <!-- Page Header --> */}
-          <div>
-            <div className="row">
-              <div className="col-sm-12">
-                <h3 className="page-title">Department List</h3>
+      {profile.userProfile.permissions.view ? (
+        <div>
+          <div className="content container-fluid">
+            {/* <!-- Page Header --> */}
+            <div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <h3 className="page-title">Department List</h3>
+                </div>
               </div>
             </div>
-          </div>
-          {/* <!-- /Page Header --> */}
+            {/* <!-- /Page Header --> */}
 
-          {/* <!--select post per page and search input --> */}
-          <div className="showTop d-flex w-100 justify-content-between">
-            <SelectPostPerPage setpostPerPage={setpostPerPage} />
-            <SearchInput
-              searchInput={searchInput}
-              setSearchInput={setSearchInput}
-              placeholder={'Search Department'}
-            />
-          </div>
-          {/* <!--/select post per page and search input --> */}
+            {/* <!--select post per page and search input --> */}
+            <div className="showTop d-flex w-100 justify-content-between">
+              <SelectPostPerPage setpostPerPage={setpostPerPage} />
+              <SearchInput
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+                placeholder={"Search Department"}
+              />
+            </div>
+            {/* <!--/select post per page and search input --> */}
 
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="card">
-                <div className="card-body">
-                  <div className="table-responsive">
-                    <table className="datatable table table-hover table-center mb-0">
-                      <thead>
-                        <tr>
-                          <th>Serial </th>
-                          <th>Name</th>
-                          <th>Deatils</th>
-                          <th>Hospital</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentDepartment.map((singleDepartment, index) => {
-                          return (
-                            <tr key={index}>
-                              <td>
-                                {(currentPage - 1) * postPerPage + 1 + index}
-                              </td>
-                              <td>{singleDepartment.name}</td>
-                              <td>{singleDepartment.details}</td>
-                              <td>
-                                {truncatedText(singleDepartment.hospital.name, 30)}
-                              </td>
-                              <td>
-                                <div className="actions">
-                                  <a
-                                    className="btn btn-sm bg-success-light mr-2"
-                                    onClick={() =>
-                                      handleEditClick(singleDepartment)
-                                    }
-                                  >
-                                    <i className="fa-solid fa-pen-to-square"></i>
-                                  </a>
-                                  <a
-                                    className="btn btn-sm bg-danger-light"
-                                    onClick={() =>
-                                      handleDeleteClick(singleDepartment.id)
-                                    }
-                                  >
-                                    <i className="fa fa-trash"></i>
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="table-responsive">
+                      <table className="datatable table table-hover table-center mb-0">
+                        <thead>
+                          <tr>
+                            <th>Serial </th>
+                            <th>Name</th>
+                            <th>Deatils</th>
+                            <th>Hospital</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {currentDepartment.map((singleDepartment, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>
+                                  {(currentPage - 1) * postPerPage + 1 + index}
+                                </td>
+                                <td>{singleDepartment.name}</td>
+                                <td>{singleDepartment.details}</td>
+                                <td>
+                                  {truncatedText(
+                                    singleDepartment.hospital.name,
+                                    30
+                                  )}
+                                </td>
+                                <td>
+                                  <div className="actions">
+                                    <button
+                                      disabled={
+                                        !profile.userProfile.permissions.edit
+                                      }
+                                      className="btn btn-sm bg-success-light mr-2"
+                                      onClick={() =>
+                                        handleEditClick(singleDepartment)
+                                      }
+                                    >
+                                      <i className="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button
+                                      disabled={
+                                        !profile.userProfile.permissions.delete
+                                      }
+                                      className="btn btn-sm bg-danger-light"
+                                      onClick={() =>
+                                        handleDeleteClick(singleDepartment.id)
+                                      }
+                                    >
+                                      <i className="fa fa-trash"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          {/* <!-- Pagination --> */}
-          <div className="d-flex justify-content-center">
-            <PaginationComponent
-              currentPage={currentPage}
-              postPerPage={postPerPage}
-              totalPost={filteredDepartment.length}
-              changePage={getCurrentPage}
-            />
+            {/* <!-- Pagination --> */}
+            <div className="d-flex justify-content-center">
+              <PaginationComponent
+                currentPage={currentPage}
+                postPerPage={postPerPage}
+                totalPost={filteredDepartment.length}
+                changePage={getCurrentPage}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="text-center">
+          <h3>You Do Not Have Access to The Table</h3>
+          <h4>Make sure you are admin</h4>
+        </div>
+      )}
+
       {/* <!-- /Table Section --> */}
 
       {/* <!-- Delete Modal --> */}

@@ -14,7 +14,7 @@ const initalValue = {
   latitude: "",
 };
 const HospitalMap = () => {
-  const { hospitalInfo, hospitalMap } = useStoreState((state) => state);
+  const { hospitalInfo, hospitalMap, profile } = useStoreState((state) => state);
   const { getHospitalMapListFromServer } = useStoreActions(
     (actions) => actions.hospitalMap
   );
@@ -132,6 +132,8 @@ const HospitalMap = () => {
     }
   };
 
+
+
   return (
     <div className="card">
       <ToastContainer />
@@ -139,7 +141,7 @@ const HospitalMap = () => {
         <h4 className="card-title">Hospital Map Data Input</h4>
       </div>
       <div className="card-body">
-        <form action="#" onSubmit={handleSubmit} >
+        <form action="#" onSubmit={handleSubmit}>
           {/* hospital input start from here */}
           <div className="form-group row">
             <label className="col-form-label col-md-2">Select Hospital</label>
@@ -198,6 +200,7 @@ const HospitalMap = () => {
                   />
                   <div className="input-group-append">
                     <button
+                      disabled={!profile.userProfile.permissions.insert}
                       className="btn btn-primary"
                       type="submit"
                     >
@@ -214,94 +217,107 @@ const HospitalMap = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      <div>
-        <div className="content container-fluid">
-          {/* <!-- Page Header --> */}
-          <div>
-            <div className="row">
-              <div className="col-sm-12">
-                <h3 className="page-title">Hospital Maps List</h3>
+      {profile.userProfile.permissions.view ? (
+        <div>
+          <div className="content container-fluid">
+            {/* <!-- Page Header --> */}
+            <div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <h3 className="page-title">Hospital Maps List</h3>
+                </div>
               </div>
             </div>
-          </div>
-          {/* <!-- /Page Header --> */}
+            {/* <!-- /Page Header --> */}
 
-          {/* <!--select post per page and search input --> */}
-          <div className="showTop d-flex w-100 justify-content-between">
-            <SelectPostPerPage setpostPerPage={setpostPerPage} />
-            <SearchInput
-              searchInput={searchInput}
-              setSearchInput={setSearchInput}
-              placeholder={'Search Map'}
-            />
-          </div>
-          {/* <!--/select post per page and search input --> */}
+            {/* <!--select post per page and search input --> */}
+            <div className="showTop d-flex w-100 justify-content-between">
+              <SelectPostPerPage setpostPerPage={setpostPerPage} />
+              <SearchInput
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+                placeholder={"Search Map"}
+              />
+            </div>
+            {/* <!--/select post per page and search input --> */}
 
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="card">
-                <div className="card-body">
-                  <div className="table-responsive">
-                    <table className="datatable table table-hover table-center mb-0">
-                      <thead>
-                        <tr>
-                          <th>Serial</th>
-                          <th>Name</th>
-                          <th>Latitude</th>
-                          <th>Longitude</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentHospitalMapList.map((singleMap, index) => {
-                          return (
-                            <tr key={index}>
-                              <td>
-                                {(currentPage - 1) * postPerPage + 1 + index}
-                              </td>
-                              <td>{singleMap.hospital_name}</td>
-                              <td>{singleMap.latitude}</td>
-                              <td>{singleMap.longitude}</td>
-                              <td>
-                                <div className="actions">
-                                  <a
-                                    className="btn btn-sm bg-success-light mr-2"
-                                    onClick={() => handleEditClick(singleMap)}
-                                  >
-                                    <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    
-                                  </a>
-                                  <a
-                                    className="btn btn-sm bg-danger-light"
-                                    onClick={() =>
-                                      handleDeleteClick(singleMap.id)
-                                    }
-                                  >
-                                    <i className="fa fa-trash"></i>
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="table-responsive">
+                      <table className="datatable table table-hover table-center mb-0">
+                        <thead>
+                          <tr>
+                            <th>Serial</th>
+                            <th>Name</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {currentHospitalMapList.map((singleMap, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>
+                                  {(currentPage - 1) * postPerPage + 1 + index}
+                                </td>
+                                <td>{singleMap.hospital_name}</td>
+                                <td>{singleMap.latitude}</td>
+                                <td>{singleMap.longitude}</td>
+                                <td>
+                                  <div className="actions">
+                                    <button
+                                      disabled={
+                                        !profile.userProfile.permissions.edit
+                                      }
+                                      className="btn btn-sm bg-success-light mr-2"
+                                      onClick={() => handleEditClick(singleMap)}
+                                    >
+                                      <i className="fa-solid fa-pen-to-square"></i>{" "}
+                                    </button>
+                                    <button
+                                      disabled={
+                                        !profile.userProfile.permissions.delete
+                                      }
+                                      className="btn btn-sm bg-danger-light"
+                                      onClick={() =>
+                                        handleDeleteClick(singleMap.id)
+                                      }
+                                    >
+                                      <i className="fa fa-trash"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          {/* <!-- Pagination --> */}
-          <div className="d-flex justify-content-center">
-            <PaginationComponent
-              currentPage={currentPage}
-              postPerPage={postPerPage}
-              totalPost={filteredMapList.length}
-              changePage={getCurrentPage}
-            />
+            {/* <!-- Pagination --> */}
+            <div className="d-flex justify-content-center">
+              <PaginationComponent
+                currentPage={currentPage}
+                postPerPage={postPerPage}
+                totalPost={filteredMapList.length}
+                changePage={getCurrentPage}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="text-center">
+          <h3>You Do Not Have Access to The Table</h3>
+          <h4>Make sure you are admin</h4>
+        </div>
+      )}
+
       {/* <!-- /Table Section --> */}
 
       {/* <!-- Delete Modal --> */}

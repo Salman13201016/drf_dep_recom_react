@@ -17,6 +17,7 @@ const StationInput = () => {
     division: divisionFromServer,
     district: districtFromServer,
     station: stationFromServer,
+    profile
   } = useStoreState((state) => state);
   const { getStationFromServer } = useStoreActions(
     (actions) => actions.station
@@ -45,7 +46,6 @@ const StationInput = () => {
        }
      }
 
-     console.log(currentStation)
 
   useEffect(() => {
     let selectedDistrict = [];
@@ -227,7 +227,9 @@ const StationInput = () => {
                     name="district"
                     required
                   >
-                    <option value="">District is not available in under this division</option>
+                    <option value="">
+                      District is not available in under this division
+                    </option>
                   </select>
                 </div>
               </div>
@@ -250,7 +252,11 @@ const StationInput = () => {
                     required
                   />
                   <div className="input-group-append">
-                    <button className="btn btn-primary" type="submit">
+                    <button
+                      className="btn btn-primary"
+                      type="submit"
+                      disabled={!profile.userProfile.permissions.insert}
+                    >
                       Submit
                     </button>
                   </div>
@@ -260,99 +266,112 @@ const StationInput = () => {
           </div>
         </form>
       </div>
-      <hr style={{background:'black'}} />
+      <hr style={{ background: "black" }} />
       {/* <!-- Table Section --> */}
-      <div>
-        <div className="content container-fluid">
-          {/* <!-- Page Header --> */}
-          <div>
-            <div className="row">
-              <div className="col-sm-12">
-                <h3 className="page-title">Station List</h3>
+      {profile.userProfile.permissions.view ? (
+        <div>
+          <div className="content container-fluid">
+            {/* <!-- Page Header --> */}
+            <div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <h3 className="page-title">Station List</h3>
+                </div>
               </div>
             </div>
-          </div>
-          {/* <!-- /Page Header --> */}
+            {/* <!-- /Page Header --> */}
 
-          {/* <!--select post per page and search input --> */}
-          <div className="showTop d-flex w-100 justify-content-between">
-            <SelectPostPerPage setpostPerPage={setpostPerPage} />
-            <SearchInput
-              searchInput={searchInput}
-              setSearchInput={setSearchInput}
-              placeholder={'Search Station'}
-            />
-          </div>
-          {/* <!--/select post per page and search input --> */}
+            {/* <!--select post per page and search input --> */}
+            <div className="showTop d-flex w-100 justify-content-between">
+              <SelectPostPerPage setpostPerPage={setpostPerPage} />
+              <SearchInput
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+                placeholder={"Search Station"}
+              />
+            </div>
+            {/* <!--/select post per page and search input --> */}
 
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="card">
-                <div className="card-body">
-                  <div className="table-responsive">
-                    <table className="datatable table table-hover table-center mb-0">
-                      <thead>
-                        <tr>
-                          <th>Serial</th>
-                          <th>Name</th>
-                          <th>District</th>
-                          <th>Division</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentStation.map((singleStation, index) => {
-                          return (
-                            <tr key={index}>
-                              <td>
-                                {(currentPage - 1) * postPerPage + 1 + index}
-                              </td>
-                              <td>{singleStation.name}</td>
-                              <td>{singleStation.district_name}</td>
-                              <td>{singleStation.division_name}</td>
-                              <td>
-                                <div className="actions">
-                                  <a
-                                    className="btn btn-sm bg-success-light mr-2"
-                                    onClick={() =>
-                                      handleEditClick(singleStation)
-                                    }
-                                  >
-                                    <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                  </a>
-                                  <a
-                                    className="btn btn-sm bg-danger-light"
-                                    onClick={() =>
-                                      handleDeleteClick(singleStation.id)
-                                    }
-                                  >
-                                    <i className="fa fa-trash"></i>
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="table-responsive">
+                      <table className="datatable table table-hover table-center mb-0">
+                        <thead>
+                          <tr>
+                            <th>Serial</th>
+                            <th>Name</th>
+                            <th>District</th>
+                            <th>Division</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {currentStation.map((singleStation, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>
+                                  {(currentPage - 1) * postPerPage + 1 + index}
+                                </td>
+                                <td>{singleStation.name}</td>
+                                <td>{singleStation.district_name}</td>
+                                <td>{singleStation.division_name}</td>
+                                <td>
+                                  <div className="actions">
+                                    <button
+                                      disabled={
+                                        !profile.userProfile.permissions.edit
+                                      }
+                                      className="btn btn-sm bg-success-light mr-2"
+                                      onClick={() =>
+                                        handleEditClick(singleStation)
+                                      }
+                                    >
+                                      <i className="fa-solid fa-pen-to-square"></i>{" "}
+                                    </button>
+                                    <button
+                                      disabled={
+                                        !profile.userProfile.permissions.delete
+                                      }
+                                      className="btn btn-sm bg-danger-light"
+                                      onClick={() =>
+                                        handleDeleteClick(singleStation.id)
+                                      }
+                                    >
+                                      <i className="fa fa-trash"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          {/* <!-- Pagination --> */}
-          <div className="d-flex justify-content-center">
-            <PaginationComponent
-              currentPage={currentPage}
-              postPerPage={postPerPage}
-              totalPost={filteredStation.length}
-              changePage={getCurrentPage}
-            />
+            {/* <!-- Pagination --> */}
+            <div className="d-flex justify-content-center">
+              <PaginationComponent
+                currentPage={currentPage}
+                postPerPage={postPerPage}
+                totalPost={filteredStation.length}
+                changePage={getCurrentPage}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      {/* <!-- /Table Section --> */}
+      ) : (
+        <div className="text-center">
+          <h3>You Do Not Have Access to The Table</h3>
+          <h4>Make sure you are admin</h4>
+        </div>
+      )}
 
+      {/* <!-- /Table Section --> */}
       {/* <!-- Delete Modal --> */}
       <DeleteModal
         isOpen={isDeleteModalOpen}
@@ -361,7 +380,6 @@ const StationInput = () => {
         itemId={selectedItemId}
       />
       {/* <!-- /Delete Modal --> */}
-
       {/* <!-- Edit Modal --> */}
       <EditModal
         isShow={isEditModalshow}
