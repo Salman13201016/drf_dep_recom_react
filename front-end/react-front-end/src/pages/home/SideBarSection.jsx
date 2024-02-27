@@ -19,6 +19,7 @@ const SideBarSection = ({
   isRoleMenuDisplay,
   changeDisplayMenu,
 }) => {
+  const nName = 'dashboard';
   return (
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner slimscroll">
@@ -35,9 +36,9 @@ const SideBarSection = ({
               </a>
             </li>
             <li>
-              <a href="#" onClick={() => selectComponent("dashboard")}>
+              <Link to={`/admin/dashboard`}>
                 <FontAwesomeIcon icon={faHouse} /> <span>Dashboard</span>
-              </a>
+              </Link>
             </li>
             <li className="submenu">
               <a href="#" onClick={() => changeDisplayMenu("hospitalLocation")}>
@@ -59,19 +60,13 @@ const SideBarSection = ({
                 }}
               >
                 <li>
-                  <a href="#" onClick={() => selectComponent("division")}>
-                    Division
-                  </a>
+                  <Link to={`/admin/division`}>Division</Link>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent("district")}>
-                    District
-                  </a>
+                  <Link to={`/admin/district`}>District</Link>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent("station")}>
-                    Station
-                  </a>
+                  <Link to={`/admin/station`}>Division</Link>
                 </li>
               </ul>
             </li>
@@ -96,19 +91,13 @@ const SideBarSection = ({
                 }}
               >
                 <li>
-                  <a href="#" onClick={() => selectComponent("hospitalCtg")}>
-                    Hospital Category
-                  </a>
+                  <Link to={`/admin/hospitalCategory`}>Hospital Category</Link>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent("hospitalApp")}>
-                    Hospital App
-                  </a>
+                  <Link to={`/admin/hospitalApp`}>Hospital App</Link>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent("hospitalmap")}>
-                    Hospital Map
-                  </a>
+                  <Link to={`/admin/hospitalMap`}>Hospital Map</Link>
                 </li>
               </ul>
             </li>
@@ -132,19 +121,13 @@ const SideBarSection = ({
                 }}
               >
                 <li>
-                  <a href="#" onClick={() => selectComponent("department")}>
-                    Department
-                  </a>
+                  <Link to={`/admin/department`}>Department</Link>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent("disease")}>
-                    Disease
-                  </a>
+                  <Link to={`/admin/disease`}>Disease</Link>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent("symtoms")}>
-                    Symtoms
-                  </a>
+                  <Link to={`/admin/symtoms`}>Symtoms</Link>
                 </li>
               </ul>
             </li>
@@ -168,25 +151,20 @@ const SideBarSection = ({
                 }}
               >
                 <li>
-                  <a href="#" onClick={() => selectComponent("role")}>
-                    Role
-                  </a>
+                  <Link to={`/admin/role`}>Role</Link>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent("roleUser")}>
-                    Role User
-                  </a>
+
+                  <Link to={`/admin/roleUser`}>Role User</Link>
                 </li>
                 <li>
-                  <a href="#" onClick={() => selectComponent("rolePermission")}>
-                    Role Permission
-                  </a>
+                  <Link to={`/admin/rolePermission`}>Role Permission</Link>
                 </li>
               </ul>
             </li>
 
             <li>
-              <Link to={"/digiverse"}>
+              <Link to={'/digiverse'}>
                 <FontAwesomeIcon icon={faUserDoctor} /> <span> Digiverse</span>{" "}
               </Link>
             </li>

@@ -29,7 +29,7 @@ const DigiverseLogin = () => {
      );
 
      profile.updateProfile(response.data);
-     navigate("/admin");
+     navigate("/admin/dashboard");
 
     //  if (response.data.role == "Admin") {
     //    navigate("/admin");

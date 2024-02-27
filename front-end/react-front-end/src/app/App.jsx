@@ -73,7 +73,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<DigiverseLogin />} />
-        <Route path="/admin" element={<HomePage />} />
+        <Route path="/admin/:input" element={<HomePage />} />
         <Route path="/digiverse" element={<DigiverseMain />} />
         <Route path="/digiverse/login" element={<DigiverseLogin />} />
         <Route path="/digiverse/login/google" element={<GoogleLogIn />} />
