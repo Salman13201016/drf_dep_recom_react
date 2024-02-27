@@ -25,26 +25,32 @@ class UserRoleSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         user = instance.select_user
         role = instance.select_role
-        representation['user_name'] = {
-            'id': user.id,
-            'fname': user.fname,
-            # Add any other user attributes you want to include
-        }
-        representation['role'] = {
-            'id': role.id,
-            'role': role.role,
-            # Add any other role attributes you want to include
-        }
+
+        if user:
+            representation['user_name'] = {
+                'id': user.id,
+                'fname': user.fname,
+                # Add any other user attributes you want to include
+            }
+
+        if role:
+            representation['role'] = {
+                'id': role.id,
+                'role': role.role,
+                # Add any other role attributes you want to include
+            }
+
         return representation
+
     
 
 
 class UserRoleDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_role_management
-        fields = '__all__'
+        fields = '_all_'
 
 class UserRolesSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_role_management
-        fields = '__all__'
+        fields = '_all_'

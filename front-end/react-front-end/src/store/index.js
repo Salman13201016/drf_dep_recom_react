@@ -12,6 +12,7 @@ import symptomModel from './symptomModel';
 import userModel from './userModel';
 import userRoleModel from './userRoleModel';
 import profileModel from './profile';
+import rolePermissionModel from './rolePermissionModel';
 
 
 
@@ -30,6 +31,7 @@ const store = createStore({
     userRole :  userRoleModel,
     symptom : symptomModel,
     profile : profileModel,
+    rolePermission : rolePermissionModel
 })
 
 export default store;

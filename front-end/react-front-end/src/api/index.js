@@ -91,6 +91,15 @@ const apiService = {
     } catch (error) {
       return error
     }
+  },
+  putData : function(url, params){
+    try {
+      axios.put(url, {
+        params
+      })
+    } catch (error) {
+      return error
+    }
   }
 };
 

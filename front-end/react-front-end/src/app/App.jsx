@@ -30,6 +30,7 @@ const App = () => {
     role,
     users,
     userRole,
+    rolePermission,
   } = useStoreActions((actions) => actions);
   division.getDivisionListFromServer(
     "http://127.0.0.1:8000/division/divisions/"
@@ -66,6 +67,10 @@ const App = () => {
   
   userRole.getUserRoleListFromServer(
     "http://127.0.0.1:8000/user_role/user-role-panel/"
+  );
+
+  rolePermission.getRolePermissionListFromServer(
+    "http://127.0.0.1:8000/role/crudOperation/"
   );
   
 

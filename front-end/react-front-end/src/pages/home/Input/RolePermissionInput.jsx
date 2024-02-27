@@ -3,15 +3,56 @@ import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import SearchInput from "../../../components/shared/input/SearchInput";
 import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
 import { useStoreState } from "easy-peasy";
+import apiService from "../../../api";
+import { toast } from "react-toastify";
 
+const initalValue = {
+  role: null,
+  view: false,
+  insert: false,
+  edit: false,
+  delete: false,
+};
 const RolePermissionInput = () => {
-  const { roleList } = useStoreState((state) => state.role);
+  const { role, rolePermission } = useStoreState((state) => state);
+  const [rolePermissionInput, setRolePermissionInput] = useState(initalValue);
   const [searchInput, setSearchInput] = useState("");
   const [postPerPage, setpostPerPage] = useState(5);
 
-  const handleChange = (e) =>{
-    console.log(e.target.value)
-  }
+  const handleRolePermission = (e) => {
+    if (e.target.name == "role") {
+      setRolePermissionInput((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
+    } else {
+      setRolePermissionInput((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.checked,
+        };
+      });
+    }
+  };
+
+  const handleSubmit = async () => {
+    // console.log(JSON.stringify(rolePermissionInput))
+    if(rolePermissionInput.role){
+      const response =  await apiService.postData(`http://127.0.0.1:8000/role/crudOperation/`, JSON.stringify(rolePermissionInput));
+      if(response.status == 201){
+        toast
+      }
+    }
+  };
+
+  // console.log(role.roleList);
+
+  const handleChange = (e) => {
+    console.log(e.target.checked);
+  };
+
   return (
     <div className="card">
       <div className="card-body">
@@ -27,6 +68,87 @@ const RolePermissionInput = () => {
               </div>
             </div>
             {/* <!-- /Page Header --> */}
+
+            <div className="card">
+              <div className="card-body">
+                <div className="form-group row">
+                  <label className="col-form-label col-md-2">Select Role</label>
+                  <div className="col-md-10">
+                    <select
+                      className="form-control"
+                      onChange={handleRolePermission}
+                      name="role"
+                      required
+                    >
+                      <option value="">Select</option>
+                      {role.roleList.map((singleRole) => {
+                        return (
+                          <option key={singleRole.id} value={singleRole.id}>
+                            {singleRole.role}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    <table className="datatable table table-hover table-center mb-0">
+                      <thead>
+                        <tr>
+                          <th>Edit</th>
+                          <th>Delete</th>
+                          <th>View</th>
+                          <th>Insert</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <input
+                              name="edit"
+                              value={"edit"}
+                              onChange={handleRolePermission}
+                              type="checkbox"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              name="delete"
+                              value={"delete"}
+                              onChange={handleRolePermission}
+                              type="checkbox"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              name="view"
+                              value={"view"}
+                              onChange={handleRolePermission}
+                              type="checkbox"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              name="insert"
+                              value={"insert"}
+                              onChange={handleRolePermission}
+                              type="checkbox"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div className="input-group-append mt-2">
+                      <button
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr style={{ background: "black" }} />
 
             {/* <!--select post per page and search input --> */}
             <div className="showTop d-flex w-100 justify-content-between">
@@ -51,31 +173,55 @@ const RolePermissionInput = () => {
                             <th>Edit</th>
                             <th>Delete</th>
                             <th>View</th>
-                            <th>All</th>
+                            <th>Insert</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {roleList.map((singleRole, index) => {
-                            return (
-                              <tr key={index}>
-                                <td>
-                                  {singleRole.role}
-                                </td>
-                                <td>
-                                  <input name="edit" value={'edit'} onChange={handleChange} type="checkbox" />
-                                </td>
-                                <td>
-                                  <input name="delete" value={'delete'} onChange={handleChange} type="checkbox" />
-                                </td>
-                                <td>
-                                  <input name="view" value={'view'} onChange={handleChange} type="checkbox" />
-                                </td>
-                                <td>
-                                  <input name="all" value={'all'} onChange={handleChange} type="checkbox" />
-                                </td>
-                              </tr>
-                            );
-                          })}
+                          {rolePermission.rolePermissionList.map(
+                            (singleRolePermission, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td>{singleRolePermission.role_name}</td>
+                                  <td>
+                                    <input
+                                      checked={singleRolePermission.edit}
+                                      name="edit"
+                                      value={"edit"}
+                                      onChange={handleChange}
+                                      type="checkbox"
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      checked={singleRolePermission.delete}
+                                      name="delete"
+                                      value={"delete"}
+                                      onChange={handleChange}
+                                      type="checkbox"
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      checked={singleRolePermission.view}
+                                      name="view"
+                                      value={"view"}
+                                      onChange={handleChange}
+                                      type="checkbox"
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      checked={singleRolePermission.insert}
+                                      name="insert"
+                                      value={"insert"}
+                                      onChange={handleChange}
+                                      type="checkbox"
+                                    />
+                                  </td>
+                                </tr>
+                              );
+                            }
+                          )}
                         </tbody>
                       </table>
                     </div>
