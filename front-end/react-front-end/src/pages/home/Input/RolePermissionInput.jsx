@@ -5,6 +5,7 @@ import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPag
 import { useStoreState } from "easy-peasy";
 import apiService from "../../../api";
 import { toast } from "react-toastify";
+import UpdateRolePermission from "./UpdateRolePermission";
 
 const initalValue = {
   role: null,
@@ -63,7 +64,7 @@ const RolePermissionInput = () => {
             <div>
               <div className="row">
                 <div className="col-sm-12">
-                  <h3 className="page-title">Role Permission</h3>
+                  <h3 className="page-title">Role Permission Input</h3>
                 </div>
               </div>
             </div>
@@ -147,10 +148,14 @@ const RolePermissionInput = () => {
                 </div>
               </div>
             </div>
+            <hr style={{ background: "black" }} />
 
+            <h3 className="page-title">Update Role Permission</h3>
+            <UpdateRolePermission />
             <hr style={{ background: "black" }} />
 
             {/* <!--select post per page and search input --> */}
+            <h3 className="page-title">Role Permission List</h3>
             <div className="showTop d-flex w-100 justify-content-between">
               <SelectPostPerPage setpostPerPage={setpostPerPage} />
 
