@@ -4,7 +4,7 @@ import SearchInput from "../../../components/shared/input/SearchInput";
 import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
 import { useStoreState } from "easy-peasy";
 import apiService from "../../../api";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import UpdateRolePermission from "./UpdateRolePermission";
 
 const initalValue = {
@@ -43,7 +43,9 @@ const RolePermissionInput = () => {
     if(rolePermissionInput.role){
       const response =  await apiService.postData(`http://127.0.0.1:8000/role/crudOperation/`, JSON.stringify(rolePermissionInput));
       if(response.status == 201){
-        toast
+        toast.success('Added Successfully')
+      }else{
+        console.log(response)
       }
     }
   };
@@ -56,6 +58,7 @@ const RolePermissionInput = () => {
 
   return (
     <div className="card">
+      <ToastContainer />
       <div className="card-body">
         {/* <!-- Table Section --> */}
         <div>

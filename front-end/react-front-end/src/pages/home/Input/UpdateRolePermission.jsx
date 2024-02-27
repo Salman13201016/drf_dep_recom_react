@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import apiService from "../../../api";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -12,6 +12,7 @@ const initalValue = {
 };
 const UpdateRolePermission = () => {
   const { role } = useStoreState((state) => state);
+  const { rolePermission } = useStoreActions((actions) => actions);
   const [rolePermissionInput, setRolePermissionInput] = useState(initalValue);
 
   const handleRolePermission = (e) => {
@@ -33,16 +34,22 @@ const UpdateRolePermission = () => {
   };
 
   const handleSubmit = async () => {
-    // console.log(JSON.stringify(rolePermissionInput))
     if (rolePermissionInput.role) {
       const response = await apiService.updateData(
-        `http://127.0.0.1:8000/role/crudOperation/${rolePermissionInput.role}`,
+        `http://127.0.0.1:8000/role/crudOperation/${rolePermissionInput.role}/`,
         JSON.stringify(rolePermissionInput)
       );
-      if (response.status == 201) {
-        toast.success('Updated Successfully')
+      if (response.status == 200) {
+        toast.success('Updated Successfully');
+        rolePermission.getRolePermissionListFromServer(
+          "http://127.0.0.1:8000/role/crudOperation/"
+        );
+
+      }else{
+        console.log(response)
       }
     }
+
   };
 
   return (
