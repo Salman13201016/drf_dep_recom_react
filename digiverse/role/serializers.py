@@ -16,9 +16,11 @@ class UserRoleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CRUDPermissionSerializer(serializers.ModelSerializer):
+    role_name = serializers.CharField(source='role.role', read_only=True)
+
     class Meta:
         model = CRUDPermission
-        fields = ['view', 'insert', 'edit', 'delete']
+        fields = ['role', 'role_name', 'view', 'insert', 'edit', 'delete']
 
 class MenuPermissionSerializer(serializers.ModelSerializer):
     class Meta:

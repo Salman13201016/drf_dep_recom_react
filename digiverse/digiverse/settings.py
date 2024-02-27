@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'privacy_policy',
     'permissions', 
+    # 'menuPermission',
    
     
 
