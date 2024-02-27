@@ -30,6 +30,7 @@ const App = () => {
     role,
     users,
     userRole,
+    rolePermission,
   } = useStoreActions((actions) => actions);
   division.getDivisionListFromServer(
     "http://127.0.0.1:8000/division/divisions/"
@@ -67,13 +68,17 @@ const App = () => {
   userRole.getUserRoleListFromServer(
     "http://127.0.0.1:8000/user_role/user-role-panel/"
   );
+
+  rolePermission.getRolePermissionListFromServer(
+    "http://127.0.0.1:8000/role/crudOperation/"
+  );
   
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<DigiverseLogin />} />
-        <Route path="/admin" element={<HomePage />} />
+        <Route path="/admin/:input" element={<HomePage />} />
         <Route path="/digiverse" element={<DigiverseMain />} />
         <Route path="/digiverse/login" element={<DigiverseLogin />} />
         <Route path="/digiverse/login/google" element={<GoogleLogIn />} />

@@ -1,7 +1,10 @@
 import HeaderSection from './HeaderSection';
 import SideBarSection from './SideBarSection';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import HospitalBody from './HospitalBody';
+import { useParams } from 'react-router';
+
+
 
 const HomePage = () => {
   const [isDisplayNone, setisDisplayNone] = useState(true);
@@ -10,9 +13,13 @@ const HomePage = () => {
   const [isSymptomMenuDisplay, setIsSymptomMenuDisplay] = useState(false);
   const [isRoleMenuDisplay, setIsRoleMenuDisplay] = useState(false);
   const [componentShow, setcomponentShow] = useState('primary');
-  const selectComponent = (value) =>{
-    setcomponentShow(value);
-  }
+
+  const {input} = useParams();
+
+  useEffect(() => {
+    setcomponentShow(input);
+  }, [input]);
+  
 
   const changeDisplayMenu = (menu) => {
     if(menu == "hospitalLocation"){
@@ -50,7 +57,6 @@ const HomePage = () => {
       />
 
       <SideBarSection
-        selectComponent={selectComponent}
         isDisplayNone={isDisplayNone}
         setisDisplayNone={setisDisplayNone}
         ishospitalLocationMenuDisplay={ishospitalLocationMenuDisplay}

@@ -38,7 +38,7 @@ const RoleUser = () => {
         select_user: setUserRoleInfo.user,
       };
       const response = await apiService.postData(
-        "http://127.0.0.1:8000/user_role/user-role-panel/",
+        "http://127.0.0.1:8000/user_role/user-role-panels/",
         JSON.stringify(roleInfo)
       );
       if(response.statusText == 'Created'){

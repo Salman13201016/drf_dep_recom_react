@@ -25,11 +25,11 @@ const HospitalBody = ({ componentShow }) => {
     renderComponent = <DistrictInput />;
   } else if (componentShow == "station") {
     renderComponent = <StationInput />;
-  } else if (componentShow == "hospitalCtg") {
+  } else if (componentShow == "hospitalCategory") {
     renderComponent = <HospitalCategoryInput />;
   } else if (componentShow == "hospitalApp") {
     renderComponent = <HospitalAppInput />;
-  } else if (componentShow == "hospitalmap") {
+  } else if (componentShow == "hospitalMap") {
     renderComponent = <HospitalMap />;
   } else if (componentShow == "department") {
     renderComponent = <DepartmentInput />;
