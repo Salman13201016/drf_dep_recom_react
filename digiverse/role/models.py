@@ -13,6 +13,7 @@ class UserRole(models.Model):
         return self.role
 
 class CRUDPermission(models.Model):
+    id = models.AutoField(primary_key=True)
     role = models.ForeignKey(UserRole, on_delete=models.CASCADE)
     view = models.BooleanField(default=False)
     insert = models.BooleanField(default=False)

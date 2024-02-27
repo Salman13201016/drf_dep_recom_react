@@ -20,7 +20,8 @@ class CRUDPermissionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CRUDPermission
-        fields = ['role', 'role_name', 'view', 'insert', 'edit', 'delete']
+        fields = ['id', 'role', 'role_name', 'view', 'insert', 'edit', 'delete']
+    
 
 class MenuPermissionSerializer(serializers.ModelSerializer):
     class Meta:
