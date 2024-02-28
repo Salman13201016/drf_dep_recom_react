@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import SearchInput from "../../../components/shared/input/SearchInput";
 import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
@@ -18,7 +18,17 @@ const RolePermissionInput = () => {
   const { role, rolePermission } = useStoreState((state) => state);
   const [rolePermissionInput, setRolePermissionInput] = useState(initalValue);
   const [searchInput, setSearchInput] = useState("");
+  const [filteredRolePermissionList, setFilteredRolePermissionList] = useState(rolePermission.rolePermissionList);
   const [postPerPage, setpostPerPage] = useState(5);
+   const [currentPage, setcurrentPage] = useState(1);
+     const lastPostIndex = currentPage * postPerPage;
+     const firstPostIndex = lastPostIndex - postPerPage;
+     const currentRolePermissionList = filteredRolePermissionList.slice(
+       firstPostIndex,
+       lastPostIndex
+     );
+
+
 
   const handleRolePermission = (e) => {
     if (e.target.name == "role") {
@@ -49,12 +59,36 @@ const RolePermissionInput = () => {
       }
     }
   };
+  const handleChange = (e) =>{
+    console.log(e.target.value)
+  }
 
-  // console.log(role.roleList);
+    useEffect(() => {
+      const result = rolePermission.rolePermissionList.filter((item) => {
+        return searchInput.toLowerCase() === ""
+          ? item
+          : item.name.toLowerCase().includes(searchInput);
+      });
 
-  const handleChange = (e) => {
-    console.log(e.target.checked);
+      if (result.length) {
+        setFilteredRolePermissionList(result);
+      } else if (!searchInput.length) {
+        setFilteredRolePermissionList(rolePermission.rolePermissionList);
+      } else {
+        setFilteredRolePermissionList([]);
+      }
+    }, [searchInput, rolePermission.rolePermissionList]);
+
+    if (filteredRolePermissionList.length) {
+      if (Math.ceil(filteredRolePermissionList.length / postPerPage) < currentPage) {
+        setcurrentPage(1);
+      }
+    }
+
+  const getCurrentPage = (pageNumber) => {
+    setcurrentPage(pageNumber);
   };
+
 
   return (
     <div className="card">
@@ -162,10 +196,11 @@ const RolePermissionInput = () => {
             <div className="showTop d-flex w-100 justify-content-between">
               <SelectPostPerPage setpostPerPage={setpostPerPage} />
 
-              <SearchInput
+              {/* <SearchInput
                 searchInput={searchInput}
                 setSearchInput={setSearchInput}
-              />
+                placeholder={'Search'}
+              /> */}
             </div>
             {/* <!--/select post per page and search input --> */}
 
@@ -185,18 +220,18 @@ const RolePermissionInput = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {rolePermission.rolePermissionList.map(
-                            (singleRolePermission, index) => {
+                          {currentRolePermissionList.map(
+                            (singleRolePermission) => {
                               return (
-                                <tr key={index}>
+                                <tr key={singleRolePermission.id}>
                                   <td>{singleRolePermission.role_name}</td>
                                   <td>
                                     <input
                                       checked={singleRolePermission.edit}
                                       name="edit"
                                       value={"edit"}
-                                      onChange={handleChange}
                                       type="checkbox"
+                                      onChange={handleChange}
                                     />
                                   </td>
                                   <td>
@@ -204,8 +239,8 @@ const RolePermissionInput = () => {
                                       checked={singleRolePermission.delete}
                                       name="delete"
                                       value={"delete"}
-                                      onChange={handleChange}
                                       type="checkbox"
+                                      onChange={handleChange}
                                     />
                                   </td>
                                   <td>
@@ -213,8 +248,8 @@ const RolePermissionInput = () => {
                                       checked={singleRolePermission.view}
                                       name="view"
                                       value={"view"}
-                                      onChange={handleChange}
                                       type="checkbox"
+                                      onChange={handleChange}
                                     />
                                   </td>
                                   <td>
@@ -222,8 +257,8 @@ const RolePermissionInput = () => {
                                       checked={singleRolePermission.insert}
                                       name="insert"
                                       value={"insert"}
-                                      onChange={handleChange}
                                       type="checkbox"
+                                      onChange={handleChange}
                                     />
                                   </td>
                                 </tr>
@@ -238,14 +273,14 @@ const RolePermissionInput = () => {
               </div>
             </div>
             {/* <!-- Pagination --> */}
-            {/* <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center">
               <PaginationComponent
                 currentPage={currentPage}
                 postPerPage={postPerPage}
-                totalPost={filteredDivision.length}
+                totalPost={filteredRolePermissionList.length}
                 changePage={getCurrentPage}
               />
-            </div> */}
+            </div>
           </div>
         </div>
         {/* <!-- /Table Section --> */}

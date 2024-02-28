@@ -66,7 +66,7 @@ const App = () => {
   users.getUserListFromServer("http://127.0.0.1:8000/auth_user/user_emails/");
   
   userRole.getUserRoleListFromServer(
-    "http://127.0.0.1:8000/user_role/user-role-panel/"
+    "http://127.0.0.1:8000/user_role/user-role-panels/"
   );
 
   rolePermission.getRolePermissionListFromServer(

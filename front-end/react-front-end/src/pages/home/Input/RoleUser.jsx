@@ -4,6 +4,7 @@ import apiService from "../../../api";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
+import { ToastContainer, toast } from "react-toastify";
 const initalValue = {
   user: "",
   role: "",
@@ -42,9 +43,9 @@ const RoleUser = () => {
         JSON.stringify(roleInfo)
       );
       if(response.statusText == 'Created'){
-        console.log('created successfully')
+        toast.success('Successfully Added')
       }else{
-        console.log('something went wrong')
+        toast.warn('Something went wrong')
       }
 
     };
@@ -100,6 +101,7 @@ const RoleUser = () => {
     };
   return (
     <div className="card">
+      <ToastContainer />
       <div className="card-header">
         <h4 className="card-title">Role User Data Input</h4>
       </div>

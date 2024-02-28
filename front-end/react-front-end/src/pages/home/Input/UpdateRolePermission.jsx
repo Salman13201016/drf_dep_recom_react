@@ -11,9 +11,12 @@ const initalValue = {
   delete: false,
 };
 const UpdateRolePermission = () => {
-  const { role } = useStoreState((state) => state);
-  const { rolePermission } = useStoreActions((actions) => actions);
+  const { rolePermission } = useStoreState((state) => state);
+  const { rolePermission: rolePermissionActions } = useStoreActions(
+    (actions) => actions
+  );
   const [rolePermissionInput, setRolePermissionInput] = useState(initalValue);
+
 
   const handleRolePermission = (e) => {
     if (e.target.name == "role") {
@@ -34,14 +37,20 @@ const UpdateRolePermission = () => {
   };
 
   const handleSubmit = async () => {
+    const updatedValue = {
+      view: rolePermissionInput.view,
+      insert: rolePermissionInput.insert,
+      edit: rolePermissionInput.edit,
+      delete: rolePermissionInput.delete,
+    };
     if (rolePermissionInput.role) {
       const response = await apiService.updateData(
         `http://127.0.0.1:8000/role/crudOperation/${rolePermissionInput.role}/`,
-        JSON.stringify(rolePermissionInput)
+        JSON.stringify(updatedValue)
       );
       if (response.status == 200) {
         toast.success('Updated Successfully');
-        rolePermission.getRolePermissionListFromServer(
+        rolePermissionActions.getRolePermissionListFromServer(
           "http://127.0.0.1:8000/role/crudOperation/"
         );
 
@@ -54,7 +63,7 @@ const UpdateRolePermission = () => {
 
   return (
     <div className="card">
-        <ToastContainer />
+      <ToastContainer />
       <div className="card-body">
         <div className="form-group row">
           <label className="col-form-label col-md-2">Select Role</label>
@@ -66,10 +75,13 @@ const UpdateRolePermission = () => {
               required
             >
               <option value="">Select</option>
-              {role.roleList.map((singleRole) => {
+              {rolePermission.rolePermissionList.map((singleRole) => {
                 return (
-                  <option key={singleRole.id} value={singleRole.id}>
-                    {singleRole.role}
+                  <option
+                    key={singleRole.id}
+                    value={singleRole.id}
+                  >
+                    {singleRole.role_name}
                   </option>
                 );
               })}
