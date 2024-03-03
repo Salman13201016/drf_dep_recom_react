@@ -71,7 +71,7 @@ const apiService = {
       });
       return response;
     } catch (error) {
-      console.log("Error making POST Request:", error.message);
+      console.log("Error making Patch Request:", error.message);
     }
   },
   deleteData: async function (url) {
