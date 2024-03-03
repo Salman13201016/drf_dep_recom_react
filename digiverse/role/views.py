@@ -17,7 +17,7 @@ class RoleViewSet(viewsets.ModelViewSet):
 class CRUDPermissionViewSet(viewsets.ModelViewSet):
     queryset = CRUDPermission.objects.all()
     serializer_class = CRUDPermissionSerializer
-    # lookup_field = 'id'  
+    
 
 
 class MenuPermissionViewSet(viewsets.ModelViewSet):
