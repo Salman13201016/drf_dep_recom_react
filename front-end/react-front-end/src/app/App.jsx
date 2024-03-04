@@ -31,6 +31,7 @@ const App = () => {
     users,
     userRole,
     rolePermission,
+    menu,
   } = useStoreActions((actions) => actions);
   division.getDivisionListFromServer(
     "http://127.0.0.1:8000/division/divisions/"
@@ -72,6 +73,8 @@ const App = () => {
   rolePermission.getRolePermissionListFromServer(
     "http://127.0.0.1:8000/role/crudOperation/"
   );
+
+  menu.getMenuListFromServer("http://127.0.0.1:8000/menu_permission/menus/");
   
 
   return (

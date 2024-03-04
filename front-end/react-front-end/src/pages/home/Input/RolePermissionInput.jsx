@@ -94,7 +94,6 @@ const RolePermissionInput = () => {
     <div className="card">
       <ToastContainer />
       <div className="card-body">
-        {/* <!-- Table Section --> */}
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -190,6 +189,8 @@ const RolePermissionInput = () => {
             <h3 className="page-title">Update Role Permission</h3>
             <UpdateRolePermission />
             <hr style={{ background: "black" }} />
+
+            {/* <!-- Table Section --> */}
 
             {/* <!--select post per page and search input --> */}
             <h3 className="page-title">Role Permission List</h3>

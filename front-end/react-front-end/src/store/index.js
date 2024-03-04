@@ -13,6 +13,8 @@ import userModel from './userModel';
 import userRoleModel from './userRoleModel';
 import profileModel from './profile';
 import rolePermissionModel from './rolePermissionModel';
+import menuModel from './menuModel';
+import menuPermissionModel from './menuPermissionModel';
 
 
 
@@ -31,7 +33,9 @@ const store = createStore({
     userRole :  userRoleModel,
     symptom : symptomModel,
     profile : profileModel,
-    rolePermission : rolePermissionModel
+    rolePermission : rolePermissionModel,
+    menu : menuModel,
+    menuPermission : menuPermissionModel,
 })
 
 export default store;

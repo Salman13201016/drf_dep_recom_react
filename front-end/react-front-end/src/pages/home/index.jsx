@@ -12,6 +12,7 @@ const HomePage = () => {
   const [ishospitalMenuDisplay, setIsHospitalMenuDisplay] = useState(false);
   const [isSymptomMenuDisplay, setIsSymptomMenuDisplay] = useState(false);
   const [isRoleMenuDisplay, setIsRoleMenuDisplay] = useState(false);
+  const [isMenuDisplay, setIsMenuDisplay] = useState(false);
   const [componentShow, setcomponentShow] = useState('primary');
 
   const {input} = useParams();
@@ -30,6 +31,8 @@ const HomePage = () => {
       setIsSymptomMenuDisplay(!isSymptomMenuDisplay)
     }else if(menu == "roleMenu"){
       setIsRoleMenuDisplay(!isRoleMenuDisplay)
+    }else if(menu == "Menu"){
+      setIsMenuDisplay(!isMenuDisplay);
     }
   }
 
@@ -63,6 +66,7 @@ const HomePage = () => {
         ishospitalMenuDisplay={ishospitalMenuDisplay}
         isSymptomMenuDisplay={isSymptomMenuDisplay}
         isRoleMenuDisplay={isRoleMenuDisplay}
+        isMenuDisplay={isMenuDisplay}
         changeDisplayMenu={changeDisplayMenu}
       />
 

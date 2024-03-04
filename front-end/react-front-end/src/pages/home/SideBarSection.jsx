@@ -12,14 +12,13 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 const SideBarSection = ({
-  selectComponent,
   ishospitalLocationMenuDisplay,
   ishospitalMenuDisplay,
   isSymptomMenuDisplay,
   isRoleMenuDisplay,
+  isMenuDisplay,
   changeDisplayMenu,
 }) => {
-  const nName = 'dashboard';
   return (
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner slimscroll">
@@ -154,7 +153,6 @@ const SideBarSection = ({
                   <Link to={`/admin/role`}>Role</Link>
                 </li>
                 <li>
-
                   <Link to={`/admin/roleUser`}>Role User</Link>
                 </li>
                 <li>
@@ -162,9 +160,35 @@ const SideBarSection = ({
                 </li>
               </ul>
             </li>
+            <li className="submenu">
+              <a href="#" onClick={() => changeDisplayMenu("Menu")}>
+                <FontAwesomeIcon icon={faUser} /> <span> Menu</span>{" "}
+                {isMenuDisplay ? (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronUp} />
+                  </span>
+                ) : (
+                  <span>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </span>
+                )}
+              </a>
+              <ul
+                style={{
+                  display: isMenuDisplay ? "block" : "none",
+                }}
+              >
+                <li>
+                  <Link to={`/admin/menu`}>Menu Operation</Link>
+                </li>
+                <li>
+                  <Link to={`/admin/menuPermission`}>Menu Permission</Link>
+                </li>
+              </ul>
+            </li>
 
             <li>
-              <Link to={'/digiverse'}>
+              <Link to={"/digiverse"}>
                 <FontAwesomeIcon icon={faUserDoctor} /> <span> Digiverse</span>{" "}
               </Link>
             </li>
