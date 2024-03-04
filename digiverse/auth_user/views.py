@@ -198,12 +198,6 @@ class LoginAuthView(viewsets.GenericViewSet):
                         except CRUDPermission.DoesNotExist:
                             crud_permission = None
 
-                        # Fetch Menu permissions associated with the user's role
-                        try:
-                            menu_permission = MenuPermission.objects.get(role=user_role.select_role)
-                        except MenuPermission.DoesNotExist:
-                            menu_permission = None
-
                         # Construct the response
                         response_data = {
                             "message": "Login successful",
@@ -213,12 +207,6 @@ class LoginAuthView(viewsets.GenericViewSet):
                                 "insert": crud_permission.insert if crud_permission else False,
                                 "edit": crud_permission.edit if crud_permission else False,
                                 "delete": crud_permission.delete if crud_permission else False
-                            },
-                            "menu_permissions": {
-                                "view_menu": menu_permission.can_view if menu_permission else False,
-                                "create_menu": menu_permission.can_insert if menu_permission else False,
-                                "update_menu": menu_permission.can_edit if menu_permission else False,
-                                "delete_menu": menu_permission.can_delete if menu_permission else False
                             }
                         }
 
@@ -233,12 +221,6 @@ class LoginAuthView(viewsets.GenericViewSet):
                                 "insert": False,
                                 "edit": False,
                                 "delete": False
-                            },
-                            "menu_permissions": {
-                                "view_menu": False,
-                                "create_menu": False,
-                                "update_menu": False,
-                                "delete_menu": False
                             }
                         }, status=status.HTTP_200_OK)
                 else:
