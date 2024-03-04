@@ -1,7 +1,7 @@
-
 from django.contrib import admin
-from django.urls import path,include
-# from auth_user.views import EmailVerificationView
+from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
@@ -18,13 +18,10 @@ urlpatterns = [
     path('auth_user/', include('auth_user.urls')),
     path('dashboard-form/', include('dashboard_from.urls')),
     path('address/', include('address.urls')),
-    # path('prediction/', include('prediction.urls')),
     path('user_role/', include('user_role.urls')),
     path('privacy/', include('privacy_policy.urls')),
     path('role_permission/', include('permissions.urls')),
     path('menu_permission/', include('menuPermission.urls')),
-   
-    
-
-    
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

@@ -165,6 +165,7 @@ from django.contrib import messages
 # from .models import user_register, user_role_management
 from .serializers import LoginAuthSerializer
 from role.models import CRUDPermission
+from menuPermission.models import MenuPermission
 
 class LoginAuthView(viewsets.GenericViewSet):
     serializer_class = LoginAuthSerializer
@@ -185,48 +186,59 @@ class LoginAuthView(viewsets.GenericViewSet):
                     request.session['user_id'] = user.id
                     request.session['user_email'] = user.email
                     request.session['user_fname'] = user.fname
-                    
+
                     # Fetch the user's role from the user_role_management model
                     try:
                         user_role = user_role_management.objects.get(select_user=user)
                         role_name = user_role.select_role.role if user_role else "No Role Assigned"
-                        print(user_role)
-                        print(role_name)
-                        crud_permission = CRUDPermission.objects.get(role=user_role.select_role)
                         
-                        # Fetch permissions associated with the user's role
+                        # Fetch CRUD permissions associated with the user's role
                         try:
                             crud_permission = CRUDPermission.objects.get(role=user_role.select_role)
-                            
-                            permissions = {
-                                "view": crud_permission.view,
-                                "insert": crud_permission.insert,
-                                "edit": crud_permission.edit,
-                                "delete": crud_permission.delete
-                            }
                         except CRUDPermission.DoesNotExist:
-                            permissions = {
-                                "view": False,
-                                "insert": False,
-                                "edit": False,
-                                "delete": False
-                            }
-                        print(user_role.select_role)
-                        return Response({
+                            crud_permission = None
+
+                        # Fetch Menu permissions associated with the user's role
+                        try:
+                            menu_permission = MenuPermission.objects.get(role=user_role.select_role)
+                        except MenuPermission.DoesNotExist:
+                            menu_permission = None
+
+                        # Construct the response
+                        response_data = {
                             "message": "Login successful",
                             "role": role_name,
-                            "permissions": permissions
-                        }, status=status.HTTP_200_OK)
+                            "role_permissions": {
+                                "view": crud_permission.view if crud_permission else False,
+                                "insert": crud_permission.insert if crud_permission else False,
+                                "edit": crud_permission.edit if crud_permission else False,
+                                "delete": crud_permission.delete if crud_permission else False
+                            },
+                            "menu_permissions": {
+                                "view_menu": menu_permission.can_view if menu_permission else False,
+                                "create_menu": menu_permission.can_insert if menu_permission else False,
+                                "update_menu": menu_permission.can_edit if menu_permission else False,
+                                "delete_menu": menu_permission.can_delete if menu_permission else False
+                            }
+                        }
+
+                        return Response(response_data, status=status.HTTP_200_OK)
                     except user_role_management.DoesNotExist:
                         role_name = "No Role Assigned"
                         return Response({
                             "message": "Login successful",
                             "role": role_name,
-                            "permissions": {
+                            "role_permissions": {
                                 "view": False,
                                 "insert": False,
                                 "edit": False,
                                 "delete": False
+                            },
+                            "menu_permissions": {
+                                "view_menu": False,
+                                "create_menu": False,
+                                "update_menu": False,
+                                "delete_menu": False
                             }
                         }, status=status.HTTP_200_OK)
                 else:
