@@ -42,25 +42,18 @@ class MenuSerializer(serializers.ModelSerializer):
     #         validated_data['menu_url'] = None
     #     return super().update(instance, validated_data)
 
-
+from user_role.models import UserRole
 class MenuPermissionSerializer(serializers.ModelSerializer):
-    menu = serializers.PrimaryKeyRelatedField(queryset=Menu.objects.all(), many=True)
+    role_name = serializers.SerializerMethodField()
+    menu_names = serializers.SerializerMethodField()
 
     class Meta:
         model = MenuPermission
-        fields = ['id', 'role', 'menu']
+        fields = ['id', 'role', 'role_name', 'menu', 'menu_names']
 
-    def create(self, validated_data):
-        menu_name = validated_data.pop('menu', None)  # Extract menu name
-        permission = MenuPermission.objects.create(**validated_data)
+    def get_role_name(self, obj):
+        return obj.role.role if obj.role else None
 
-        if menu_name:
-            # Retrieve the Menu instance by name
-            menu = Menu.objects.filter(menu_name=menu_name).first()
-            if menu:
-                permission.menu = menu
-                permission.save()
-            else:
-                print('Nothing')
+    def get_menu_names(self, obj):
+        return [menu.menu_name for menu in obj.menu.all()]
 
-        return permission
