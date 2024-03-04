@@ -78,6 +78,7 @@ const MenuInput = () => {
     }
   };
   const handleSubmit = async () => {
+    console.log(JSON.stringify(menuInfo));
     const response = await apiService.postData(
       "http://127.0.0.1:8000/menu_permission/menus/",
       JSON.stringify(menuInfo)

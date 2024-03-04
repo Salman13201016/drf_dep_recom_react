@@ -3,7 +3,7 @@ import { action } from "easy-peasy";
 
 const profileModel = {
   userProfile: {
-    permissions : {edit: false, delete:false, view:false}
+    permissions : {edit: true, delete:true, view:true, insert:true}
   },
   updateProfile: action((state, payload) => {
     state.userProfile = payload;

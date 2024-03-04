@@ -1,17 +1,26 @@
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import UpdateMenuPermissionInput from "./UpdateMenuPermission";
-import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
 import apiService from "../../../api";
+import DeleteModal from "../../../components/shared/modal/DeleteModal";
 
 const initialValue = {
   role: "",
   menu: [],
 };
 const MenuPermissionInput = () => {
-  const { role, menu, rolePermission } = useStoreState((state) => state);
+  const { role, menu, menuPermission } = useStoreState(
+    (state) => state
+  );
+  const { menuPermission: menuPermissionAction } = useStoreActions(
+    (actions) => actions
+  );
   const [menuPermissionInfo, setMenuPermissionInfo] = useState(initialValue);
+    const [currentPage, setcurrentPage] = useState(1);
+    const [postPerPage, setpostPerPage] = useState(5);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedItemId, setSelectedItemId] = useState(null);
   
   const handleChange = (e) => {
     if(e.target.name=='role'){
@@ -39,15 +48,49 @@ const MenuPermissionInput = () => {
       }
     }
   };
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const response = await apiService.postData(
       "http://127.0.0.1:8000/menu_permission/menuPermission/",
       JSON.stringify(menuPermissionInfo)
     );
     if(response.status == 201){
-      toast.success('Successfully Added')
+      toast.success('Successfully Added');
+      menuPermissionAction.getMenuPermissionListFromServer(
+        "http://127.0.0.1:8000/menu_permission/menuPermission/"
+      );
     }
   };
+
+    const handleDeleteClick = (itemId) => {
+      setSelectedItemId(itemId);
+      setIsDeleteModalOpen(true);
+    };
+
+      const handleDeleteModalClose = () => {
+        // Reset selectedItemId and close the modal
+        setSelectedItemId(null);
+        setIsDeleteModalOpen(false);
+      };
+
+        const handleDeleteConfirm = async (itemId) => {
+
+          const response = await apiService.deleteData(
+            `http://127.0.0.1:8000/menu_permission/menuPermission/${itemId}/`
+          );
+          if (response.status == 204) {
+            toast.warn("Deleted Successfully");
+            // Reset selectedItemId and close the modal
+            setSelectedItemId(null);
+            setIsDeleteModalOpen(false);
+            await menuPermissionAction.getMenuPermissionListFromServer(
+              "http://127.0.0.1:8000/menu_permission/menuPermission/"
+            );
+          } else {
+            toast.error("Something went wrong");
+          }
+        };
+
 
   return (
     <div className="card">
@@ -150,54 +193,33 @@ const MenuPermissionInput = () => {
                   <table className="datatable table table-hover table-center mb-0">
                     <thead>
                       <tr>
+                        <th>Serial</th>
                         <th>Role</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                        <th>View</th>
-                        <th>Insert</th>
+                        <th>Menu List</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {rolePermission.rolePermissionList.map(
-                        (singleRolePermission) => {
+                      {menuPermission.menuPermissionList.map(
+                        (singleMenuPermission, index) => {
                           return (
-                            <tr key={singleRolePermission.id}>
-                              <td>{singleRolePermission.role_name}</td>
+                            <tr key={singleMenuPermission.id}>
                               <td>
-                                <input
-                                  checked={singleRolePermission.edit}
-                                  name="edit"
-                                  value={"edit"}
-                                  type="checkbox"
-                                  onChange={handleChange}
-                                />
+                                {(currentPage - 1) * postPerPage + 1 + index}
+                              </td>
+                              <td>{singleMenuPermission.role_name}</td>
+                              <td>
+                                {singleMenuPermission.menu_names.join(", ")}
                               </td>
                               <td>
-                                <input
-                                  checked={singleRolePermission.delete}
-                                  name="delete"
-                                  value={"delete"}
-                                  type="checkbox"
-                                  onChange={handleChange}
-                                />
-                              </td>
-                              <td>
-                                <input
-                                  checked={singleRolePermission.view}
-                                  name="view"
-                                  value={"view"}
-                                  type="checkbox"
-                                  onChange={handleChange}
-                                />
-                              </td>
-                              <td>
-                                <input
-                                  checked={singleRolePermission.insert}
-                                  name="insert"
-                                  value={"insert"}
-                                  type="checkbox"
-                                  onChange={handleChange}
-                                />
+                                <button
+                                  className="btn btn-sm bg-danger-light px-3"
+                                  onClick={() =>
+                                    handleDeleteClick(singleMenuPermission.id)
+                                  }
+                                >
+                                  <i className="fa fa-trash"></i>
+                                </button>
                               </td>
                             </tr>
                           );
@@ -212,6 +234,14 @@ const MenuPermissionInput = () => {
         </div>
       </div>
       {/* <!-- Table Section --> */}
+      {/* <!-- Delete Modal --> */}
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteModalClose}
+        onConfirm={handleDeleteConfirm}
+        itemId={selectedItemId}
+      />
+      {/* <!-- /Delete Modal --> */}
     </div>
   );
 };

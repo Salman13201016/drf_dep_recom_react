@@ -1,13 +1,17 @@
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import apiService from "../../../api";
 
 const initialValue = {
   role: "",
   menu: [],
 };
 const UpdateMenuPermissionInput = () => {
-  const { role, menu } = useStoreState((state) => state);
+  const { menu, menuPermission } = useStoreState((state) => state);
+    const { menuPermission: menuPermissionAction } = useStoreActions(
+      (actions) => actions
+    );
   const [menuPermissionInfo, setMenuPermissionInfo] = useState(initialValue);
 
   const handleChange = (e) => {
@@ -37,8 +41,20 @@ const UpdateMenuPermissionInput = () => {
     }
   };
 
-  const handleSubmit = () =>{
-    console.log(menuPermissionInfo)
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+    const updatedMenu = {menu : menuPermissionInfo.menu};
+    const response = await apiService.updateData(
+      `http://127.0.0.1:8000/menu_permission/menuPermission/${menuPermissionInfo.role}/`,
+      JSON.stringify(updatedMenu)
+    );
+
+    if(response.status == 200){
+      toast.success('Updated Successfully');
+      await menuPermissionAction.getMenuPermissionListFromServer(
+        "http://127.0.0.1:8000/menu_permission/menuPermission/"
+      );
+    }
   }
 
 
@@ -49,7 +65,7 @@ const UpdateMenuPermissionInput = () => {
         {/* <!-- Page Header --> */}
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">Menu Permission Input</h3>
+            <h3 className="page-title">Update Menu Permission</h3>
           </div>
         </div>
 
@@ -68,10 +84,10 @@ const UpdateMenuPermissionInput = () => {
                     required
                   >
                     <option value="">Select</option>
-                    {role.roleList.map((singleRole) => {
+                    {menuPermission.menuPermissionList.map((singleMenu) => {
                       return (
-                        <option key={singleRole.id} value={singleRole.id}>
-                          {singleRole.role}
+                        <option key={singleMenu.id} value={singleMenu.id}>
+                          {singleMenu.role_name}
                         </option>
                       );
                     })}
@@ -103,7 +119,7 @@ const UpdateMenuPermissionInput = () => {
                         </tr>
                       </thead>
                     </table>
-                    <div className="input-group-append mt-3 ml-3">
+                    <div className="input-group-append m-3">
                       <button
                         className="btn btn-primary"
                         onClick={handleSubmit}
