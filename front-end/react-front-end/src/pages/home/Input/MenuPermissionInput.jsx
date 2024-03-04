@@ -1,41 +1,54 @@
 import { useStoreState } from "easy-peasy";
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import UpdateMenuPermissionInput from "./UpdateMenuPermission";
 import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
+import apiService from "../../../api";
 
 const initialValue = {
   role: "",
-  menuList: [],
+  menu: [],
 };
 const MenuPermissionInput = () => {
   const { role, menu, rolePermission } = useStoreState((state) => state);
   const [menuPermissionInfo, setMenuPermissionInfo] = useState(initialValue);
   
   const handleChange = (e) => {
-    console.log(e.target.value);
-  };
-  const handleSubmit = () => {
-    console.log(menuPermissionInfo);
-  };
-
-  const handleRolePermission = (e) => {
-    if (e.target.name == "role") {
-      setMenuPermissionInfo((prev) => {
+    if(e.target.name=='role'){
+      setMenuPermissionInfo((prev)=>{
         return {
           ...prev,
-          [e.target.name]: e.target.value,
-        };
-      });
-    } else {
-      setMenuPermissionInfo((prev) => {
-        return {
-          ...prev,
-          [e.target.name]: e.target.checked,
-        };
-      });
+          [e.target.name] : e.target.value
+        }
+      })
+    }else{
+      if(e.target.checked){
+        setMenuPermissionInfo((prev)=>{
+          return{
+            ...prev,
+            menu: [...prev.menu, e.target.value]
+          }
+        })
+      }else{
+        setMenuPermissionInfo((prev)=>{
+          return {
+            ...prev,
+            menu: prev.menu.filter(item => item !== e.target.value)
+          }
+        })
+      }
     }
   };
+  const handleSubmit = async () => {
+    const response = await apiService.postData(
+      "http://127.0.0.1:8000/menu_permission/menuPermission/",
+      JSON.stringify(menuPermissionInfo)
+    );
+    if(response.status == 201){
+      toast.success('Successfully Added')
+    }
+  };
+
   return (
     <div className="card">
       <ToastContainer />
@@ -57,7 +70,7 @@ const MenuPermissionInput = () => {
                 <div className="col-md-10">
                   <select
                     className="form-control"
-                    onChange={handleRolePermission}
+                    onChange={handleChange}
                     name="role"
                     required
                   >
@@ -72,7 +85,6 @@ const MenuPermissionInput = () => {
                   </select>
                 </div>
                 {/* select role end */}
-
 
                 {/* select menu start */}
                 <label className="col-form-label col-md-2 mt-2">
@@ -89,8 +101,7 @@ const MenuPermissionInput = () => {
                                 <p>{singleMenu.menu_name}</p>
                                 <input
                                   type="checkbox"
-                                  name={singleMenu.menu_name}
-                                  value={singleMenu.menu_name}
+                                  value={singleMenu.id}
                                   onChange={handleChange}
                                 />
                               </th>
@@ -99,8 +110,13 @@ const MenuPermissionInput = () => {
                         </tr>
                       </thead>
                     </table>
-                    <div className="input-group-append mt-3">
-                      <button className="btn btn-primary">Submit</button>
+                    <div className="input-group-append mt-3 ml-3">
+                      <button
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
+                        Submit
+                      </button>
                     </div>
                   </div>
                 </div>

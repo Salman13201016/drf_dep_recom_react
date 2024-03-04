@@ -2,21 +2,15 @@ import { useStoreState } from "easy-peasy";
 import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 
-const initalValue = {
+const initialValue = {
   role: "",
-  menuList: [],
+  menu: [],
 };
 const UpdateMenuPermissionInput = () => {
   const { role, menu } = useStoreState((state) => state);
-  const [menuPermissionInfo, setMenuPermissionInfo] = useState(initalValue);
-  const handleChange = (e) => {
-    console.log(e.target.value);
-  };
-  const handleSubmit = () => {
-    console.log(menuPermissionInfo);
-  };
+  const [menuPermissionInfo, setMenuPermissionInfo] = useState(initialValue);
 
-  const handleRolePermission = (e) => {
+  const handleChange = (e) => {
     if (e.target.name == "role") {
       setMenuPermissionInfo((prev) => {
         return {
@@ -25,26 +19,40 @@ const UpdateMenuPermissionInput = () => {
         };
       });
     } else {
-      setMenuPermissionInfo((prev) => {
-        return {
-          ...prev,
-          [e.target.name]: e.target.checked,
-        };
-      });
+      if (e.target.checked) {
+        setMenuPermissionInfo((prev) => {
+          return {
+            ...prev,
+            menu: [...prev.menu, e.target.value],
+          };
+        });
+      } else {
+        setMenuPermissionInfo((prev) => {
+          return {
+            ...prev,
+            menu: prev.menu.filter((item) => item !== e.target.value),
+          };
+        });
+      }
     }
   };
+
+  const handleSubmit = () =>{
+    console.log(menuPermissionInfo)
+  }
+
+
   return (
     <div className="card">
       <ToastContainer />
       <div className="card-body">
         {/* <!-- Page Header --> */}
-        <div>
-          <div className="row">
-            <div className="col-sm-12">
-              <h3 className="page-title">Update Menu Permission</h3>
-            </div>
+        <div className="row">
+          <div className="col-sm-12">
+            <h3 className="page-title">Menu Permission Input</h3>
           </div>
         </div>
+
         {/* <!-- /Page Header --> */}
         <form action="#">
           <div className="card">
@@ -55,7 +63,7 @@ const UpdateMenuPermissionInput = () => {
                 <div className="col-md-10">
                   <select
                     className="form-control"
-                    onChange={handleRolePermission}
+                    onChange={handleChange}
                     name="role"
                     required
                   >
@@ -68,11 +76,10 @@ const UpdateMenuPermissionInput = () => {
                       );
                     })}
                   </select>
-                  {/* select role end */}
                 </div>
+                {/* select role end */}
 
                 {/* select menu start */}
-
                 <label className="col-form-label col-md-2 mt-2">
                   Select Menu
                 </label>
@@ -81,13 +88,14 @@ const UpdateMenuPermissionInput = () => {
                     <table className="datatable table table-hover table-center mb-0">
                       <thead>
                         <tr>
-                          {menu.menuList.map((singleMenu, index) => {
+                          {menu.menuList.map((singleMenu) => {
                             return (
                               <th key={singleMenu.id}>
                                 <p>{singleMenu.menu_name}</p>
                                 <input
                                   type="checkbox"
-                                  name={singleMenu.menu_name}
+                                  value={singleMenu.id}
+                                  onChange={handleChange}
                                 />
                               </th>
                             );
@@ -95,8 +103,13 @@ const UpdateMenuPermissionInput = () => {
                         </tr>
                       </thead>
                     </table>
-                    <div className="input-group-append mt-3">
-                      <button className="btn btn-primary">Submit</button>
+                    <div className="input-group-append mt-3 ml-3">
+                      <button
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
+                        Submit
+                      </button>
                     </div>
                   </div>
                 </div>
