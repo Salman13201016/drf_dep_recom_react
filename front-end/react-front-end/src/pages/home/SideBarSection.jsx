@@ -65,7 +65,7 @@ const SideBarSection = ({
                   <Link to={`/admin/district`}>District</Link>
                 </li>
                 <li>
-                  <Link to={`/admin/station`}>Division</Link>
+                  <Link to={`/admin/station`}>Station</Link>
                 </li>
               </ul>
             </li>

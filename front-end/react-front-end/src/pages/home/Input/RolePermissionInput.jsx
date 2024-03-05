@@ -15,7 +15,7 @@ const initalValue = {
   delete: false,
 };
 const RolePermissionInput = () => {
-  const { role, rolePermission } = useStoreState((state) => state);
+  const { role, rolePermission, profile } = useStoreState((state) => state);
   const [rolePermissionInput, setRolePermissionInput] = useState(initalValue);
   const [searchInput, setSearchInput] = useState("");
   const [filteredRolePermissionList, setFilteredRolePermissionList] = useState(rolePermission.rolePermissionList);
@@ -174,6 +174,7 @@ const RolePermissionInput = () => {
                     </table>
                     <div className="input-group-append mt-2">
                       <button
+                        disabled={!profile.userProfile.role_permissions.insert}
                         className="btn btn-primary"
                         onClick={handleSubmit}
                       >
@@ -190,98 +191,107 @@ const RolePermissionInput = () => {
             <UpdateRolePermission />
             <hr style={{ background: "black" }} />
 
-            {/* <!-- Table Section --> */}
+            {profile.userProfile.role_permissions.view ? (
+              <div>
+                {/* <!--select post per page and search input --> */}
+                <h3 className="page-title">Role Permission List</h3>
+                <div className="showTop d-flex w-100 justify-content-between">
+                  <SelectPostPerPage setpostPerPage={setpostPerPage} />
 
-            {/* <!--select post per page and search input --> */}
-            <h3 className="page-title">Role Permission List</h3>
-            <div className="showTop d-flex w-100 justify-content-between">
-              <SelectPostPerPage setpostPerPage={setpostPerPage} />
-
-              {/* <SearchInput
+                  {/* <SearchInput
                 searchInput={searchInput}
                 setSearchInput={setSearchInput}
                 placeholder={'Search'}
               /> */}
-            </div>
-            {/* <!--/select post per page and search input --> */}
-
-            <div className="row">
-              <div className="col-sm-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="table-responsive">
-                      <table className="datatable table table-hover table-center mb-0">
-                        <thead>
-                          <tr>
-                            <th>Role</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                            <th>View</th>
-                            <th>Insert</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {currentRolePermissionList.map(
-                            (singleRolePermission) => {
-                              return (
-                                <tr key={singleRolePermission.id}>
-                                  <td>{singleRolePermission.role_name}</td>
-                                  <td>
-                                    <input
-                                      checked={singleRolePermission.edit}
-                                      name="edit"
-                                      value={"edit"}
-                                      type="checkbox"
-                                      onChange={handleChange}
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      checked={singleRolePermission.delete}
-                                      name="delete"
-                                      value={"delete"}
-                                      type="checkbox"
-                                      onChange={handleChange}
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      checked={singleRolePermission.view}
-                                      name="view"
-                                      value={"view"}
-                                      type="checkbox"
-                                      onChange={handleChange}
-                                    />
-                                  </td>
-                                  <td>
-                                    <input
-                                      checked={singleRolePermission.insert}
-                                      name="insert"
-                                      value={"insert"}
-                                      type="checkbox"
-                                      onChange={handleChange}
-                                    />
-                                  </td>
-                                </tr>
-                              );
-                            }
-                          )}
-                        </tbody>
-                      </table>
+                </div>
+                {/* <!--/select post per page and search input --> */}
+                <div className="row">
+                  <div className="col-sm-12">
+                    <div className="card">
+                      <div className="card-body">
+                        <div className="table-responsive">
+                          <table className="datatable table table-hover table-center mb-0">
+                            <thead>
+                              <tr>
+                                <th>Role</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                                <th>View</th>
+                                <th>Insert</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {currentRolePermissionList.map(
+                                (singleRolePermission) => {
+                                  return (
+                                    <tr key={singleRolePermission.id}>
+                                      <td>{singleRolePermission.role_name}</td>
+                                      <td>
+                                        <input
+                                          checked={singleRolePermission.edit}
+                                          name="edit"
+                                          value={"edit"}
+                                          type="checkbox"
+                                          onChange={handleChange}
+                                        />
+                                      </td>
+                                      <td>
+                                        <input
+                                          checked={singleRolePermission.delete}
+                                          name="delete"
+                                          value={"delete"}
+                                          type="checkbox"
+                                          onChange={handleChange}
+                                        />
+                                      </td>
+                                      <td>
+                                        <input
+                                          checked={singleRolePermission.view}
+                                          name="view"
+                                          value={"view"}
+                                          type="checkbox"
+                                          onChange={handleChange}
+                                        />
+                                      </td>
+                                      <td>
+                                        <input
+                                          checked={singleRolePermission.insert}
+                                          name="insert"
+                                          value={"insert"}
+                                          type="checkbox"
+                                          onChange={handleChange}
+                                        />
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div className="d-flex justify-content-center">
+                  <PaginationComponent
+                    currentPage={currentPage}
+                    postPerPage={postPerPage}
+                    totalPost={filteredRolePermissionList.length}
+                    changePage={getCurrentPage}
+                  />
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="text-center">
+                <h3>You Do Not Have Access to The Table</h3>
+                <h4>Make sure you are admin</h4>
+              </div>
+            )}
+
+            {/* <!-- Table Section --> */}
+
             {/* <!-- Pagination --> */}
-            <div className="d-flex justify-content-center">
-              <PaginationComponent
-                currentPage={currentPage}
-                postPerPage={postPerPage}
-                totalPost={filteredRolePermissionList.length}
-                changePage={getCurrentPage}
-              />
-            </div>
           </div>
         </div>
         {/* <!-- /Table Section --> */}

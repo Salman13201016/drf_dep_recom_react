@@ -438,7 +438,7 @@ const HospitalAppInput = () => {
                       <button
                         className="btn btn-primary"
                         type="submit"
-                        disabled={!profile.userProfile.permissions.insert}
+                        disabled={!profile.userProfile.role_permissions.insert}
                       >
                         Submit
                       </button>
@@ -453,7 +453,7 @@ const HospitalAppInput = () => {
         <hr style={{ background: "black" }} />
 
         {/* <!-- Table Section --> */}
-        {profile.userProfile.permissions.view ? (
+        {profile.userProfile.role_permissions.view ? (
           <div>
             <div className="content container-fluid">
               {/* <!-- Page Header --> */}
@@ -509,7 +509,7 @@ const HospitalAppInput = () => {
                                       <div className="actions">
                                         <button
                                           disabled={
-                                            !profile.userProfile.permissions
+                                            !profile.userProfile.role_permissions
                                               .edit
                                           }
                                           className="btn btn-sm bg-success-light mr-2"
@@ -521,7 +521,7 @@ const HospitalAppInput = () => {
                                         </button>
                                         <button
                                           disabled={
-                                            !profile.userProfile.permissions
+                                            !profile.userProfile.role_permissions
                                               .delete
                                           }
                                           className="btn btn-sm bg-danger-light"

@@ -189,7 +189,7 @@ const DistrictInput = () => {
                   <div className="input-group-append">
                     <button
                       className="btn btn-primary"
-                      disabled={!userProfile.permissions.insert}
+                      disabled={!userProfile.role_permissions.insert}
                     >
                       Submit
                     </button>
@@ -203,7 +203,7 @@ const DistrictInput = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {userProfile.permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -252,7 +252,7 @@ const DistrictInput = () => {
                                 <td>{singleDistrict.division.name}</td>
                                 <td>
                                   <button
-                                    disabled={!userProfile.permissions.edit}
+                                    disabled={!userProfile.role_permissions.edit}
                                     className="btn btn-sm bg-success-light px-3 mr-2"
                                     onClick={() =>
                                       handleEditClick(singleDistrict)
@@ -261,7 +261,7 @@ const DistrictInput = () => {
                                     <i className="fa-solid fa-pen-to-square"></i>
                                   </button>
                                   <button
-                                    disabled={!userProfile.permissions.delete}
+                                    disabled={!userProfile.role_permissions.delete}
                                     className="btn btn-sm bg-danger-light px-3"
                                     onClick={() =>
                                       handleDeleteClick(singleDistrict.id)

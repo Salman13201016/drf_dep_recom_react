@@ -218,7 +218,7 @@ const DepartmentInput = () => {
                 <button
                   className="btn btn-primary"
                   type="submit"
-                  disabled={!profile.userProfile.permissions.insert}
+                  disabled={!profile.userProfile.role_permissions.insert}
                 >
                   Submit
                 </button>
@@ -231,7 +231,7 @@ const DepartmentInput = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {profile.userProfile.permissions.view ? (
+      {profile.userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -289,7 +289,7 @@ const DepartmentInput = () => {
                                   <div className="actions">
                                     <button
                                       disabled={
-                                        !profile.userProfile.permissions.edit
+                                        !profile.userProfile.role_permissions.edit
                                       }
                                       className="btn btn-sm bg-success-light mr-2"
                                       onClick={() =>
@@ -300,7 +300,7 @@ const DepartmentInput = () => {
                                     </button>
                                     <button
                                       disabled={
-                                        !profile.userProfile.permissions.delete
+                                        !profile.userProfile.role_permissions.delete
                                       }
                                       className="btn btn-sm bg-danger-light"
                                       onClick={() =>
