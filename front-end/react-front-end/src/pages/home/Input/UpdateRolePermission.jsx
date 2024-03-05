@@ -11,7 +11,7 @@ const initalValue = {
   delete: false,
 };
 const UpdateRolePermission = () => {
-  const { rolePermission } = useStoreState((state) => state);
+  const { rolePermission, profile } = useStoreState((state) => state);
   const { rolePermission: rolePermissionActions } = useStoreActions(
     (actions) => actions
   );
@@ -77,10 +77,7 @@ const UpdateRolePermission = () => {
               <option value="">Select</option>
               {rolePermission.rolePermissionList.map((singleRole) => {
                 return (
-                  <option
-                    key={singleRole.id}
-                    value={singleRole.id}
-                  >
+                  <option key={singleRole.id} value={singleRole.id}>
                     {singleRole.role_name}
                   </option>
                 );
@@ -133,7 +130,11 @@ const UpdateRolePermission = () => {
               </tbody>
             </table>
             <div className="input-group-append mt-2">
-              <button className="btn btn-primary" onClick={handleSubmit}>
+              <button
+                disabled={!profile.userProfile.role_permissions.edit}
+                className="btn btn-primary"
+                onClick={handleSubmit}
+              >
                 Submit
               </button>
             </div>

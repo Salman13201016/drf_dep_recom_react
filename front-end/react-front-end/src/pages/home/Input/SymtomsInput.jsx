@@ -288,7 +288,7 @@ const SymtomsInput = () => {
             <button
               className="btn btn-primary mr-2"
               type="submit"
-              disabled={!profile.userProfile.permissions.insert}
+              disabled={!profile.userProfile.role_permissions.insert}
             >
               Submit
             </button>
@@ -312,7 +312,7 @@ const SymtomsInput = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {profile.userProfile.permissions.view ? (
+      {profile.userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -363,7 +363,7 @@ const SymtomsInput = () => {
                                 <td>
                                   <button
                                     disabled={
-                                      !profile.userProfile.permissions.edit
+                                      !profile.userProfile.role_permissions.edit
                                     }
                                     className="btn btn-sm bg-success-light px-3 mr-2"
                                     onClick={() => handleEditClick(item)}
@@ -372,7 +372,7 @@ const SymtomsInput = () => {
                                   </button>
                                   <button
                                     disabled={
-                                      !profile.userProfile.permissions.delete
+                                      !profile.userProfile.role_permissions.delete
                                     }
                                     className="btn btn-sm bg-danger-light px-3"
                                     onClick={() => handleDeleteClick(item.id)}

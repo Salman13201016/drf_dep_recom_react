@@ -9,6 +9,7 @@ const initialValue = {
 };
 const UpdateMenuPermissionInput = () => {
   const { menu, menuPermission } = useStoreState((state) => state);
+  const { profile: userProfile } = useStoreState((state) => state);
     const { menuPermission: menuPermissionAction } = useStoreActions(
       (actions) => actions
     );
@@ -121,6 +122,9 @@ const UpdateMenuPermissionInput = () => {
                     </table>
                     <div className="input-group-append m-3">
                       <button
+                        disabled={
+                          !userProfile.userProfile.role_permissions.edit
+                        }
                         className="btn btn-primary"
                         onClick={handleSubmit}
                       >

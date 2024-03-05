@@ -142,7 +142,7 @@ const HospitalCategoryInput = () => {
                   <button
                     className="btn btn-primary"
                     type="submit"
-                    disabled={!profile.userProfile.permissions.insert}
+                    disabled={!profile.userProfile.role_permissions.insert}
                   >
                     Submit
                   </button>
@@ -154,7 +154,7 @@ const HospitalCategoryInput = () => {
       </div>
       <hr style={{ background: "black" }} />
       {/* <!-- Table Section --> */}
-      {profile.userProfile.permissions.view ? (
+      {profile.userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}

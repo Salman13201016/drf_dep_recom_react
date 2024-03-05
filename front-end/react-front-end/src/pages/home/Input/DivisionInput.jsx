@@ -29,6 +29,9 @@ const DivisionInput = () => {
   const currentDivision = filteredDivision.slice(firstPostIndex, lastPostIndex);
 
 
+console.log(userProfile);
+console.log(userProfile.userProfile.role_permissions.insert);
+
 
   useEffect(() => {
     const result = divisionList.filter((item) => {
@@ -158,7 +161,7 @@ const DivisionInput = () => {
                 />
                 <div className="input-group-append">
                   <button
-                    disabled={!userProfile.userProfile.permissions.insert}
+                    disabled={!userProfile.userProfile.role_permissions.insert}
                     className="btn btn-primary"
                     type="button"
                     onClick={handleSubmit}
@@ -174,7 +177,7 @@ const DivisionInput = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {userProfile.userProfile.permissions.view ? (
+      {userProfile.userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -222,7 +225,8 @@ const DivisionInput = () => {
                                 <td>
                                   <button
                                     disabled={
-                                      !userProfile.userProfile.permissions.edit
+                                      !userProfile.userProfile.role_permissions
+                                        .edit
                                     }
                                     className="btn btn-sm bg-success-light mr-2 px-3"
                                     onClick={() =>
@@ -233,7 +237,7 @@ const DivisionInput = () => {
                                   </button>
                                   <button
                                     disabled={
-                                      !userProfile.userProfile.permissions
+                                      !userProfile.userProfile.role_permissions
                                         .delete
                                     }
                                     className="btn btn-sm bg-danger-light px-3"

@@ -3,14 +3,14 @@ import { action } from "easy-peasy";
 
 const profileModel = {
   userProfile: {
-    permissions : {edit: true, delete:true, view:true, insert:true}
+    role_permissions: { edit: false, delete: false, view: false, insert: false },
   },
   updateProfile: action((state, payload) => {
     state.userProfile = payload;
   }),
   removeProfile: action((state) => {
-    state.updateProfile = '';
-  })
+    state.updateProfile = "";
+  }),
 };
 
 export default profileModel;
