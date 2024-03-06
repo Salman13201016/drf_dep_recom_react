@@ -10,7 +10,7 @@ class Menu(models.Model):
     submenu_status = models.BooleanField(default=False)
     menu_url = models.URLField(blank=True, null=True)
     submenu_name = models.CharField(max_length=200, blank=True, null=True)  # Allow multiple names separated by commas
-    submenu_urls = models.TextField(blank=True, null=True)  # Allow multiple URLs separated by commas
+    submenu_urls = models.TextField(blank=True, null=True, unique = True)  # Allow multiple URLs separated by commas
     menu_icon = models.CharField(max_length=50) 
 
     def __str__(self):
@@ -26,6 +26,7 @@ class MenuPermission(models.Model):
     id = models.AutoField(primary_key=True)
     role = models.ForeignKey(UserRole, on_delete=models.CASCADE)
     menu = models.ManyToManyField(Menu)
+    submenu = models.ManyToManyField(Submenu, related_name='submenu_permissions')
     
 
     def __str__(self):

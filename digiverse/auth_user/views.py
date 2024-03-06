@@ -166,7 +166,7 @@ from django.contrib import messages
 from .serializers import LoginAuthSerializer
 from role.models import CRUDPermission
 from menuPermission.models import MenuPermission
-
+import base64
 class LoginAuthView(viewsets.GenericViewSet):
     serializer_class = LoginAuthSerializer
 
@@ -198,9 +198,11 @@ class LoginAuthView(viewsets.GenericViewSet):
                         except CRUDPermission.DoesNotExist:
                             crud_permission = None
 
-                        # Construct the response
+                        # Construct the response data including the user's image URL
                         response_data = {
                             "message": "Login successful",
+                            "user_name": user.fname,
+                            "user_image": user.user_image.url if user.user_image else None,
                             "role": role_name,
                             "role_permissions": {
                                 "view": crud_permission.view if crud_permission else False,
@@ -215,6 +217,8 @@ class LoginAuthView(viewsets.GenericViewSet):
                         role_name = "No Role Assigned"
                         return Response({
                             "message": "Login successful",
+                            "user_name": user.fname,
+                            "user_image": user.user_image.url if user.user_image else None,
                             "role": role_name,
                             "role_permissions": {
                                 "view": False,
@@ -230,7 +234,7 @@ class LoginAuthView(viewsets.GenericViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
+
 
 # class LoginAuthView(viewsets.GenericViewSet):
 #     serializer_class = LoginAuthSerializer

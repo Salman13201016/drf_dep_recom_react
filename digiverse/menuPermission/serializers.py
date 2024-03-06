@@ -6,12 +6,13 @@ from django.forms.widgets import CheckboxSelectMultiple
 class SubmenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submenu
-        fields = ['url']
+        fields = ['id', 'submenu_name', 'url']
 
 class MenuSerializer(serializers.ModelSerializer):
+    submenus = SubmenuSerializer(many=True, read_only=True)
     class Meta:
         model = Menu
-        fields = '__all__'
+        fields = ['id', 'menu_name', 'submenu_status', 'menu_url', 'submenu_name', 'submenu_urls', 'menu_icon', 'submenus']
         
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -46,14 +47,22 @@ from user_role.models import UserRole
 class MenuPermissionSerializer(serializers.ModelSerializer):
     role_name = serializers.SerializerMethodField()
     menu_names = serializers.SerializerMethodField()
+    submenu_names = serializers.SerializerMethodField()
 
     class Meta:
         model = MenuPermission
-        fields = ['id', 'role', 'role_name', 'menu', 'menu_names']
+        fields = ['id', 'role', 'role_name', 'menu', 'menu_names', 'submenu_names']
 
     def get_role_name(self, obj):
         return obj.role.role if obj.role else None
 
     def get_menu_names(self, obj):
         return [menu.menu_name for menu in obj.menu.all()]
+
+    def get_submenu_names(self, obj):
+        submenu_names = []
+        for menu in obj.menu.all():
+            submenu_names.extend(menu.submenu_name.split(','))
+        return submenu_names
+
 
