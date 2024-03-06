@@ -10,7 +10,7 @@ import SearchInput from "../../../components/shared/input/SearchInput";
 
 const HospitalCategoryInput = () => {
   const { categoryList } = useStoreState((state) => state.hospitalCategory);
-  const { profile } = useStoreState((state) => state);
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const { getCategoryListFromServer } = useStoreActions(
     (actions) => actions.hospitalCategory
   );
@@ -142,7 +142,7 @@ const HospitalCategoryInput = () => {
                   <button
                     className="btn btn-primary"
                     type="submit"
-                    disabled={!profile.userProfile.role_permissions.insert}
+                    disabled={!userProfile.role_permissions.insert}
                   >
                     Submit
                   </button>
@@ -154,7 +154,7 @@ const HospitalCategoryInput = () => {
       </div>
       <hr style={{ background: "black" }} />
       {/* <!-- Table Section --> */}
-      {profile.userProfile.role_permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}

@@ -15,7 +15,8 @@ const initalValue = {
   delete: false,
 };
 const RolePermissionInput = () => {
-  const { role, rolePermission, profile } = useStoreState((state) => state);
+  const { role, rolePermission } = useStoreState((state) => state);
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const [rolePermissionInput, setRolePermissionInput] = useState(initalValue);
   const [searchInput, setSearchInput] = useState("");
   const [filteredRolePermissionList, setFilteredRolePermissionList] = useState(rolePermission.rolePermissionList);
@@ -174,7 +175,7 @@ const RolePermissionInput = () => {
                     </table>
                     <div className="input-group-append mt-2">
                       <button
-                        disabled={!profile.userProfile.role_permissions.insert}
+                        disabled={!userProfile.role_permissions.insert}
                         className="btn btn-primary"
                         onClick={handleSubmit}
                       >
@@ -191,7 +192,7 @@ const RolePermissionInput = () => {
             <UpdateRolePermission />
             <hr style={{ background: "black" }} />
 
-            {profile.userProfile.role_permissions.view ? (
+            {userProfile.role_permissions.view ? (
               <div>
                 {/* <!--select post per page and search input --> */}
                 <h3 className="page-title">Role Permission List</h3>

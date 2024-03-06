@@ -14,10 +14,11 @@ const initalValue = {
   latitude: "",
 };
 const HospitalMap = () => {
-  const { hospitalInfo, hospitalMap, profile } = useStoreState((state) => state);
+  const { hospitalInfo, hospitalMap } = useStoreState((state) => state);
   const { getHospitalMapListFromServer } = useStoreActions(
     (actions) => actions.hospitalMap
   );
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const [hospitalMapInfo, setHospitalMapInfo] = useState(initalValue);
   const [searchInput, setSearchInput] = useState("");
   const filteredMapList = hospitalMap.hospitalMapList.filter((item) => {
@@ -200,7 +201,7 @@ const HospitalMap = () => {
                   />
                   <div className="input-group-append">
                     <button
-                      disabled={!profile.userProfile.role_permissions.insert}
+                      disabled={!userProfile.role_permissions.insert}
                       className="btn btn-primary"
                       type="submit"
                     >
@@ -217,7 +218,7 @@ const HospitalMap = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {profile.userProfile.role_permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -270,7 +271,7 @@ const HospitalMap = () => {
                                   <div className="actions">
                                     <button
                                       disabled={
-                                        !profile.userProfile.role_permissions
+                                        !userProfile.role_permissions
                                           .edit
                                       }
                                       className="btn btn-sm bg-success-light mr-2"
@@ -280,7 +281,7 @@ const HospitalMap = () => {
                                     </button>
                                     <button
                                       disabled={
-                                        !profile.userProfile.role_permissions
+                                        !userProfile.role_permissions
                                           .delete
                                       }
                                       className="btn btn-sm bg-danger-light"

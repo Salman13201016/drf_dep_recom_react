@@ -29,6 +29,7 @@ const DigiverseLogin = () => {
      );
 
      profile.updateProfile(response.data);
+     sessionStorage.setItem("loginInfo", JSON.stringify(response.data));
      navigate("/admin/dashboard");
 
     //  if (response.data.role == "Admin") {

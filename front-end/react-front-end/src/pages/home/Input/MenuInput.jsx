@@ -17,11 +17,9 @@ const initialValue = {
   menu_icon: "",
 };
 const MenuInput = () => {
-  const { menu, } = useStoreState((state) => state);
-      const { menu: menuActions } = useStoreActions(
-        (actions) => actions
-      );
-      const { profile: userProfile } = useStoreState((state) => state);
+  const { menu } = useStoreState((state) => state);
+  const { menu: menuActions } = useStoreActions((actions) => actions);
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const [menuInfo, setMenuInfo] = useState(initialValue);
   const [searchInput, setSearchInput] = useState("");
   const [filteredMenu, setFilteredMenu] = useState(menu.menuList);
@@ -35,7 +33,6 @@ const MenuInput = () => {
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
   const currentMenu = filteredMenu.slice(firstPostIndex, lastPostIndex);
-  
 
   useEffect(() => {
     const result = menu.menuList.filter((item) => {
@@ -60,20 +57,20 @@ const MenuInput = () => {
   }
 
   const handleChange = (e) => {
-    if(e.target.name == "submenu_status"){
-        setMenuInfo((prev)=>{
-            return {
-                ...prev,
-                [e.target.name] : e.target.checked,
-            }
-        })
-    }else{
-        setMenuInfo((prev) => {
-          return {
-            ...prev,
-            [e.target.name]: e.target.value,
-          };
-        });
+    if (e.target.name == "submenu_status") {
+      setMenuInfo((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.checked,
+        };
+      });
+    } else {
+      setMenuInfo((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
     }
   };
   const handleSubmit = async () => {
@@ -82,14 +79,14 @@ const MenuInput = () => {
       "http://127.0.0.1:8000/menu_permission/menus/",
       JSON.stringify(menuInfo)
     );
-    if(response.statusText == 'Created'){
-        toast.success('Added Successfully');
-        setMenuInfo(initialValue);
-        await menuActions.getMenuListFromServer(
-          "http://127.0.0.1:8000/menu_permission/menus/"
-        );
-    }else{
-        toast.warn('Something went wrong')
+    if (response.statusText == "Created") {
+      toast.success("Added Successfully");
+      setMenuInfo(initialValue);
+      await menuActions.getMenuListFromServer(
+        "http://127.0.0.1:8000/menu_permission/menus/"
+      );
+    } else {
+      toast.warn("Something went wrong");
     }
   };
   const getCurrentPage = (pageNumber) => {
@@ -100,7 +97,6 @@ const MenuInput = () => {
     setSelectedItemId(itemId);
     setIsDeleteModalOpen(true);
   };
-
 
   const handleDeleteConfirm = async (itemId) => {
     const response = await apiService.deleteData(
@@ -136,21 +132,21 @@ const MenuInput = () => {
     setIsEditModalShow(true);
   };
   const handleEditValueChange = (e) => {
-     if (e.target.name == "submenu_status") {
-       setSelectedEditItem((prev) => {
-         return {
-           ...prev,
-           [e.target.name]: e.target.checked,
-         };
-       });
-     } else {
-       setSelectedEditItem((prev) => {
-         return {
-           ...prev,
-           [e.target.name]: e.target.value,
-         };
-       });
-     }
+    if (e.target.name == "submenu_status") {
+      setSelectedEditItem((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.checked,
+        };
+      });
+    } else {
+      setSelectedEditItem((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
+    }
   };
 
   const handleConfirmEdit = async () => {
@@ -158,7 +154,6 @@ const MenuInput = () => {
       `http://127.0.0.1:8000/menu_permission/menus/${selectedItemId}/`,
       JSON.stringify(selectedEditItem)
     );
-
 
     if (response.status == 200) {
       setIsEditModalShow(false);
@@ -274,7 +269,7 @@ const MenuInput = () => {
               </div>
               <div className="input-group-append mt-2">
                 <button
-                  disabled={!userProfile.userProfile.role_permissions.insert}
+                  disabled={!userProfile.role_permissions.insert}
                   className="btn btn-primary"
                   type="button"
                   onClick={handleSubmit}
@@ -290,7 +285,7 @@ const MenuInput = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {userProfile.userProfile.role_permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -346,8 +341,7 @@ const MenuInput = () => {
                                 <td>
                                   <button
                                     disabled={
-                                      !userProfile.userProfile.role_permissions
-                                        .edit
+                                      !userProfile.role_permissions.edit
                                     }
                                     className="btn btn-sm bg-success-light mr-2 px-3"
                                     onClick={() => handleEditClick(singleMenu)}
@@ -356,8 +350,7 @@ const MenuInput = () => {
                                   </button>
                                   <button
                                     disabled={
-                                      !userProfile.userProfile.role_permissions
-                                        .delete
+                                      !userProfile.role_permissions.delete
                                     }
                                     className="btn btn-sm bg-danger-light px-3"
                                     onClick={() =>
@@ -429,6 +422,6 @@ const MenuInput = () => {
       {/* <!-- /Edit Modal --> */}
     </div>
   );
-}
+};
 
-export default MenuInput
+export default MenuInput;

@@ -11,7 +11,7 @@ const initialValue = {
 };
 const MenuPermissionInput = () => {
   const { role, menu, menuPermission } = useStoreState((state) => state);
-  const { profile: userProfile } = useStoreState((state) => state);
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const { menuPermission: menuPermissionAction } = useStoreActions(
     (actions) => actions
   );
@@ -153,7 +153,7 @@ const MenuPermissionInput = () => {
                     <div className="input-group-append mt-3 ml-3">
                       <button
                         disabled={
-                          !userProfile.userProfile.role_permissions.insert
+                          !userProfile.role_permissions.insert
                         }
                         className="btn btn-primary"
                         onClick={handleSubmit}
@@ -173,7 +173,7 @@ const MenuPermissionInput = () => {
       <UpdateMenuPermissionInput />
 
       {/* <!-- Table Section --> */}
-      {userProfile.userProfile.role_permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div className="card-body">
           {/* <!--select post per page and search input --> */}
           <div>
@@ -214,7 +214,7 @@ const MenuPermissionInput = () => {
                                 <td>
                                   <button
                                     disabled={
-                                      !userProfile.userProfile.role_permissions
+                                      !userProfile.role_permissions
                                         .delete
                                     }
                                     className="btn btn-sm bg-danger-light px-3"

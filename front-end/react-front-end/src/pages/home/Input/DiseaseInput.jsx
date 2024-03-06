@@ -12,10 +12,11 @@ const initalState = {
   name: "",
 };
 const DiseaseInput = () => {
-  const { department, disease, profile } = useStoreState((state) => state);
+  const { department, disease } = useStoreState((state) => state);
   const { getDiseaseListFromServer } = useStoreActions(
     (actions) => actions.disease
   );
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const [diseaseInfo, setdiseaseInfo] = useState(initalState);
   const [searchInput, setSearchInput] = useState("");
   const [filteredDisease, setFilteredDisease] = useState(disease.diseaseList);
@@ -189,7 +190,7 @@ const DiseaseInput = () => {
                     <button
                       className="btn btn-primary"
                       type="submit"
-                      disabled={!profile.userProfile.role_permissions.insert}
+                      disabled={!userProfile.role_permissions.insert}
                     >
                       Submit
                     </button>
@@ -204,7 +205,7 @@ const DiseaseInput = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {profile.userProfile.role_permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -255,7 +256,7 @@ const DiseaseInput = () => {
                                   <div className="actions">
                                     <button
                                       disabled={
-                                        !profile.userProfile.role_permissions.edit
+                                        !userProfile.role_permissions.edit
                                       }
                                       className="btn btn-sm bg-success-light mr-2"
                                       onClick={() =>
@@ -266,7 +267,7 @@ const DiseaseInput = () => {
                                     </button>
                                     <button
                                       disabled={
-                                        !profile.userProfile.role_permissions.delete
+                                        !userProfile.role_permissions.delete
                                       }
                                       className="btn btn-sm bg-danger-light"
                                       onClick={() =>

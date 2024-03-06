@@ -32,7 +32,8 @@ const initalValue = {
 };
 
 const SymtomsInput = () => {
-  const { department, disease, symptom: symptomFromServer, profile } = useStoreState((state) => state);
+  const { department, disease, symptom: symptomFromServer } = useStoreState((state) => state);
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const [symptomInfo, setSymptomInfo] = useState(initalValue);
   const [showDiseaseInJSX, setshowDiseaseInJSX] = useState("");
   const [initialInputNumber, setinitialInputNumber] = useState(5);
@@ -288,7 +289,7 @@ const SymtomsInput = () => {
             <button
               className="btn btn-primary mr-2"
               type="submit"
-              disabled={!profile.userProfile.role_permissions.insert}
+              disabled={!userProfile.role_permissions.insert}
             >
               Submit
             </button>
@@ -312,7 +313,7 @@ const SymtomsInput = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {profile.userProfile.role_permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -363,7 +364,7 @@ const SymtomsInput = () => {
                                 <td>
                                   <button
                                     disabled={
-                                      !profile.userProfile.role_permissions.edit
+                                      !userProfile.role_permissions.edit
                                     }
                                     className="btn btn-sm bg-success-light px-3 mr-2"
                                     onClick={() => handleEditClick(item)}
@@ -372,7 +373,7 @@ const SymtomsInput = () => {
                                   </button>
                                   <button
                                     disabled={
-                                      !profile.userProfile.role_permissions.delete
+                                      !userProfile.role_permissions.delete
                                     }
                                     className="btn btn-sm bg-danger-light px-3"
                                     onClick={() => handleDeleteClick(item.id)}

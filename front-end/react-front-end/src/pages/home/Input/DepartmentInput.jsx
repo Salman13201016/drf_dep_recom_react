@@ -15,10 +15,11 @@ const initialState = {
   details: "",
 };
 const DepartmentInput = () => {
-  const { hospitalInfo, department, profile } = useStoreState((state) => state);
+  const { hospitalInfo, department } = useStoreState((state) => state);
   const { getDepartmentListFromServer } = useStoreActions(
     (actions) => actions.department
   );
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const [searchInput, setSearchInput] = useState("");
   const [filteredDepartment, setFilteredDepartment] = useState(
     department.departmentList
@@ -218,7 +219,7 @@ const DepartmentInput = () => {
                 <button
                   className="btn btn-primary"
                   type="submit"
-                  disabled={!profile.userProfile.role_permissions.insert}
+                  disabled={!userProfile.role_permissions.insert}
                 >
                   Submit
                 </button>
@@ -231,7 +232,7 @@ const DepartmentInput = () => {
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {profile.userProfile.role_permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -289,7 +290,7 @@ const DepartmentInput = () => {
                                   <div className="actions">
                                     <button
                                       disabled={
-                                        !profile.userProfile.role_permissions.edit
+                                        !userProfile.role_permissions.edit
                                       }
                                       className="btn btn-sm bg-success-light mr-2"
                                       onClick={() =>
@@ -300,7 +301,7 @@ const DepartmentInput = () => {
                                     </button>
                                     <button
                                       disabled={
-                                        !profile.userProfile.role_permissions.delete
+                                        !userProfile.role_permissions.delete
                                       }
                                       className="btn btn-sm bg-danger-light"
                                       onClick={() =>

@@ -8,7 +8,7 @@ import PaginationComponent from "../../../components/UI/pagination/Pagination";
 
 const RoleInput = () => {
       const { roleList } = useStoreState((state) => state.role);
-      const { profile } = useStoreState((state) => state);
+      const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
       const [roleName, setRolName] = useState("");
       const [currentPage, setcurrentPage] = useState(1);
       const [postPerPage, setpostPerPage] = useState(5);
@@ -116,7 +116,7 @@ const RoleInput = () => {
                 />
                 <div className="input-group-append">
                   <button
-                    disabled={!profile.userProfile.role_permissions.insert}
+                    disabled={!userProfile.role_permissions.insert}
                     className="btn btn-primary"
                     type="button"
                     onClick={handleSubmit}
@@ -131,7 +131,7 @@ const RoleInput = () => {
       </div>
 
       {/* <!-- Table Section --> */}
-      {profile.userProfile.role_permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -169,7 +169,7 @@ const RoleInput = () => {
                                   <div className="actions">
                                     <button
                                       disabled={
-                                        !profile.userProfile.role_permissions.edit
+                                        !userProfile.role_permissions.edit
                                       }
                                       className="btn btn-sm bg-success-light mr-2"
                                       onClick={() =>
@@ -180,7 +180,7 @@ const RoleInput = () => {
                                     </button>
                                     <button
                                       disabled={
-                                        !profile.userProfile.role_permissions.delete
+                                        !userProfile.role_permissions.delete
                                       }
                                       className="btn btn-sm bg-danger-light"
                                       onClick={() =>

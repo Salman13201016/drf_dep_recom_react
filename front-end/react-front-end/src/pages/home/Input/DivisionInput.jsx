@@ -13,7 +13,7 @@ const DivisionInput = () => {
     (actions) => actions.division
   );
   const { divisionList } = useStoreState((state) => state.division);
-  const { profile:userProfile } = useStoreState((state) => state);
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const [searchInput, setSearchInput] = useState("");
   const [filteredDivision, setFilteredDivision] = useState(divisionList);
   const [division, setdivision] = useState("");
@@ -28,9 +28,6 @@ const DivisionInput = () => {
   const firstPostIndex = lastPostIndex - postPerPage;
   const currentDivision = filteredDivision.slice(firstPostIndex, lastPostIndex);
 
-
-console.log(userProfile);
-console.log(userProfile.userProfile.role_permissions.insert);
 
 
   useEffect(() => {
@@ -58,22 +55,26 @@ console.log(userProfile.userProfile.role_permissions.insert);
   const handleChange = (e) => {
     setdivision(e.target.value);
   };
-  const handleSubmit = async () => {
-    if (division.length > 0) {
-      const response = await apiService.postData(
-        "http://127.0.0.1:8000/division/divisions/",
-        JSON.stringify({ name: division })
-      );
-      if (response.statusText == "Created") {
-        toast.success("Division added successfully!");
-        setdivision("");
-        await getDivisionListFromServer(
-          "http://127.0.0.1:8000/division/divisions/"
-        );
-      }
-    } else {
-      toast.error("Please insert valid division");
-    }
+  const handleSubmit = async (e) => {
+    if (e.target.disabled){
+      toast.warn('You Are Not Allowed to Insert')
+    }else{
+          if (division.length > 0) {
+            const response = await apiService.postData(
+              "http://127.0.0.1:8000/division/divisions/",
+              JSON.stringify({ name: division })
+            );
+            if (response.statusText == "Created") {
+              toast.success("Division added successfully!");
+              setdivision("");
+              await getDivisionListFromServer(
+                "http://127.0.0.1:8000/division/divisions/"
+              );
+            }
+          } else {
+            toast.error("Please insert valid division");
+          }
+    } 
   };
   const getCurrentPage = (pageNumber) => {
     setcurrentPage(pageNumber);
@@ -161,7 +162,7 @@ console.log(userProfile.userProfile.role_permissions.insert);
                 />
                 <div className="input-group-append">
                   <button
-                    disabled={!userProfile.userProfile.role_permissions.insert}
+                    disabled={!userProfile.role_permissions.insert}
                     className="btn btn-primary"
                     type="button"
                     onClick={handleSubmit}
@@ -177,7 +178,7 @@ console.log(userProfile.userProfile.role_permissions.insert);
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
-      {userProfile.userProfile.role_permissions.view ? (
+      {userProfile.role_permissions.view ? (
         <div>
           <div className="content container-fluid">
             {/* <!-- Page Header --> */}
@@ -225,7 +226,7 @@ console.log(userProfile.userProfile.role_permissions.insert);
                                 <td>
                                   <button
                                     disabled={
-                                      !userProfile.userProfile.role_permissions
+                                      !userProfile.role_permissions
                                         .edit
                                     }
                                     className="btn btn-sm bg-success-light mr-2 px-3"
@@ -237,7 +238,7 @@ console.log(userProfile.userProfile.role_permissions.insert);
                                   </button>
                                   <button
                                     disabled={
-                                      !userProfile.userProfile.role_permissions
+                                      !userProfile.role_permissions
                                         .delete
                                     }
                                     className="btn btn-sm bg-danger-light px-3"

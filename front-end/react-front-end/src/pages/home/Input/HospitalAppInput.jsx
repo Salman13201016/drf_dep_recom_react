@@ -20,11 +20,13 @@ const initalState = {
 };
 
 const HospitalAppInput = () => {
-  const { division, district, station, hospitalCategory, hospitalInfo: hospitalInfoFromServer, profile } =
+  const { division, district, station, hospitalCategory, hospitalInfo: hospitalInfoFromServer } =
     useStoreState((state) => state);
     const { getHospitalInfoFromServer } = useStoreActions(
       (actions) => actions.hospitalInfo
     );
+
+    const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
 
   const [searchInput, setSearchInput] = useState("");
   const [filteredHospital, setFilteredHospital] = useState(
@@ -438,7 +440,7 @@ const HospitalAppInput = () => {
                       <button
                         className="btn btn-primary"
                         type="submit"
-                        disabled={!profile.userProfile.role_permissions.insert}
+                        disabled={!userProfile.role_permissions.insert}
                       >
                         Submit
                       </button>
@@ -453,7 +455,7 @@ const HospitalAppInput = () => {
         <hr style={{ background: "black" }} />
 
         {/* <!-- Table Section --> */}
-        {profile.userProfile.role_permissions.view ? (
+        {userProfile.role_permissions.view ? (
           <div>
             <div className="content container-fluid">
               {/* <!-- Page Header --> */}
@@ -509,7 +511,7 @@ const HospitalAppInput = () => {
                                       <div className="actions">
                                         <button
                                           disabled={
-                                            !profile.userProfile.role_permissions
+                                            !userProfile.role_permissions
                                               .edit
                                           }
                                           className="btn btn-sm bg-success-light mr-2"
@@ -521,7 +523,7 @@ const HospitalAppInput = () => {
                                         </button>
                                         <button
                                           disabled={
-                                            !profile.userProfile.role_permissions
+                                            !userProfile.role_permissions
                                               .delete
                                           }
                                           className="btn btn-sm bg-danger-light"

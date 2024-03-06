@@ -11,7 +11,7 @@ import DistrictEditModal from "../../../components/shared/modal/DistrictEditModa
 const DistrictInput = () => {
   const { divisionList } = useStoreState((state) => state.division);
   const { districtList } = useStoreState((state) => state.district);
-  const { userProfile } = useStoreState((state) => state.profile);
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const { getDistrictListFromServer } = useStoreActions(
     (actions) => actions.district
   );
