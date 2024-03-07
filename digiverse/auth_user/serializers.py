@@ -160,12 +160,9 @@ class EmailVerificationSerializer(serializers.Serializer):
 class LoginAuthSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
-    user_image = serializers.ImageField(required=False)  # Assuming user_image is an ImageField
+    
 
-    # Override the default __init__ method to remove the user_image field from the validated data
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields.pop('user_image', None)
+
 
 
 # serializers.py

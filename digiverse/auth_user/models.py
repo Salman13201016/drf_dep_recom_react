@@ -11,7 +11,7 @@ class user_register(models.Model):
     password = models.CharField(max_length=100)
     v_key = models.CharField(max_length = 500,default=0, unique=True)
     v_status = models.CharField(max_length = 500, default=0)
-    user_image = models.ImageField(upload_to='user_images/', null=True, blank=True)
+   
     
     def __str__(self):
         return self.fname
