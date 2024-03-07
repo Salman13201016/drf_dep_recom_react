@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 import SearchInput from "../../../components/shared/input/SearchInput";
 import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import apiService from "../../../api";
 import { ToastContainer, toast } from "react-toastify";
 import UpdateRolePermission from "./UpdateRolePermission";
@@ -16,6 +16,7 @@ const initalValue = {
 };
 const RolePermissionInput = () => {
   const { role, rolePermission } = useStoreState((state) => state);
+  const { rolePermission:rolePermissionAction } = useStoreActions((actions) => actions);
   const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const [rolePermissionInput, setRolePermissionInput] = useState(initalValue);
   const [searchInput, setSearchInput] = useState("");
@@ -54,7 +55,11 @@ const RolePermissionInput = () => {
     if(rolePermissionInput.role){
       const response =  await apiService.postData(`http://127.0.0.1:8000/role/crudOperation/`, JSON.stringify(rolePermissionInput));
       if(response.status == 201){
-        toast.success('Added Successfully')
+        toast.success('Added Successfully');
+          rolePermissionAction.getRolePermissionListFromServer(
+            "http://127.0.0.1:8000/role/crudOperation/"
+          );
+
       }else{
         console.log(response)
       }

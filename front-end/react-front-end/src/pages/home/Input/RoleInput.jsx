@@ -1,100 +1,105 @@
 import { useState } from "react";
 import apiService from "../../../api";
 import { ToastContainer, toast } from "react-toastify";
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import DeleteModal from "../../../components/shared/modal/DeleteModal";
 import EditModal from "../../../components/shared/modal/EditModal";
 import PaginationComponent from "../../../components/UI/pagination/Pagination";
 
 const RoleInput = () => {
-      const { roleList } = useStoreState((state) => state.role);
-      const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
-      const [roleName, setRolName] = useState("");
-      const [currentPage, setcurrentPage] = useState(1);
-      const [postPerPage, setpostPerPage] = useState(5);
-      const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-      const [isEditModalshow, setIsEditModalShow] = useState(false);
-      const [selectedItemId, setSelectedItemId] = useState(null);
-      const [selectedItemName, setSelectedItemName] = useState("");
-      const [selectedEditItem, setSelectedEditItem] = useState("");
-      const lastPostIndex = currentPage * postPerPage;
-      const firstPostIndex = lastPostIndex - postPerPage;
-      const currentDivision = roleList.slice(firstPostIndex, lastPostIndex);
+  const { roleList } = useStoreState((state) => state.role);
+  const { role: roleAction } = useStoreActions((actions) => actions);
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
+  const [roleName, setRolName] = useState("");
+  const [currentPage, setcurrentPage] = useState(1);
+  const [postPerPage, setpostPerPage] = useState(5);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalshow, setIsEditModalShow] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedItemName, setSelectedItemName] = useState("");
+  const [selectedEditItem, setSelectedEditItem] = useState("");
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentDivision = roleList.slice(firstPostIndex, lastPostIndex);
 
+  const handleChange = (e) => {
+    setRolName(e.target.value);
+  };
+  const handleSubmit = async () => {
+    if (roleName.length > 0) {
+      const response = await apiService.postData(
+        "http://127.0.0.1:8000/role/roles/",
+        JSON.stringify({ role: roleName })
+      );
+      if (response.statusText == "Created") {
+        toast.success("Role name added successfully!");
+        setRolName("");
+        roleAction.getRoleListFromServer("http://127.0.0.1:8000/role/roles/");
+      }
+    } else {
+      toast.error("Please insert valid role");
+    }
+  };
+  const getCurrentPage = (pageNumber) => {
+    setcurrentPage(pageNumber);
+  };
 
-      const handleChange = (e) => {
-        setRolName(e.target.value);
-      };
-      const handleSubmit = async () => {
-        if (roleName.length > 0) {
-          const response = await apiService.postData(
-            "http://127.0.0.1:8000/division/divisions/",
-            JSON.stringify({ name: roleName })
-          );
-          if (response.statusText == "Created") {
-            toast.success("Role name added successfully!");
-            setRolName("");
-          }
-        } else {
-          toast.error("Please insert valid role");
-        }
-      };
-      const getCurrentPage = (pageNumber) => {
-        setcurrentPage(pageNumber);
-      };
+  const handleDeleteClick = (itemId) => {
+    setSelectedItemId(itemId);
+    setIsDeleteModalOpen(true);
+  };
 
-      const handleDeleteClick = (itemId) => {
-        setSelectedItemId(itemId);
-        setIsDeleteModalOpen(true);
-      };
+  const handleDeleteConfirm = async (itemId) => {
+    const response = await apiService.deleteData(
+      `http://127.0.0.1:8000/role/roles/${itemId}/`
+    );
+    if (response.status == 204) {
+      toast.warn("Role has been deleted");
+      // Reset selectedItemId and close the modal
+      setSelectedItemId(null);
+      setIsDeleteModalOpen(false);
+      roleAction.getRoleListFromServer("http://127.0.0.1:8000/role/roles/");
+    } else {
+      toast.error("Something went wrong");
+    }
+  };
 
-      const handleDeleteConfirm = async (itemId) => {
-        const response = await apiService.deleteData(
-          `http://127.0.0.1:8000/division/divisions/${itemId}/`
-        );
-        if (response.status == 204) {
-          toast.warn("Division has been deleted");
-          // Reset selectedItemId and close the modal
-          setSelectedItemId(null);
-          setIsDeleteModalOpen(false);
-        } else {
-          toast.error("Something went wrong");
-        }
-      };
+  const handleDeleteModalClose = () => {
+    // Reset selectedItemId and close the modal
+    setSelectedItemId(null);
+    setIsDeleteModalOpen(false);
+  };
+  const handleEditModalClose = () => {
+    setSelectedItemId(null);
+    setSelectedItemName("");
+    setIsEditModalShow(false);
+  };
 
-      const handleDeleteModalClose = () => {
-        // Reset selectedItemId and close the modal
-        setSelectedItemId(null);
-        setIsDeleteModalOpen(false);
-      };
-      const handleEditModalClose = () => {
-        setSelectedItemId(null);
-        setSelectedItemName("");
-        setIsEditModalShow(false);
-      };
+  const handleEditClick = (singleDiv) => {
+    setSelectedItemId(singleDiv.id);
+    setSelectedItemName(singleDiv.role);
+    setSelectedEditItem(singleDiv);
+    setIsEditModalShow(true);
+  };
+  const handleEditValueChange = (e) => {
+    setSelectedItemName(e.target.value);
+  };
 
-      const handleEditClick = (singleDiv) => {
-        setSelectedItemId(singleDiv.id);
-        setSelectedItemName(singleDiv.role);
-        setSelectedEditItem(singleDiv);
-        setIsEditModalShow(true);
-      };
-      const handleEditValueChange = (e) => {
-        setSelectedItemName(e.target.value);
-      };
-
-      const handleConfirmEdit = () => {
-        setSelectedItemId(null);
-        setSelectedItemName("");
-
-        const finalData = { ...selectedEditItem, name: selectedItemName };
-        apiService.updateData(
-          `http://127.0.0.1:8000/division/divisions/${finalData.id}/`,
-          JSON.stringify(finalData)
-        );
-        console.log(JSON.stringify(finalData));
-        setIsEditModalShow(false);
-      };
+  const handleConfirmEdit = async () => {
+    const response = await apiService.updateData(
+      `http://127.0.0.1:8000/role/roles/${selectedItemId}/`,
+      JSON.stringify({ role: selectedItemName })
+    );
+    if (response.statusText == "OK") {
+      toast.success("Success");
+      setSelectedItemId(null);
+      setSelectedItemName("");
+      setIsEditModalShow(false);
+      roleAction.getRoleListFromServer("http://127.0.0.1:8000/role/roles/");
+    } else {
+      toast.warn("Something went went arong");
+    }
+  };
 
   return (
     <div className="card">

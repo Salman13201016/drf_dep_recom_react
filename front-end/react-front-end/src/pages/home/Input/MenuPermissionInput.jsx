@@ -47,6 +47,9 @@ const MenuPermissionInput = () => {
       }
     }
   };
+  const handleSubmenuChange = (e)=>{
+    console.log(e.target.value)
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await apiService.postData(
@@ -130,37 +133,67 @@ const MenuPermissionInput = () => {
                 <label className="col-form-label col-md-2 mt-2">
                   Select Menu
                 </label>
-                <div className="col-md-10 mt-2">
-                  <div className="table-responsive">
-                    <table className="datatable table table-hover table-center mb-0">
-                      <thead>
-                        <tr>
-                          {menu.menuList.map((singleMenu) => {
-                            return (
-                              <th key={singleMenu.id}>
-                                <p>{singleMenu.menu_name}</p>
-                                <input
-                                  type="checkbox"
-                                  value={singleMenu.id}
-                                  onChange={handleChange}
-                                />
-                              </th>
-                            );
-                          })}
-                        </tr>
-                      </thead>
-                    </table>
-                    <div className="input-group-append mt-3 ml-3">
-                      <button
-                        disabled={
-                          !userProfile.role_permissions.insert
-                        }
-                        className="btn btn-primary"
-                        onClick={handleSubmit}
-                      >
-                        Submit
-                      </button>
-                    </div>
+                <div className="col-md-10 mt-3">
+                  <div>
+                    {menu.menuList.map((singleMenu) => {
+                      return (
+                        <div key={singleMenu.id}>
+                          {/* main menu start */}
+                          <div>
+                            <input
+                              type="checkbox"
+                              value={singleMenu.id}
+                              id={singleMenu.menu_name}
+                              onChange={handleChange}
+                            />
+                            <label
+                              className="ml-1"
+                              htmlFor={singleMenu.menu_name}
+                            >
+                              {singleMenu.menu_name}
+                            </label>
+                          </div>
+                          {/* main menu end */}
+
+                          {/* sub menu start */}
+                          <div className="ml-5">
+                            {singleMenu.submenu_name
+                              .split(", ")
+                              .map((singleSubMenu, index) => {
+                                return (
+                                  <div key={index}>
+                                    <input
+                                      type="checkbox"
+                                      value={singleSubMenu}
+                                      id={singleSubMenu}
+                                      onChange={handleSubmenuChange}
+                                    />
+                                    <label
+                                      className="ml-1"
+                                      htmlFor={singleSubMenu}
+                                    >
+                                      {singleSubMenu}
+                                    </label>
+                                  </div>
+                                );
+                              })}
+                          </div>
+                          {/* sub menu end */}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div
+                    className="input-group-append"
+                    style={{ marginTop: "20px" }}
+                  >
+                    <button
+                      className="btn btn-primary"
+                      type="submit"
+                      disabled={!userProfile.role_permissions.insert}
+                    >
+                      Submit
+                    </button>
                   </div>
                 </div>
 
@@ -214,8 +247,7 @@ const MenuPermissionInput = () => {
                                 <td>
                                   <button
                                     disabled={
-                                      !userProfile.role_permissions
-                                        .delete
+                                      !userProfile.role_permissions.delete
                                     }
                                     className="btn btn-sm bg-danger-light px-3"
                                     onClick={() =>

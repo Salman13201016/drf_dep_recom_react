@@ -25,6 +25,7 @@ const RoleUser = () => {
 
 
 
+
     const handleChange = (e) => {
       setUserRoleInfo((prev) => {
         return {
@@ -36,17 +37,21 @@ const RoleUser = () => {
 
     const handleSubmit = async () => {
       const roleInfo = {
-        select_role: setUserRoleInfo.role,
-        select_user: setUserRoleInfo.user,
+        select_role: userRoleInfo.role,
+        select_user: userRoleInfo.user,
       };
+
       const response = await apiService.postData(
         "http://127.0.0.1:8000/user_role/user-role-panels/",
         JSON.stringify(roleInfo)
       );
       if(response.statusText == 'Created'){
         toast.success('Successfully Added')
+      }else if(response.response.status == 400){
+        toast.warn('This user is already assigned')
       }else{
         toast.warn('Something went wrong')
+        console.log(response)
       }
 
     };

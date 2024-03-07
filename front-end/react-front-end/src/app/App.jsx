@@ -65,6 +65,7 @@ const App = () => {
   symptom.getSymptomListFromServer("http://127.0.0.1:8000/symptoms/symptom/");
 
   role.getRoleListFromServer("http://127.0.0.1:8000/role/roles/");
+  
   users.getUserListFromServer("http://127.0.0.1:8000/auth_user/user_emails/");
   
   userRole.getUserRoleListFromServer(
@@ -76,6 +77,7 @@ const App = () => {
   );
 
   menu.getMenuListFromServer("http://127.0.0.1:8000/menu_permission/menus/");
+  
   menuPermission.getMenuPermissionListFromServer(
     "http://127.0.0.1:8000/menu_permission/menuPermission/"
   );

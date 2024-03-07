@@ -55,10 +55,7 @@ const DivisionInput = () => {
   const handleChange = (e) => {
     setdivision(e.target.value);
   };
-  const handleSubmit = async (e) => {
-    if (e.target.disabled){
-      toast.warn('You Are Not Allowed to Insert')
-    }else{
+  const handleSubmit = async () => {
           if (division.length > 0) {
             const response = await apiService.postData(
               "http://127.0.0.1:8000/division/divisions/",
@@ -74,7 +71,6 @@ const DivisionInput = () => {
           } else {
             toast.error("Please insert valid division");
           }
-    } 
   };
   const getCurrentPage = (pageNumber) => {
     setcurrentPage(pageNumber);
@@ -148,33 +144,40 @@ const DivisionInput = () => {
       <div className="card-header">
         <h4 className="card-title">Division Data Input</h4>
       </div>
-      <div className="card-body">
-        <form action="#">
-          <div className="form-group mb-0 row">
-            <label className="col-form-label col-md-2">Division Name</label>
-            <div className="col-md-10">
-              <div className="input-group">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={division}
-                  onChange={handleChange}
-                />
-                <div className="input-group-append">
-                  <button
-                    disabled={!userProfile.role_permissions.insert}
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </button>
+      {userProfile.role_permissions.insert ? (
+        <div className="card-body">
+          <form action="#">
+            <div className="form-group mb-0 row">
+              <label className="col-form-label col-md-2">Division Name</label>
+              <div className="col-md-10">
+                <div className="input-group">
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={division}
+                    onChange={handleChange}
+                  />
+                  <div className="input-group-append">
+                    <button
+                      disabled={!userProfile.role_permissions.insert}
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={handleSubmit}
+                    >
+                      Submit
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      ) : (
+        <div className="text-center">
+          <h3>You Do Not Have Access</h3>
+        </div>
+      )}
+
       <hr style={{ background: "black" }} />
 
       {/* <!-- Table Section --> */}
@@ -226,8 +229,7 @@ const DivisionInput = () => {
                                 <td>
                                   <button
                                     disabled={
-                                      !userProfile.role_permissions
-                                        .edit
+                                      !userProfile.role_permissions.edit
                                     }
                                     className="btn btn-sm bg-success-light mr-2 px-3"
                                     onClick={() =>
@@ -238,8 +240,7 @@ const DivisionInput = () => {
                                   </button>
                                   <button
                                     disabled={
-                                      !userProfile.role_permissions
-                                        .delete
+                                      !userProfile.role_permissions.delete
                                     }
                                     className="btn btn-sm bg-danger-light px-3"
                                     onClick={() =>

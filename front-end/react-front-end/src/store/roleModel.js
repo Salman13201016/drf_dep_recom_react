@@ -6,8 +6,14 @@ const roleModel = {
   updateRoleList: action((state, payload) => {
     state.roleList.push(payload);
   }),
+  removeRoleList: action((state) => {
+    state.roleList = [];
+  }),
   getRoleListFromServer: thunk(async (actions, payload) => {
     const data = await apiService.getData(payload);
+    if (data) {
+      actions.removeRoleList();
+    }
     data.forEach((element) => {
       actions.updateRoleList(element);
     });

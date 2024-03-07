@@ -20,11 +20,11 @@ const apiService = {
       return response;
     } catch (error) {
       console.log("Error making POST Request:", error.message);
+      return error;
     }
   },
   signUpPostData: async function (url, postData) {
     try {
-      console.log(postData)
       const response = await axios.post(url, postData, {
         headers: {
           "Content-Type": "application/json",
@@ -32,7 +32,6 @@ const apiService = {
       });
       return response;
     } catch (error) {
-      console.log(postData)
       return error.response.data.non_field_errors[0];
     }
   },

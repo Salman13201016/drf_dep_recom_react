@@ -238,11 +238,13 @@ const MenuInput = () => {
           {/* submenu status input end */}
 
           {/* submenu name input start */}
+
           <div className="form-group mb-0 row mb-2">
             <label className="col-form-label col-md-2">Submenu Name</label>
             <div className="col-md-10">
               <div className="input-group">
                 <input
+                  disabled={!menuInfo.submenu_status}
                   name="submenu_name"
                   className="form-control"
                   type="text"
@@ -252,14 +254,17 @@ const MenuInput = () => {
               </div>
             </div>
           </div>
+
           {/* submenu name input end */}
 
           {/* submenu url input start */}
+
           <div className="form-group mb-0 row mb-2">
             <label className="col-form-label col-md-2">Submenu Url</label>
             <div className="col-md-10">
               <div className="input-group">
                 <input
+                  disabled={!menuInfo.submenu_status}
                   name="submenu_urls"
                   className="form-control"
                   type="text"
@@ -267,18 +272,20 @@ const MenuInput = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="input-group-append mt-2">
-                <button
-                  disabled={!userProfile.role_permissions.insert}
-                  className="btn btn-primary"
-                  type="button"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
-              </div>
             </div>
           </div>
+
+          <div className="input-group-append ml-5">
+            <button
+              disabled={!userProfile.role_permissions.insert}
+              className="btn btn-primary"
+              type="button"
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
+          </div>
+
           {/* submenu url input end */}
         </form>
       </div>

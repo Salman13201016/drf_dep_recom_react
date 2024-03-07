@@ -8,6 +8,25 @@ import {
 
 
 const HeaderSection = ({makeDefaultMenu}) => {
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
+  const handleLogOut = () =>{
+    const logOutInfo = {
+      user_name: "",
+      role: "",
+      role_permissions: {
+        view: false,
+        insert: false,
+        edit: false,
+        delete: false,
+      },
+      message: "Logout successful",
+    };
+    sessionStorage.setItem("loginInfo", JSON.stringify(logOutInfo));
+    window.location.reload();
+  }
+
+
+
   return (
     <div className="header">
       <div className="header-left">
@@ -27,19 +46,6 @@ const HeaderSection = ({makeDefaultMenu}) => {
       <a href="#" id="toggle_btn" onClick={makeDefaultMenu}>
         <FontAwesomeIcon icon={faAlignLeft} />
       </a>
-      {/* 
-      <div className="top-nav-search">
-        <form>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search here"
-          />
-          <button className="btn" type="submit">
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </button>
-        </form>
-      </div> */}
 
       <a className="mobile_btn" id="mobile_btn">
         <i className="fa fa-bars"></i>
@@ -190,8 +196,12 @@ const HeaderSection = ({makeDefaultMenu}) => {
                 />
               </div>
               <div className="user-text">
-                <h6>Ryan Taylor</h6>
-                <p className="text-muted mb-0">Administrator</p>
+                <h6>
+                  {userProfile.user_name ? userProfile.user_name : "No User"}
+                </h6>
+                <p className="text-muted mb-0">
+                  {userProfile.role ? userProfile.role : "No Role"}
+                </p>
               </div>
             </div>
             <a className="dropdown-item" href="profile.html">
@@ -200,9 +210,9 @@ const HeaderSection = ({makeDefaultMenu}) => {
             <a className="dropdown-item" href="settings.html">
               Settings
             </a>
-            <a className="dropdown-item" href="login.html">
+            <button className="dropdown-item" onClick={handleLogOut}>
               Logout
-            </a>
+            </button>
           </div>
         </li>
       </ul>
