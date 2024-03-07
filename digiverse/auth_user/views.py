@@ -218,7 +218,6 @@ class LoginAuthView(viewsets.GenericViewSet):
                         return Response({
                             "message": "Login successful",
                             "user_name": user.fname,
-                            "user_image": user.user_image.url if user.user_image else None,
                             "role": role_name,
                             "role_permissions": {
                                 "view": False,
