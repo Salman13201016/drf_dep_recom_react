@@ -194,6 +194,7 @@ const MenuInput = () => {
             <div className="col-md-10">
               <div className="input-group">
                 <input
+                  disabled={menuInfo.submenu_status}
                   name="menu_url"
                   className="form-control"
                   type="text"
