@@ -18,11 +18,5 @@ class CustomPermission(BasePermission):
         # Custom permission logic based on the action
         if view.action == 'view_menu':
             return menu_permission.can_view
-        elif view.action == 'create_menu':
-            return menu_permission.can_insert
-        elif view.action == 'update_menu':
-            return menu_permission.can_edit
-        elif view.action == 'delete_menu':
-            return menu_permission.can_delete
         
         return True  # Allow other actions by default

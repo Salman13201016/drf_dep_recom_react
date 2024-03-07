@@ -28,7 +28,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = user_register
-        fields = ['id', 'fname', 'email', 'mobile', 'password', 'date_of_birth', 'conf_password', 'user_image']
+        fields = ['id', 'fname', 'email', 'mobile', 'password', 'date_of_birth', 'conf_password']
 
     def validate(self, data):
         # Your validation logic here
@@ -37,7 +37,6 @@ class SignUpSerializer(serializers.ModelSerializer):
         email = data.get('email').strip()
         mobile = data.get('mobile')
         password = data.get('password')
-        user_image = data.get('image')
         date_of_birth = data.get('date_of_birth')
         conpw = data.get('conf_password')
         e_pattern = r"^[a-zA-Z0-9_.]+@gmail\.com$"
@@ -94,7 +93,6 @@ class SignUpSerializer(serializers.ModelSerializer):
             mobile=validated_data['mobile'],
             password=validated_data['password'],
             date_of_birth=validated_data['date_of_birth'],
-            user_image = validated_data['user_image'],
             v_key=v_key,
             v_status=0
         )

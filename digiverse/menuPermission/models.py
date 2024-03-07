@@ -38,6 +38,7 @@ class MenuPermission(models.Model):
     role = models.ForeignKey(UserRole, on_delete=models.CASCADE)
     menu = models.ManyToManyField(Menu)
     submenu = models.ManyToManyField(Submenu, related_name='submenu_permissions')
+    view = models.BooleanField(default=False)
     
 
     def __str__(self):
