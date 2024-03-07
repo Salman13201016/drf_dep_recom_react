@@ -45,24 +45,34 @@ class MenuSerializer(serializers.ModelSerializer):
 
 from user_role.models import UserRole
 class MenuPermissionSerializer(serializers.ModelSerializer):
-    role_name = serializers.SerializerMethodField()
-    menu_names = serializers.SerializerMethodField()
-    submenu_names = serializers.SerializerMethodField()
+    role_name = serializers.CharField(source='role.role', read_only=True)
+    menu = serializers.SerializerMethodField()
 
     class Meta:
         model = MenuPermission
-        fields = ['id', 'role', 'role_name', 'menu', 'menu_names', 'submenu_names']
+        fields = ['id', 'role', 'role_name', 'menu']
 
-    def get_role_name(self, obj):
-        return obj.role.role if obj.role else None
+    def get_menu(self, obj):
+        menus = obj.menu.all()
+        menu_data = []
+        for menu in menus:
+            if menu.menu_name == 'Hospital Location':
+                submenus_data = [
+                    {"name": "Division", "can_view": True},  # Assuming Division has can_view permission
+                    {"name": "District", "can_view": True},  # Assuming District has can_view permission
+                    {"name": "Station", "can_view": True},  # Assuming Station has can_view permission
+                ]
+                menu_data.append({
+                    'id': menu.id,
+                    'menu_name': menu.menu_name,
+                    'submenus': submenus_data
+                })
+            else:
+                menu_serializer = MenuSerializer(menu)
+                menu_data.append(menu_serializer.data)
+        return menu_data
 
-    def get_menu_names(self, obj):
-        return [menu.menu_name for menu in obj.menu.all()]
 
-    def get_submenu_names(self, obj):
-        submenu_names = []
-        for menu in obj.menu.all():
-            submenu_names.extend(menu.submenu_name.split(','))
-        return submenu_names
+
 
 
