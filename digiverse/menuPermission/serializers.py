@@ -1,15 +1,15 @@
 from rest_framework import serializers
-from .models import Menu, Submenu, MenuPermission
-from django import forms
-from django.forms.widgets import CheckboxSelectMultiple
+from .models import Menu, Submenu, MenuPermission, MenuItem
+from user_role.models import UserRole
 
-class SubmenuSerializer(serializers.ModelSerializer):
+class SubmenuPermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submenu
-        fields = ['id', 'submenu_name', 'url']
+        fields = '__all__'
 
 class MenuSerializer(serializers.ModelSerializer):
-    submenus = SubmenuSerializer(many=True, read_only=True)
+    submenus = SubmenuPermissionSerializer(many=True, read_only=True)
+    
     class Meta:
         model = Menu
         fields = ['id', 'menu_name', 'submenu_status', 'menu_url', 'submenu_name', 'submenu_urls', 'menu_icon', 'submenus']
@@ -29,50 +29,44 @@ class MenuSerializer(serializers.ModelSerializer):
             validated_data['menu_url'] = None
         return super().update(instance, validated_data)
 
-
-
-    # def create(self, validated_data):
-    #     # Set menu_url to None if submenu_status is True
-    #     if validated_data.get('submenu_status', False):
-    #         validated_data['menu_url'] = None
-    #     return super().create(validated_data)
-
-    # def update(self, instance, validated_data):
-    #     # Set menu_url to None if submenu_status is True
-    #     if validated_data.get('submenu_status', instance.submenu_status):
-    #         validated_data['menu_url'] = None
-    #     return super().update(instance, validated_data)
-
-from user_role.models import UserRole
 class MenuPermissionSerializer(serializers.ModelSerializer):
-    role_name = serializers.CharField(source='role.role', read_only=True)
-    menu = serializers.SerializerMethodField()
+    role_name = serializers.SerializerMethodField()
+    menu_details = serializers.SerializerMethodField()
+    submenu_permissions = SubmenuPermissionSerializer(many=True, required=False)
 
     class Meta:
         model = MenuPermission
-        fields = ['id', 'role', 'role_name', 'menu']
+        fields = ['id', 'role', 'role_name', 'menu', 'menu_details', 'submenu_permissions']
 
-    def get_menu(self, obj):
-        menus = obj.menu.all()
-        menu_data = []
-        for menu in menus:
-            if menu.menu_name == 'Hospital Location':
-                submenus_data = [
-                    {"name": "Division", "can_view": True},  # Assuming Division has can_view permission
-                    {"name": "District", "can_view": True},  # Assuming District has can_view permission
-                    {"name": "Station", "can_view": True},  # Assuming Station has can_view permission
-                ]
-                menu_data.append({
-                    'id': menu.id,
-                    'menu_name': menu.menu_name,
-                    'submenus': submenus_data
-                })
-            else:
-                menu_serializer = MenuSerializer(menu)
-                menu_data.append(menu_serializer.data)
-        return menu_data
+    def get_role_name(self, obj):
+        return obj.role.role if obj.role else None
 
+    def get_menu_details(self, obj):
+        menu_details = []
+        for menu in obj.menu.all():
+            submenu_names = menu.submenu_name.split(',') if menu.submenu_name else []
+            menu_details.append({
+                'menu_name': menu.menu_name,
+                'submenus': submenu_names
+            })
+        return menu_details
 
+    
+class MenuItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuItem
+        fields = ['name', 'can_view', 'can_edit', 'can_delete']
 
+class MenuSerializer(serializers.ModelSerializer):
+    menu_items = MenuItemSerializer(many=True)
 
+    class Meta:
+        model = Menu
+        fields = ['name', 'menu_items']
 
+    def create(self, validated_data):
+        menu_items_data = validated_data.pop('menu_items')
+        menu = Menu.objects.create(**validated_data)
+        for item_data in menu_items_data:
+            MenuItem.objects.create(menu=menu, **item_data)
+        return menu

@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from role.models import UserRole
-class Submenu(models.Model):
-    url = models.URLField()
+from django.db import models
+
+
 
 class Menu(models.Model):
     id = models.AutoField(primary_key=True)
@@ -33,6 +34,31 @@ class Menu(models.Model):
 
         super().save(*args, **kwargs)
 
+class Submenu(models.Model):
+    url = models.URLField()
+    menu = models.ForeignKey(Menu, related_name='submenus', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Submenu: {self.id}"
+
+class MenuItem(models.Model):
+    MENU_TYPE_CHOICES = [
+        ('menu', 'Menu'),
+        ('submenu', 'Submenu')
+    ]
+
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    url = models.URLField()
+    menu_type = models.CharField(max_length=10, choices=MENU_TYPE_CHOICES)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+
+    def __str__(self):
+        return f"{self.name} ({self.menu_type})"
+
+
+
+
 class MenuPermission(models.Model):
     id = models.AutoField(primary_key=True)
     role = models.ForeignKey(UserRole, on_delete=models.CASCADE)
@@ -43,6 +69,8 @@ class MenuPermission(models.Model):
 
     def __str__(self):
         return f"Permission for {self.role} on {self.menu}"
+
+
 
 
  
