@@ -41,11 +41,11 @@ class Submenu(models.Model):
     def __str__(self):
         return f"Submenu: {self.id}"
 
-class MenuItem(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    can_view = models.BooleanField(default=False)
-    menu = models.ForeignKey(Menu, related_name='menu_items', on_delete=models.CASCADE)
+# class MenuItem(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     name = models.CharField(max_length=100)
+#     can_view = models.BooleanField(default=False)
+#     menu = models.ForeignKey(Menu, related_name='menu_items', on_delete=models.CASCADE)
 
 
 class MenuPermission(models.Model):

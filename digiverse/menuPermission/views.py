@@ -1,8 +1,8 @@
 from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Menu, MenuItem
-from .serializers import MenuSerializer, MenuPermissionSerializer, MenuItemSerializer
+from .models import Menu
+from .serializers import MenuSerializer, MenuPermissionSerializer
 from .permissions import MenuPermission
 
 class MenuListCreateAPIView(generics.ListCreateAPIView):
@@ -36,13 +36,13 @@ class MenuPermissionViewSet(viewsets.ModelViewSet):
         self.perform_update(serializer)
         return Response(serializer.data)
     
-class MenuItemListCreateAPIView(generics.ListCreateAPIView):
-    queryset = MenuItem.objects.all()
-    serializer_class = MenuItemSerializer
+# class MenuItemListCreateAPIView(generics.ListCreateAPIView):
+#     queryset = MenuItem.objects.all()
+#     serializer_class = MenuItemSerializer
 
-class MenuItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = MenuItem.objects.all()
-    serializer_class = MenuItemSerializer
+# class MenuItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = MenuItem.objects.all()
+#     serializer_class = MenuItemSerializer
 
 # class MenuItemListView(generics.ListAPIView):
 #     queryset = MenuItem.objects.filter(menu_type='menu')
