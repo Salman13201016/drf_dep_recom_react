@@ -21,6 +21,7 @@ const MenuPermissionInput = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
 
+
   const handleChange = (e) => {
     if (e.target.name == "role") {
       setMenuPermissionInfo((prev) => {
@@ -196,7 +197,6 @@ const MenuPermissionInput = () => {
                     </button>
                   </div>
                 </div>
-
                 {/* select menu end */}
               </div>
             </div>
@@ -242,7 +242,11 @@ const MenuPermissionInput = () => {
                                 </td>
                                 <td>{singleMenuPermission.role_name}</td>
                                 <td>
-                                  {singleMenuPermission.menu_names.join(", ")}
+                                  { singleMenuPermission.menu_names && singleMenuPermission.menu_names.map((singleName, index)=>{
+                                    return (
+                                      <span key={index}>{singleName}</span>
+                                    );
+                                  })}
                                 </td>
                                 <td>
                                   <button

@@ -74,7 +74,6 @@ const MenuInput = () => {
     }
   };
   const handleSubmit = async () => {
-    console.log(JSON.stringify(menuInfo));
     const response = await apiService.postData(
       "http://127.0.0.1:8000/menu_permission/menus/",
       JSON.stringify(menuInfo)
@@ -226,12 +225,13 @@ const MenuInput = () => {
           {/* submenu status input start */}
           <div className="form-group mb-0 row mb-2">
             <label className="col-form-label col-md-2">Submenu Status</label>
-            <div className="col-md-10 mt-3">
+            <div className="col-md-10 mt-2">
               <div className="input-group">
                 <input
                   name="submenu_status"
                   onChange={handleChange}
                   type="checkbox"
+                  style={{ width: "1em", height: "1em" }}
                 />
               </div>
             </div>
