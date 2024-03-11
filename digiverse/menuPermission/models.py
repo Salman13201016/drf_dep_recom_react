@@ -42,21 +42,10 @@ class Submenu(models.Model):
         return f"Submenu: {self.id}"
 
 class MenuItem(models.Model):
-    MENU_TYPE_CHOICES = [
-        ('menu', 'Menu'),
-        ('submenu', 'Submenu')
-    ]
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    url = models.URLField()
-    menu_type = models.CharField(max_length=10, choices=MENU_TYPE_CHOICES)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-
-    def __str__(self):
-        return f"{self.name} ({self.menu_type})"
-
-
+    can_view = models.BooleanField(default=False)
+    menu = models.ForeignKey(Menu, related_name='menu_items', on_delete=models.CASCADE)
 
 
 class MenuPermission(models.Model):

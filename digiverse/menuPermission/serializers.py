@@ -58,15 +58,6 @@ class MenuItemSerializer(serializers.ModelSerializer):
         fields = ['name', 'can_view', 'can_edit', 'can_delete']
 
 class MenuSerializer(serializers.ModelSerializer):
-    menu_items = MenuItemSerializer(many=True)
-
     class Meta:
         model = Menu
-        fields = ['name', 'menu_items']
-
-    def create(self, validated_data):
-        menu_items_data = validated_data.pop('menu_items')
-        menu = Menu.objects.create(**validated_data)
-        for item_data in menu_items_data:
-            MenuItem.objects.create(menu=menu, **item_data)
-        return menu
+        fields = ['id', 'menu_name', 'submenu_status', 'menu_url', 'submenu_name', 'submenu_urls', 'menu_icon']
