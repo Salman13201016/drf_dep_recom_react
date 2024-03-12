@@ -14,6 +14,19 @@ const UpdateMenuPermissionInput = () => {
     (actions) => actions
   );
   const [menuPermissionInfo, setMenuPermissionInfo] = useState(initialValue);
+  const [selectedMainMenus, setSelectedMainMenus] = useState([]);
+
+    const handleMainMenuClick = (menuId) => {
+      // Check if the menuId is already in the selectedMainMenus array
+      const isMenuSelected = selectedMainMenus.includes(menuId);
+
+      // Toggle the selection state
+      if (isMenuSelected) {
+        setSelectedMainMenus(selectedMainMenus.filter((id) => id !== menuId));
+      } else {
+        setSelectedMainMenus([...selectedMainMenus, menuId]);
+      }
+    };
 
   const handleChange = (e) => {
     if (e.target.name == "role") {
@@ -110,7 +123,9 @@ const UpdateMenuPermissionInput = () => {
                               type="checkbox"
                               value={singleMenu.id}
                               id={singleMenu.menu_name}
-                              onChange={handleChange}
+                              onChange={() => {
+                                handleMainMenuClick(singleMenu.id);
+                              }}
                             />
                             <label
                               className="ml-1"
@@ -122,27 +137,30 @@ const UpdateMenuPermissionInput = () => {
                           {/* main menu end */}
 
                           {/* sub menu start */}
-                          <div className="ml-5">
-                            {singleMenu.submenu_name
-                              .split(", ")
-                              .map((singleSubMenu, index) => {
-                                return (
-                                  <div key={index}>
-                                    <input
-                                      type="checkbox"
-                                      value={singleSubMenu}
-                                      id={singleSubMenu}
-                                    />
-                                    <label
-                                      className="ml-1"
-                                      htmlFor={singleSubMenu}
-                                    >
-                                      {singleSubMenu}
-                                    </label>
-                                  </div>
-                                );
-                              })}
-                          </div>
+                          {selectedMainMenus.includes(singleMenu.id) && (
+                            <div className="ml-5">
+                              {singleMenu.submenu_name
+                                .split(", ")
+                                .map((singleSubMenu, index) => {
+                                  return (
+                                    <div key={index}>
+                                      <input
+                                        type="checkbox"
+                                        value={singleSubMenu}
+                                        id={singleSubMenu}
+                                      />
+                                      <label
+                                        className="ml-1"
+                                        htmlFor={singleSubMenu}
+                                      >
+                                        {singleSubMenu}
+                                      </label>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          )}
+
                           {/* sub menu end */}
                         </div>
                       );
