@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Menu, Submenu, MenuPermission, MenuItem
+from .models import Menu, Submenu, MenuPermission
 from user_role.models import UserRole
 
 class SubmenuPermissionSerializer(serializers.ModelSerializer):
@@ -52,10 +52,10 @@ class MenuPermissionSerializer(serializers.ModelSerializer):
         return menu_details
 
     
-class MenuItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MenuItem
-        fields = ['name', 'can_view', 'can_edit', 'can_delete']
+# class MenuItemSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = MenuItem
+#         fields = ['name', 'can_view', 'can_edit', 'can_delete']
 
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:
