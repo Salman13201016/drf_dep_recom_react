@@ -1,8 +1,8 @@
 from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Menu
-from .serializers import MenuSerializer, MenuPermissionSerializer
+from .models import Menu, Submenu
+from .serializers import MenuSerializer, MenuPermissionSerializer, SubmenuSerializer
 from .permissions import MenuPermission
 
 class MenuListCreateAPIView(generics.ListCreateAPIView):
@@ -18,23 +18,48 @@ class MenuRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 # Assuming your view is using a ViewSet
 
-class MenuPermissionViewSet(viewsets.ModelViewSet):
+class MenuPermissionCreateAPIView(generics.CreateAPIView):
+    queryset = MenuPermission.objects.all()
+    serializer_class = MenuPermissionSerializer
+    
+class MenuPermissionListCreateAPIView(generics.ListCreateAPIView):
     queryset = MenuPermission.objects.all()
     serializer_class = MenuPermissionSerializer
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+class SubmenuCreateAPIView(generics.CreateAPIView):
+    queryset = Submenu.objects.all()
+    serializer_class = SubmenuSerializer
 
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            # Get the validated data
+            validated_data = serializer.validated_data
+            
+            # Get the parent menu instance
+            parent_menu = validated_data.get('menu')
+            
+            # Construct the submenu URLs based on the provided submenu names
+            submenu_names = validated_data.get('submenu_name').split(', ')
+            submenu_instances = []
+            for name in submenu_names:
+                # Construct the submenu URL without the parent menu part
+                submenu_url = f"http://localhost:5173/admin/{name.lower().replace(' ', '_')}/"
+                submenu_instance = Submenu.objects.create(submenu_name=name, submenu_url=submenu_url, menu=parent_menu)
+                submenu_instances.append(submenu_instance)
+            
+            # Serialize the created submenu instances with their IDs
+            serialized_submenus = SubmenuSerializer(submenu_instances, many=True)
+            return Response(serialized_submenus.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
     
 # class MenuItemListCreateAPIView(generics.ListCreateAPIView):
 #     queryset = MenuItem.objects.all()
