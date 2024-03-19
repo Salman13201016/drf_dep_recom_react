@@ -7,7 +7,9 @@ import DeleteModal from "../../../components/shared/modal/DeleteModal";
 
 const initialValue = {
   role: "",
-  menu: [],
+  menus: [],
+  submenus: [],
+  menu_permission: false,
 };
 const MenuPermissionInput = () => {
   const { role, menu, menuPermission } = useStoreState((state) => state);
@@ -22,10 +24,6 @@ const MenuPermissionInput = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
 
-
-
-
-
   const handleMainMenuClick = (menuId) => {
     // Check if the menuId is already in the selectedMainMenus array
     const isMenuSelected = selectedMainMenus.includes(menuId);
@@ -38,7 +36,6 @@ const MenuPermissionInput = () => {
     }
   };
 
-
   const handleChange = (e) => {
     if (e.target.name == "role") {
       setMenuPermissionInfo((prev) => {
@@ -47,31 +44,39 @@ const MenuPermissionInput = () => {
           [e.target.name]: e.target.value,
         };
       });
+    } else if (e.target.name == "menu_permission") {
+            setMenuPermissionInfo((prev) => {
+              return {
+                ...prev,
+                [e.target.name]: e.target.checked,
+              };
+            });
     } else {
       if (e.target.checked) {
         setMenuPermissionInfo((prev) => {
           return {
             ...prev,
-            menu: [...prev.menu, e.target.value],
+            [e.target.name]: [...prev[e.target.name], e.target.value],
           };
         });
       } else {
         setMenuPermissionInfo((prev) => {
           return {
             ...prev,
-            menu: prev.menu.filter((item) => item !== e.target.value),
+            [e.target.name]: prev[e.target.name].filter(
+              (item) => item !== e.target.value
+            ),
           };
         });
       }
     }
+
   };
-  const handleSubmenuChange = (e)=>{
-    console.log(e.target.value)
-  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await apiService.postData(
-      "http://127.0.0.1:8000/menu_permission/menuPermission/",
+      "http://127.0.0.1:8000/menu_permission/menu-permission/create/",
       JSON.stringify(menuPermissionInfo)
     );
     if (response.status == 201) {
@@ -79,6 +84,9 @@ const MenuPermissionInput = () => {
       menuPermissionAction.getMenuPermissionListFromServer(
         "http://127.0.0.1:8000/menu_permission/menuPermission/"
       );
+      setMenuPermissionInfo(initialValue)
+    }else{
+      toast.warn('Something went wrong')
     }
   };
 
@@ -162,8 +170,9 @@ const MenuPermissionInput = () => {
                               type="checkbox"
                               value={singleMenu.id}
                               id={singleMenu.menu_name}
-                              name={singleMenu.menu_name}
-                              onChange={() => {
+                              name="menus"
+                              onChange={(e) => {
+                                handleChange(e);
                                 handleMainMenuClick(singleMenu.id);
                               }}
                             />
@@ -179,26 +188,27 @@ const MenuPermissionInput = () => {
                           {/* sub menu start */}
                           {selectedMainMenus.includes(singleMenu.id) && (
                             <div className="ml-5">
-                              {singleMenu.submenu_name
-                                .split(", ")
-                                .map((singleSubMenu, index) => {
+                              {singleMenu.submenus.map(
+                                (singleSubMenu, index) => {
                                   return (
                                     <div key={index}>
                                       <input
+                                        name="submenus"
                                         type="checkbox"
-                                        value={singleSubMenu}
-                                        id={singleSubMenu}
-                                        onChange={handleSubmenuChange}
+                                        value={singleSubMenu.submenu_id}
+                                        id={singleSubMenu.submenu_name}
+                                        onChange={handleChange}
                                       />
                                       <label
                                         className="ml-1"
-                                        htmlFor={singleSubMenu}
+                                        htmlFor={singleSubMenu.submenu_name}
                                       >
-                                        {singleSubMenu}
+                                        {singleSubMenu.submenu_name}
                                       </label>
                                     </div>
                                   );
-                                })}
+                                }
+                              )}
                             </div>
                           )}
 
@@ -207,20 +217,37 @@ const MenuPermissionInput = () => {
                       );
                     })}
                   </div>
-                  <div
-                    className="input-group-append"
-                    style={{ marginTop: "20px" }}
-                  >
-                    <button
-                      className="btn btn-primary"
-                      type="submit"
-                      disabled={!userProfile.role_permissions.insert}
-                    >
-                      Submit
-                    </button>
-                  </div>
                 </div>
                 {/* select menu end */}
+
+                {/* menu permission status input start */}
+                <div className="form-group mb-0 row mb-2">
+                  <label className="col-form-label col-md-2">
+                    Menu Permission
+                  </label>
+                  <div className="col-md-10 mt-2">
+                    <div className="input-group">
+                      <input
+                        name="menu_permission"
+                        onChange={handleChange}
+                        type="checkbox"
+                        style={{ width: "1em", height: "1em" }}
+                      />
+                    </div>
+                    <div
+                      className="input-group-append"
+                      style={{ marginTop: "20px" }}
+                    >
+                      <button
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {/* menu permission status input end */}
               </div>
             </div>
           </div>
@@ -265,11 +292,14 @@ const MenuPermissionInput = () => {
                                 </td>
                                 <td>{singleMenuPermission.role_name}</td>
                                 <td>
-                                  { singleMenuPermission.menu_names && singleMenuPermission.menu_names.map((singleName, index)=>{
-                                    return (
-                                      <span key={index}>{singleName}</span>
-                                    );
-                                  })}
+                                  {singleMenuPermission.menu_names &&
+                                    singleMenuPermission.menu_names.map(
+                                      (singleName, index) => {
+                                        return (
+                                          <span key={index}>{singleName}</span>
+                                        );
+                                      }
+                                    )}
                                 </td>
                                 <td>
                                   <button

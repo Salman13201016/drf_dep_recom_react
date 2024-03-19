@@ -7,15 +7,16 @@ import apiService from "../../../api";
 import SelectPostPerPage from "../../../components/shared/input/SelectPostPerPage";
 import SearchInput from "../../../components/shared/input/SearchInput";
 import MenuEditModal from "../../../components/shared/modal/MenuEditModal";
-import SubmenuInput from "./SubmenuInput";
-import { truncatedText } from "../../../utils/utils";
 
 const initialValue = {
   menu_name: "",
+  submenu_status: false,
   menu_url: "",
+  submenu_name: "",
+  submenu_urls: "",
   menu_icon: "",
 };
-const MenuInput = () => {
+const OldMenuInput = () => {
   const { menu } = useStoreState((state) => state);
   const { menu: menuActions } = useStoreActions((actions) => actions);
   const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
@@ -56,12 +57,21 @@ const MenuInput = () => {
   }
 
   const handleChange = (e) => {
-    setMenuInfo((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
-    });
+    if (e.target.name == "submenu_status") {
+      setMenuInfo((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.checked,
+        };
+      });
+    } else {
+      setMenuInfo((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
+    }
   };
   const handleSubmit = async () => {
     const response = await apiService.postData(
@@ -183,7 +193,7 @@ const MenuInput = () => {
             <div className="col-md-10">
               <div className="input-group">
                 <input
-                  disabled
+                  disabled={menuInfo.submenu_status}
                   name="menu_url"
                   className="form-control"
                   type="text"
@@ -208,25 +218,79 @@ const MenuInput = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="input-group-append mt-2">
-                <button
-                  disabled={!userProfile.role_permissions.insert}
-                  className="btn btn-primary"
-                  type="button"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
-              </div>
             </div>
           </div>
           {/* menu icon input end */}
+
+          {/* submenu status input start */}
+          <div className="form-group mb-0 row mb-2">
+            <label className="col-form-label col-md-2">Submenu Status</label>
+            <div className="col-md-10 mt-2">
+              <div className="input-group">
+                <input
+                  name="submenu_status"
+                  onChange={handleChange}
+                  type="checkbox"
+                  style={{ width: "1em", height: "1em" }}
+                />
+              </div>
+            </div>
+          </div>
+          {/* submenu status input end */}
+
+          {/* submenu name input start */}
+
+          <div className="form-group mb-0 row mb-2">
+            <label className="col-form-label col-md-2">Submenu Name</label>
+            <div className="col-md-10">
+              <div className="input-group">
+                <input
+                  disabled={!menuInfo.submenu_status}
+                  name="submenu_name"
+                  className="form-control"
+                  type="text"
+                  value={menuInfo.submenu_name}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* submenu name input end */}
+
+          {/* submenu url input start */}
+
+          <div className="form-group mb-0 row mb-2">
+            <label className="col-form-label col-md-2">Submenu Url</label>
+            <div className="col-md-10">
+              <div className="input-group">
+                <input
+                  disabled={!menuInfo.submenu_status}
+                  name="submenu_urls"
+                  className="form-control"
+                  type="text"
+                  value={menuInfo.submenu_urls}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="input-group-append ml-5">
+            <button
+              disabled={!userProfile.role_permissions.insert}
+              className="btn btn-primary"
+              type="button"
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
+          </div>
+
+          {/* submenu url input end */}
         </form>
       </div>
-
       <hr style={{ background: "black" }} />
-
-      <SubmenuInput />
 
       {/* <!-- Table Section --> */}
       {userProfile.role_permissions.view ? (
@@ -276,12 +340,8 @@ const MenuInput = () => {
                                 </td>
                                 <td>{singleMenu.menu_name}</td>
                                 <td>
-                                  {singleMenu.submenus.length ? (
-                                      singleMenu.submenus.map(
-                                        (singleSubMenu) => {
-                                          return `${singleSubMenu.submenu_name},`;
-                                        }
-                                    )
+                                  {singleMenu.submenu_name ? (
+                                    singleMenu.submenu_name
                                   ) : (
                                     <p>Not Available</p>
                                   )}
@@ -372,4 +432,4 @@ const MenuInput = () => {
   );
 };
 
-export default MenuInput;
+export default OldMenuInput;

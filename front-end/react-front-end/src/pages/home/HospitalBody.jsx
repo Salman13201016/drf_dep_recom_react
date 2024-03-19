@@ -15,8 +15,9 @@ import RoleInput from "./Input/RoleInput";
 import RoleUser from "./Input/RoleUser";
 import DashBoard from "./DefaultBodySection";
 import RolePermissionInput from "./Input/RolePermissionInput";
-import MenuInput from "./Input/MenuInput";
 import MenuPermissionInput from "./Input/MenuPermissionInput";
+import OldMenuInput from "./Input/OldMenuInput";
+import MenuInput from "./Input/MenuInput";
 
 
 const HospitalBody = ({ componentShow }) => {
@@ -52,9 +53,11 @@ const HospitalBody = ({ componentShow }) => {
   }else if (componentShow == "rolePermission") {
     renderComponent = <RolePermissionInput />
   }else if (componentShow == "menu") {
-    renderComponent = <MenuInput />
+    renderComponent =  <OldMenuInput />
   }else if (componentShow == "menuPermission") {
     renderComponent = <MenuPermissionInput />
+  }else if (componentShow == "menuInput") {
+    renderComponent = <MenuInput />
   }
 
     return (

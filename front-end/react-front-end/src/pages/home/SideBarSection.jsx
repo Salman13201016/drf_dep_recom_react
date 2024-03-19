@@ -182,6 +182,9 @@ const SideBarSection = ({
                   <Link to={`/admin/menu`}>Menu Operation</Link>
                 </li>
                 <li>
+                  <Link to={`/admin/menuInput`}>Menu Input</Link>
+                </li>
+                <li>
                   <Link to={`/admin/menuPermission`}>Menu Permission</Link>
                 </li>
               </ul>
