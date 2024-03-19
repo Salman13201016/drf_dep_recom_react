@@ -10,28 +10,18 @@ import {
 const HeaderSection = ({makeDefaultMenu}) => {
   const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
   const handleLogOut = () =>{
-    // const logOutInfo = {
-    //   user_name: "",
-    //   role: "",
-    //   role_permissions: {
-    //     view: false,
-    //     insert: false,
-    //     edit: false,
-    //     delete: false,
-    //   },
-    //   message: "Logout successful",
-    // };
     const logOutInfo = {
       user_name: "",
       role: "",
       role_permissions: {
-        view: true,
-        insert: true,
-        edit: true,
-        delete: true,
+        view: false,
+        insert: false,
+        edit: false,
+        delete: false,
       },
       message: "Logout successful",
     };
+
     sessionStorage.setItem("loginInfo", JSON.stringify(logOutInfo));
     window.location.reload();
   }
