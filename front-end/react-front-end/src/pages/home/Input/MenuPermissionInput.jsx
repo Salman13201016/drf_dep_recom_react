@@ -303,9 +303,6 @@ const MenuPermissionInput = () => {
                                 </td>
                                 <td>
                                   <button
-                                    disabled={
-                                      !userProfile.role_permissions.delete
-                                    }
                                     className="btn btn-sm bg-danger-light px-3"
                                     onClick={() =>
                                       handleDeleteClick(singleMenuPermission.id)
