@@ -26,6 +26,10 @@ class MenuPermissionListCreateAPIView(generics.ListCreateAPIView):
     queryset = MenuPermission.objects.all()
     serializer_class = MenuPermissionSerializer
 
+class MenuPermissionRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MenuPermission.objects.all()
+    serializer_class = MenuPermissionSerializer
+
 class SubmenuCreateAPIView(generics.CreateAPIView):
     queryset = Submenu.objects.all()
     serializer_class = SubmenuSerializer
