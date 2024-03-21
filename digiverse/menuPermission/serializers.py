@@ -40,7 +40,7 @@ class MenuSerializer(serializers.ModelSerializer):
         return menu_instance
 
 class MenuPermissionSerializer(serializers.ModelSerializer):
-    role_name = serializers.CharField(source='role.name', read_only=True)
+    role_name = serializers.CharField(source='role.role', read_only=True)
     menu_names = serializers.SerializerMethodField()
     submenu_names = serializers.SerializerMethodField()
 
