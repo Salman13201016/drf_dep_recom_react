@@ -4,7 +4,6 @@ import { ToastContainer, toast } from "react-toastify";
 import apiService from "../../../api";
 
 const initialValue = {
-  role: "",
   menus: [],
   submenus: [],
 };
@@ -16,6 +15,8 @@ const UpdateMenuPermissionInput = () => {
   );
   const [menuPermissionInfo, setMenuPermissionInfo] = useState(initialValue);
   const [selectedMainMenus, setSelectedMainMenus] = useState([]);
+  const [selectedMenuPermissionID, setSelectedMenuPermissionID] = useState('')
+
 
     const handleMainMenuClick = (menuId) => {
       // Check if the menuId is already in the selectedMainMenus array
@@ -37,40 +38,56 @@ const UpdateMenuPermissionInput = () => {
           [e.target.name]: e.target.value,
         };
       });
+    } else if (e.target.name == "menu_permission") {
+      setMenuPermissionInfo((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.checked,
+        };
+      });
     } else {
       if (e.target.checked) {
         setMenuPermissionInfo((prev) => {
           return {
             ...prev,
-            menu: [...prev.menu, e.target.value],
+            [e.target.name]: [...prev[e.target.name], e.target.value],
           };
         });
       } else {
         setMenuPermissionInfo((prev) => {
           return {
             ...prev,
-            menu: prev.menu.filter((item) => item !== e.target.value),
+            [e.target.name]: prev[e.target.name].filter(
+              (item) => item !== e.target.value
+            ),
           };
         });
       }
     }
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedMenu = { menu: menuPermissionInfo.menu };
     const response = await apiService.updateData(
-      `http://127.0.0.1:8000/menu_permission/menuPermission/${menuPermissionInfo.role}/`,
-      JSON.stringify(updatedMenu)
+      `http://127.0.0.1:8000/menu_permission/menu-permissions/${selectedMenuPermissionID}/`,
+      JSON.stringify(menuPermissionInfo)
     );
-
-    if (response.status == 200) {
-      toast.success("Updated Successfully");
-      await menuPermissionAction.getMenuPermissionListFromServer(
-        "http://127.0.0.1:8000/menu_permission/menuPermission/"
+    if(response.status == 200){
+      toast.success('Successfully Updated');
+      menuPermissionAction.getMenuPermissionListFromServer(
+        "http://127.0.0.1:8000/menu_permission/menu-permissions/"
       );
+    }else{
+      toast.warn(response.message)
     }
+
   };
+
+  const getSelectedId = (e) =>{
+    setSelectedMenuPermissionID(e.target.value);
+  }
 
   return (
     <div className="card">
@@ -93,18 +110,23 @@ const UpdateMenuPermissionInput = () => {
                 <div className="col-md-10">
                   <select
                     className="form-control"
-                    onChange={handleChange}
+                    onChange={getSelectedId}
                     name="role"
                     required
                   >
                     <option value="">Select</option>
-                    {menuPermission.menuPermissionList.map((singleMenu) => {
-                      return (
-                        <option key={singleMenu.id} value={singleMenu.id}>
-                          {singleMenu.role_name}
-                        </option>
-                      );
-                    })}
+                    {menuPermission.menuPermissionList.map(
+                      (singleMenuPermission) => {
+                        return (
+                          <option
+                            key={singleMenuPermission.id}
+                            value={singleMenuPermission.id}
+                          >
+                            {singleMenuPermission.role_name}
+                          </option>
+                        );
+                      }
+                    )}
                   </select>
                 </div>
                 {/* select role end */}
@@ -113,7 +135,7 @@ const UpdateMenuPermissionInput = () => {
                 <label className="col-form-label col-md-2 mt-2">
                   Select Menu
                 </label>
-                <div className="col-md-10 mt-2">
+                <div className="col-md-10 mt-3">
                   <div>
                     {menu.menuList.map((singleMenu) => {
                       return (
@@ -124,7 +146,9 @@ const UpdateMenuPermissionInput = () => {
                               type="checkbox"
                               value={singleMenu.id}
                               id={singleMenu.menu_name}
-                              onChange={() => {
+                              name="menus"
+                              onChange={(e) => {
+                                handleChange(e);
                                 handleMainMenuClick(singleMenu.id);
                               }}
                             />
@@ -140,25 +164,27 @@ const UpdateMenuPermissionInput = () => {
                           {/* sub menu start */}
                           {selectedMainMenus.includes(singleMenu.id) && (
                             <div className="ml-5">
-                              {singleMenu.submenu_name
-                                .split(", ")
-                                .map((singleSubMenu, index) => {
+                              {singleMenu.submenus.map(
+                                (singleSubMenu, index) => {
                                   return (
                                     <div key={index}>
                                       <input
+                                        name="submenus"
                                         type="checkbox"
-                                        value={singleSubMenu}
-                                        id={singleSubMenu}
+                                        value={singleSubMenu.submenu_id}
+                                        id={singleSubMenu.submenu_name}
+                                        onChange={handleChange}
                                       />
                                       <label
                                         className="ml-1"
-                                        htmlFor={singleSubMenu}
+                                        htmlFor={singleSubMenu.submenu_name}
                                       >
-                                        {singleSubMenu}
+                                        {singleSubMenu.submenu_name}
                                       </label>
                                     </div>
                                   );
-                                })}
+                                }
+                              )}
                             </div>
                           )}
 
@@ -172,16 +198,14 @@ const UpdateMenuPermissionInput = () => {
                     style={{ marginTop: "20px" }}
                   >
                     <button
-                      onClick={handleSubmit}
                       className="btn btn-primary"
-                      type="submit"
-                      disabled={!userProfile.role_permissions.insert}
+                      onClick={handleSubmit}
+                      disabled={!userProfile.role_permissions.edit}
                     >
-                      Submit
+                      Update
                     </button>
                   </div>
                 </div>
-
                 {/* select menu end */}
               </div>
             </div>

@@ -86,7 +86,7 @@ const MenuPermissionInput = () => {
       );
       setMenuPermissionInfo(initialValue)
     }else{
-      toast.warn('Something went wrong')
+      toast.warn(response.message)
     }
   };
 
@@ -239,6 +239,7 @@ const MenuPermissionInput = () => {
                       style={{ marginTop: "20px" }}
                     >
                       <button
+                        disabled={!userProfile.role_permissions.insert}
                         className="btn btn-primary"
                         onClick={handleSubmit}
                       >
@@ -304,12 +305,15 @@ const MenuPermissionInput = () => {
                                   {singleMenuPermission.submenu_names &&
                                     singleMenuPermission.submenu_names.map(
                                       (singleName) => {
-                                        return `${singleName},`
+                                        return `${singleName},`;
                                       }
                                     )}
                                 </td>
                                 <td>
                                   <button
+                                    disabled={
+                                      !userProfile.role_permissions.delete
+                                    }
                                     className="btn btn-sm bg-danger-light px-3"
                                     onClick={() =>
                                       handleDeleteClick(singleMenuPermission.id)

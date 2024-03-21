@@ -50,7 +50,7 @@ const RoleUser = () => {
       }else if(response.response.status == 400){
         toast.warn('This user is already assigned')
       }else{
-        toast.warn('Something went wrong')
+        toast.warn(response.message)
         console.log(response)
       }
 
@@ -152,7 +152,7 @@ const RoleUser = () => {
             </select>
             <div className="input-group-append mt-2">
               <button
-                disabled={!userProfile.role_permissions.view}
+                disabled={!userProfile.role_permissions.insert}
                 className="btn btn-primary"
                 type="button"
                 onClick={handleSubmit}

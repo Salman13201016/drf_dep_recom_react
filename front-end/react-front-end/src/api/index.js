@@ -58,6 +58,7 @@ const apiService = {
       return data;
     } catch (error) {
       console.log("Error making POST Request:", error.message);
+      return error;
     }
   },
 
@@ -71,6 +72,7 @@ const apiService = {
       return response;
     } catch (error) {
       console.log("Error making Patch Request:", error.message);
+      return error;
     }
   },
   deleteData: async function (url) {

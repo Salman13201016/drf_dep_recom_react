@@ -10,8 +10,8 @@ const initialInput = {
 };
 const SubmenuInput = () => {
     const { menu } = useStoreState((state) => state);
-
     const [subMenuInfo, setSubMenuInfo] = useState(initialInput);
+    const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
 
     const handleChange = (e) =>{
         setSubMenuInfo((prev)=>{
@@ -38,7 +38,7 @@ const SubmenuInput = () => {
 
   return (
     <div>
-        <ToastContainer />
+      <ToastContainer />
       <div className="card-header">
         <h4 className="card-title">Sub Menu Data Input</h4>
       </div>
@@ -103,6 +103,7 @@ const SubmenuInput = () => {
                   className="btn btn-primary"
                   type="button"
                   onClick={handleSubmit}
+                  disabled={!userProfile.role_permissions.insert}
                 >
                   Submit
                 </button>
