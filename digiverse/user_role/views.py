@@ -16,14 +16,21 @@ class UserRolePanelView(generics.ListAPIView):
 
     def get_queryset(self):
         google_data = self.request.session.get('social_auth_google-oauth2')
+        
         if 'user_id' in self.request.session or google_data:
             return user_role_management.objects.all()
         else:
             return user_role_management.objects.none()
 
     def get(self, request, *args, **kwargs):
+        google_data = self.request.session.get('social_auth_google-oauth2')
+        print(google_data)
         queryset = self.get_queryset()
+        
+        print("Queryset: ", queryset)
+        
         serializer = self.serializer_class(queryset, many=True)
+        print("Serializers: ", serializer)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):

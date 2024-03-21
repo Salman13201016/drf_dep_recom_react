@@ -40,9 +40,12 @@ class MenuSerializer(serializers.ModelSerializer):
         return menu_instance
 
 class MenuPermissionSerializer(serializers.ModelSerializer):
-    role_name = serializers.CharField(source='role.role', read_only=True)
+    role_name = serializers.CharField(source='role.name', read_only=True)
     menu_names = serializers.SerializerMethodField()
     submenu_names = serializers.SerializerMethodField()
+    menus = serializers.PrimaryKeyRelatedField(queryset=Menu.objects.all(), many=True)  # Allow multiple menus
+    submenus = serializers.PrimaryKeyRelatedField(queryset=Submenu.objects.all(), many=True)  # Allow multiple submenus
+
 
     def get_menu_names(self, obj):
         return [menu.menu_name for menu in obj.menus.all()]
@@ -52,7 +55,7 @@ class MenuPermissionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MenuPermission
-        fields = ['id', 'role', 'role_name', 'menu_names', 'submenu_names', 'menu_permission']
+        fields = ['id', 'role', 'role_name', 'menu_names', 'submenu_names', 'menu_permission', 'menus', 'submenus']
 
 
     
