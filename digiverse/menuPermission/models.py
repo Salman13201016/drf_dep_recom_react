@@ -27,5 +27,5 @@ class MenuPermission(models.Model):
     submenus = models.ManyToManyField(Submenu, related_name='menu_permissions')
 
     def __str__(self):
-        return f"Permission for {self.role} on {self.menu_id}"
+        return f"Permission for {self.role} on MenuPermission {self.id}"
 
