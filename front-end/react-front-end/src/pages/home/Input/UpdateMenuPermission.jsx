@@ -5,7 +5,8 @@ import apiService from "../../../api";
 
 const initialValue = {
   role: "",
-  menu: [],
+  menus: [],
+  submenus: [],
 };
 const UpdateMenuPermissionInput = () => {
   const { menu, menuPermission } = useStoreState((state) => state);

@@ -82,7 +82,7 @@ const MenuPermissionInput = () => {
     if (response.status == 201) {
       toast.success("Successfully Added");
       menuPermissionAction.getMenuPermissionListFromServer(
-        "http://127.0.0.1:8000/menu_permission/menuPermission/"
+        "http://127.0.0.1:8000/menu_permission/menu-permissions/"
       );
       setMenuPermissionInfo(initialValue)
     }else{
@@ -103,7 +103,7 @@ const MenuPermissionInput = () => {
 
   const handleDeleteConfirm = async (itemId) => {
     const response = await apiService.deleteData(
-      `http://127.0.0.1:8000/menu_permission/menuPermission/${itemId}/`
+      `http://127.0.0.1:8000/menu_permission/menu-permissions/${itemId}/`
     );
     if (response.status == 204) {
       toast.warn("Deleted Successfully");
@@ -111,7 +111,7 @@ const MenuPermissionInput = () => {
       setSelectedItemId(null);
       setIsDeleteModalOpen(false);
       await menuPermissionAction.getMenuPermissionListFromServer(
-        "http://127.0.0.1:8000/menu_permission/menuPermission/"
+        "http://127.0.0.1:8000/menu_permission/menu-permissions/"
       );
     } else {
       toast.error("Something went wrong");
