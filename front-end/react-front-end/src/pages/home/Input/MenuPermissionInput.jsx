@@ -279,6 +279,7 @@ const MenuPermissionInput = () => {
                           <th>Serial</th>
                           <th>Role</th>
                           <th>Menu List</th>
+                          <th>Sub Menu List</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -294,10 +295,16 @@ const MenuPermissionInput = () => {
                                 <td>
                                   {singleMenuPermission.menu_names &&
                                     singleMenuPermission.menu_names.map(
-                                      (singleName, index) => {
-                                        return (
-                                          <span key={index}>{singleName}</span>
-                                        );
+                                      (singleName) => {
+                                        return `${singleName},`;
+                                      }
+                                    )}
+                                </td>
+                                <td>
+                                  {singleMenuPermission.submenu_names &&
+                                    singleMenuPermission.submenu_names.map(
+                                      (singleName) => {
+                                        return `${singleName},`
                                       }
                                     )}
                                 </td>

@@ -79,7 +79,7 @@ const App = () => {
   menu.getMenuListFromServer("http://127.0.0.1:8000/menu_permission/menus/");
   
   menuPermission.getMenuPermissionListFromServer(
-    "http://127.0.0.1:8000/menu_permission/menuPermission/"
+    "http://127.0.0.1:8000/menu_permission/menu-permissions/"
   );
   
 
