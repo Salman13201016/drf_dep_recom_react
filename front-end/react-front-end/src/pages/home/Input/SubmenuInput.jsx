@@ -1,4 +1,4 @@
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { useState } from "react";
 import apiService from "../../../api";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,6 +10,7 @@ const initialInput = {
 };
 const SubmenuInput = () => {
     const { menu } = useStoreState((state) => state);
+    const {menu:menuActions} = useStoreActions((actions)=>actions)
     const [subMenuInfo, setSubMenuInfo] = useState(initialInput);
     const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
 
@@ -29,6 +30,9 @@ const SubmenuInput = () => {
         );
         if(response.status == 201){
             toast.success('Successfully Added');
+            menuActions.getMenuListFromServer(
+              "http://127.0.0.1:8000/menu_permission/menus/"
+            );
             setSubMenuInfo(initialInput);
         }else{
             toast.warn('Something Went Wrong')

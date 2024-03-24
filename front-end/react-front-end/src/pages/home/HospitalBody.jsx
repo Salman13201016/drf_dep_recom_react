@@ -18,21 +18,22 @@ import RolePermissionInput from "./Input/RolePermissionInput";
 import MenuPermissionInput from "./Input/MenuPermissionInput";
 import OldMenuInput from "./Input/OldMenuInput";
 import MenuInput from "./Input/MenuInput";
+import NotFound from "../../components/UI/pagination/NotFound";
 
 
 const HospitalBody = ({ componentShow }) => {
-  let renderComponent = <DashBoard />
+  let renderComponent = <NotFound />
   if (componentShow == "division") {
     renderComponent = <DivisionInput />;
   } else if (componentShow == "district") {
     renderComponent = <DistrictInput />;
   } else if (componentShow == "station") {
     renderComponent = <StationInput />;
-  } else if (componentShow == "hospitalCategory") {
+  } else if (componentShow == "hospital_category") {
     renderComponent = <HospitalCategoryInput />;
-  } else if (componentShow == "hospitalApp") {
+  } else if (componentShow == "hospital_app") {
     renderComponent = <HospitalAppInput />;
-  } else if (componentShow == "hospitalMap") {
+  } else if (componentShow == "hospital_map") {
     renderComponent = <HospitalMap />;
   } else if (componentShow == "department") {
     renderComponent = <DepartmentInput />;
@@ -40,24 +41,24 @@ const HospitalBody = ({ componentShow }) => {
     renderComponent = <DepartmentDetails />;
   } else if (componentShow == "disease") {
     renderComponent = <DiseaseInput />;
-  } else if (componentShow == "symtoms") {
+  } else if (componentShow == "symptoms") {
     renderComponent = <SymtomsInput />;
   } else if (componentShow == "digiverseBody") {
-    renderComponent = <DigiverseMain />
-  }else if (componentShow == "role") {
-    renderComponent = <RoleInput />
-  }else if (componentShow == "roleUser") {
-    renderComponent = <RoleUser />
-  }else if (componentShow == "dashboard") {
-    renderComponent = <DashBoard />
-  }else if (componentShow == "rolePermission") {
-    renderComponent = <RolePermissionInput />
-  }else if (componentShow == "menu") {
-    renderComponent =  <OldMenuInput />
-  }else if (componentShow == "menuPermission") {
-    renderComponent = <MenuPermissionInput />
-  }else if (componentShow == "menuInput") {
-    renderComponent = <MenuInput />
+    renderComponent = <DigiverseMain />;
+  } else if (componentShow == "role") {
+    renderComponent = <RoleInput />;
+  } else if (componentShow == "role_user") {
+    renderComponent = <RoleUser />;
+  } else if (componentShow == "dashboard") {
+    renderComponent = <DashBoard />;
+  } else if (componentShow == "role_permission") {
+    renderComponent = <RolePermissionInput />;
+  } else if (componentShow == "menu_operation") {
+    renderComponent = <OldMenuInput />;
+  } else if (componentShow == "menu_permission") {
+    renderComponent = <MenuPermissionInput />;
+  } else if (componentShow == "menu_input") {
+    renderComponent = <MenuInput />;
   }
 
     return (

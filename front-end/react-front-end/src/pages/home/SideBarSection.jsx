@@ -11,6 +11,8 @@ import {
   faBuilding,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { useStoreState } from "easy-peasy";
+import { useEffect, useState } from "react";
 const SideBarSection = ({
   ishospitalLocationMenuDisplay,
   ishospitalMenuDisplay,
@@ -19,11 +21,25 @@ const SideBarSection = ({
   isMenuDisplay,
   changeDisplayMenu,
 }) => {
+  const { menu, menuPermission } = useStoreState((state) => state);
+  const userProfile = JSON.parse(sessionStorage.getItem("loginInfo"));
+  const userRole = userProfile.role;
+  const permissionArray = menuPermission.menuPermissionList.filter(
+    (item) => item.role_name == userRole
+  );
+  const [permissionObject, setpermissionObject] = useState("");
+
+  useEffect(() => {
+    setpermissionObject(permissionArray[0]);
+  }, [permissionArray]);
+
+
   return (
-    <div className="sidebar" id="sidebar">
+    <div className="mainSideBar sidebar" id="sidebar">
       <div className="sidebar-inner slimscroll">
         <div id="sidebar-menu" className="sidebar-menu">
-          <ul>
+          {/* previous hard coded menu */}
+          {/* <ul>
             <li>
               <a href="#">
                 <span>
@@ -195,6 +211,116 @@ const SideBarSection = ({
                 <FontAwesomeIcon icon={faUserDoctor} /> <span> Digiverse</span>{" "}
               </Link>
             </li>
+          </ul> */}
+
+          {/* previous dynamic  menu */}
+          {/* <ul>
+            {menu.menuList.map((singleMenu, index) => {
+              return (
+                <li className="submenu" key={index}>
+                  <Link>{singleMenu.menu_name}</Link>
+                  {singleMenu.submenus.length && (
+                    <ul>
+                      {singleMenu.submenus.map((singleSubMenu, index) => {
+                        return (
+                          <li key={index}>{singleSubMenu.submenu_name}</li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul> */}
+
+          <ul>
+            <li>
+              <a href="#">
+                <span>
+                  <img
+                    src="../../../src/assets/img/logo/White-DigiVerse-Logo1.png"
+                    alt=""
+                  />
+                </span>
+              </a>
+            </li>
+          </ul>
+
+          {/* dynamic  menu  by chat gpt*/}
+          <ul className="nav">
+            {menu.menuList.map((singleMenu, index) => {
+              return (
+                <li className="nav-item d-block w-100" key={index}>
+                  {singleMenu.submenus.length > 0 ? (
+                    <div className="dropdown mb-2">
+                      {permissionObject &&
+                        permissionObject.menu_names.includes(
+                          singleMenu.menu_name
+                        ) && (
+                          <Link
+                            className="nav-link dropdown-toggle d-block"
+                            to="#"
+                            id={`menu-${index}`}
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            {singleMenu.menu_name}
+                          </Link>
+                        )}
+
+                      {/* <Link
+                        className="nav-link dropdown-toggle d-block"
+                        to="#"
+                        id={`menu-${index}`}
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        {singleMenu.menu_name}
+                      </Link> */}
+
+                      <ul
+                        className="dropdown-menu"
+                        aria-labelledby={`menu-${index}`}
+                      >
+                        {singleMenu.submenus.map((singleSubMenu, subIndex) => {
+                          return (
+                            <li key={subIndex}>
+                              {permissionObject &&
+                                permissionObject.submenu_names.includes(
+                                  singleSubMenu.submenu_name
+                                ) && (
+                                  <Link
+                                    className="dropdown-item submenu text-dark"
+                                    to={singleSubMenu.submenu_url}
+                                  >
+                                    {singleSubMenu.submenu_name}
+                                  </Link>
+                                )}
+
+                              {/* <Link
+                                className="dropdown-item submenu text-dark"
+                                to={singleSubMenu.submenu_url}
+                              >
+                                {singleSubMenu.submenu_name}
+                              </Link> */}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  ) : (
+                    <Link
+                      className="nav-link d-block w-100"
+                      to={singleMenu.menu_url}
+                    >
+                      {singleMenu.menu_name}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

@@ -1549,6 +1549,10 @@ button.bg-danger:hover {
 .slide-nav .sidebar {
 	margin-left: 0;
 }
+.mainSideBar.sidebar{
+	height: 100vh;
+	overflow-y: auto;
+}
 .app-dropdown .dropdown-menu {
     padding: 0;
     width: 300px;
