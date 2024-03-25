@@ -1728,11 +1728,23 @@ html.menu-opened body {
 .sidebar-menu li a:hover {
     color: #5ae8ff;
 }
-.sidebar-menu > ul > li > a:hover {
+
+.linkHover li a:hover {
+    background-color: #19c1dc;
+    color: #fff;
+}
+
+.slinkHover li a.active > a:hover {
+    background-color: #19c1dc;
+    color: #fff;
+}
+
+
+.sidebar-menu  ul  li  a:hover {
 	background-color: #19c1dc;
     color: #fff;
 }
-.sidebar-menu > ul > li.active > a:hover {
+.sidebar-menu  ul  li.active  a:hover {
     background-color: #19c1dc;
     color: #fff;
 }

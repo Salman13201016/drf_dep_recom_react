@@ -12,6 +12,7 @@ import DigiverseForgotPass from "../pages/digiverse/forgotPass/DigiverseForgotPa
 import DigiverseWelcome from "../pages/welcome/DigiverseWelcome";
 import { GoogleLogIn } from "../pages/digiverse/googleLogIn/GoogleLogIn";
 import DigiverseAbout from "../pages/digiverse/about/DigiverseAbout";
+import Symptom from "../pages/digiverse/symptom/Symptom";
 
 
 
@@ -86,8 +87,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<DigiverseLogin />} />
-        <Route path="/admin/:input" element={<HomePage />} />
+        <Route path="/" element={<DigiverseMain />} />
+        <Route path="/symptom" element={ <Symptom /> } />
         <Route path="/digiverse" element={<DigiverseMain />} />
         <Route path="/digiverse/login" element={<DigiverseLogin />} />
         <Route path="/digiverse/login/google" element={<GoogleLogIn />} />
@@ -100,6 +101,7 @@ const App = () => {
         <Route path="/digiverse/terms" element={<DigiverseTerms />} />
         <Route path="/digiverse/welcome" element={<DigiverseWelcome />} />
         <Route path="/digiverse/about" element={<DigiverseAbout />} />
+        <Route path="/admin/:input" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );

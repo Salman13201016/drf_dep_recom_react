@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useStoreState } from "easy-peasy";
 import { useEffect, useState } from "react";
+import { replaceClassWithClassName } from "../../utils/utils";
 const SideBarSection = ({
   ishospitalLocationMenuDisplay,
   ishospitalMenuDisplay,
@@ -233,43 +234,46 @@ const SideBarSection = ({
             })}
           </ul> */}
 
-          <ul>
-            <li>
-              <a href="#">
-                <span>
-                  <img
-                    src="../../../src/assets/img/logo/White-DigiVerse-Logo1.png"
-                    alt=""
-                  />
-                </span>
-              </a>
-            </li>
-          </ul>
 
-          {/* dynamic  menu  by chat gpt*/}
-          <ul className="nav">
-            {menu.menuList.map((singleMenu, index) => {
-              return (
-                <li className="nav-item d-block w-100" key={index}>
-                  {singleMenu.submenus.length > 0 ? (
-                    <div className="dropdown mb-2">
-                      {permissionObject &&
-                        permissionObject.menu_names.includes(
-                          singleMenu.menu_name
-                        ) && (
-                          <Link
-                            className="nav-link dropdown-toggle d-block"
-                            to="#"
-                            id={`menu-${index}`}
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            {singleMenu.menu_name}
-                          </Link>
-                        )}
+            <ul>
+              <li>
+                <a href="#">
+                  <span>
+                    <img
+                      src="../../../src/assets/img/logo/White-DigiVerse-Logo1.png"
+                      alt=""
+                    />
+                  </span>
+                </a>
+              </li>
+            </ul>
 
-                      {/* <Link
+            {/* dynamic  menu  by chat gpt*/}
+            <ul className="nav">
+              {menu.menuList.map((singleMenu, index) => {
+                return (
+                  <li className="nav-item d-block w-100" key={index}>
+                    {singleMenu.submenus.length > 0 ? (
+                      <div className="dropdown mb-2">
+                        {/* menu execute that have sub menu */}
+                        {permissionObject &&
+                          permissionObject.menu_names.includes(
+                            singleMenu.menu_name
+                          ) && (
+                            <Link
+                              className="nav-link dropdown-toggle d-block"
+                              to="#"
+                              id={`menu-${index}`}
+                              role="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              {/* {singleMenu.menu_icon} */}
+                              <span>{singleMenu.menu_name}</span>
+                            </Link>
+                          )}
+
+                        {/* <Link
                         className="nav-link dropdown-toggle d-block"
                         to="#"
                         id={`menu-${index}`}
@@ -280,48 +284,56 @@ const SideBarSection = ({
                         {singleMenu.menu_name}
                       </Link> */}
 
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby={`menu-${index}`}
-                      >
-                        {singleMenu.submenus.map((singleSubMenu, subIndex) => {
-                          return (
-                            <li key={subIndex}>
-                              {permissionObject &&
-                                permissionObject.submenu_names.includes(
-                                  singleSubMenu.submenu_name
-                                ) && (
-                                  <Link
-                                    className="dropdown-item submenu text-dark"
-                                    to={singleSubMenu.submenu_url}
-                                  >
-                                    {singleSubMenu.submenu_name}
-                                  </Link>
-                                )}
-
-                              {/* <Link
+                        <ul
+                          className="dropdown-menu"
+                          aria-labelledby={`menu-${index}`}
+                        >
+                          {singleMenu.submenus.map(
+                            (singleSubMenu, subIndex) => {
+                              return (
+                                <li key={subIndex}>
+                                  {permissionObject &&
+                                    permissionObject.submenu_names.includes(
+                                      singleSubMenu.submenu_name
+                                    ) && (
+                                      <Link
+                                        className="dropdown-item submenu text-dark"
+                                        to={singleSubMenu.submenu_url}
+                                      >
+                                        {singleSubMenu.submenu_name}
+                                      </Link>
+                                    )}
+                                  {/* <Link
                                 className="dropdown-item submenu text-dark"
                                 to={singleSubMenu.submenu_url}
                               >
                                 {singleSubMenu.submenu_name}
                               </Link> */}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  ) : (
-                    <Link
-                      className="nav-link d-block w-100"
-                      to={singleMenu.menu_url}
-                    >
-                      {singleMenu.menu_name}
-                    </Link>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+                                </li>
+                              );
+                            }
+                          )}
+                        </ul>
+                      </div>
+                    ) : (
+                      // menu execute that does not have sub menu
+                      permissionObject &&
+                      permissionObject.menu_names.includes(
+                        singleMenu.menu_name
+                      ) && (
+                        <Link
+                          className="nav-link d-block w-100"
+                          to={singleMenu.menu_url}
+                        >
+                          {singleMenu.menu_name}
+                        </Link>
+                      )
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+
         </div>
       </div>
     </div>

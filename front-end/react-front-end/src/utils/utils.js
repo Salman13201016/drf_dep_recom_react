@@ -90,3 +90,9 @@ export const truncatedText = (text, maxCharacters ) => {
 
   return truncatedText;
 };
+
+
+export function replaceClassWithClassName(string) {
+  // Use a regular expression to replace 'class=' with 'className='
+  return string.replace(/class=/g, "className=");
+}

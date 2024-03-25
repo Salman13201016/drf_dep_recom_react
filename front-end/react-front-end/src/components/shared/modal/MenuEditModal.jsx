@@ -13,20 +13,11 @@ const MenuEditModal = ({
   fieldName,
   handleChange,
 }) => {
-  //    const response = await apiService.postData(
-  //      "http://127.0.0.1:8000/menu_permission/menus/",
-  //      JSON.stringify(menuInfo)
-  //    );
-  //    if (response.statusText == "Created") {
-  //      toast.success("Added Successfully");
-  //      setMenuInfo(initialValue);
-  //      await menuActions.getMenuListFromServer(
-  //        "http://127.0.0.1:8000/menu_permission/menus/"
-  //      );
-  //    } else {
-  //      toast.warn("Something went wrong");
-  //    }
-  //  };
+
+  
+
+  
+
 
   return (
     <Modal show={isShow} onHide={handleClose}>
@@ -50,7 +41,7 @@ const MenuEditModal = ({
             <Form.Control
               type="text"
               autoFocus
-              value={editValue.submenu_name}
+              value={editValue.submenus}
               onChange={handleChange}
               name="submenu_name"
             />

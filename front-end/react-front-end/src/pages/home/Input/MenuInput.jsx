@@ -139,18 +139,19 @@ const MenuInput = () => {
   };
 
   const handleConfirmEdit = async () => {
-    const response = await apiService.updateData(
-      `http://127.0.0.1:8000/menu_permission/menus/${selectedItemId}/`,
-      JSON.stringify(selectedEditItem)
-    );
+    console.log(selectedEditItem.submenus);
+    // const response = await apiService.updateData(
+    //   `http://127.0.0.1:8000/menu_permission/menus/${selectedItemId}/`,
+    //   JSON.stringify(selectedEditItem)
+    // );
 
-    if (response.status == 200) {
-      setIsEditModalShow(false);
-      toast.success("Successfully Updated");
-      await menuActions.getMenuListFromServer(
-        "http://127.0.0.1:8000/menu_permission/menus/"
-      );
-    }
+    // if (response.status == 200) {
+    //   setIsEditModalShow(false);
+    //   toast.success("Successfully Updated");
+    //   await menuActions.getMenuListFromServer(
+    //     "http://127.0.0.1:8000/menu_permission/menus/"
+    //   );
+    // }
   };
   return (
     <div className="card">
@@ -287,7 +288,7 @@ const MenuInput = () => {
                                   )}
                                 </td>
                                 <td>
-                                  <button
+                                  {/* <button
                                     disabled={
                                       !userProfile.role_permissions.edit
                                     }
@@ -295,7 +296,7 @@ const MenuInput = () => {
                                     onClick={() => handleEditClick(singleMenu)}
                                   >
                                     <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                  </button>
+                                  </button> */}
                                   <button
                                     disabled={
                                       !userProfile.role_permissions.delete
